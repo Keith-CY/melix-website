@@ -267,6 +267,37 @@ cat README.md</code></pre>
               <pre class="code-block" aria-label="quick start follow-up command"><code id="quickstart-check-cmd">swift --version
 python --version
 uv --version</code></pre>
+              <div class="command-actions">
+                <button
+                  id="copy-quickstart-checks"
+                  type="button"
+                  class="btn btn-ghost btn-sm"
+                  data-i18n="section.get.quick.nextCopyBtn"
+                >
+                  Copy checks
+                </button>
+              </div>
+            </article>
+            <article class="card command-card" id="quickstart-run" hidden>
+              <h3 id="quickstart-run-heading" data-i18n="section.get.quick.runHeading">
+                Then continue with project setup
+              </h3>
+              <p class="section-subtitle" id="quickstart-run-copy" data-i18n="section.get.quick.runCopy">
+                Go to setup guide to follow the right command for starting the service.
+              </p>
+              <div class="command-actions">
+                <a
+                  id="quickstart-run-link"
+                  class="btn btn-ghost btn-sm is-disabled-link"
+                  href="#"
+                  aria-disabled="true"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  data-i18n="section.get.quick.runLinkText"
+                >
+                  Open setup guide
+                </a>
+              </div>
             </article>
           </div>
         </div>
@@ -308,8 +339,14 @@ uv --version</code></pre>
             <span data-i18n="section.status.updatedLabel">Updated</span>
             <span id="status-last-updated"></span>
             ·
+            <span data-i18n="section.status.branchLabel">Branch</span>
+            <span id="status-branch">main</span>
+            ·
             <span data-i18n="section.status.deployIdLabel">Deployment id</span>
             <span id="status-deploy-id">n/a</span>
+            ·
+            <span data-i18n="section.status.commitLabel">Commit</span>
+            <span id="status-commit">n/a</span>
           </p>
         </div>
       </section>
@@ -340,13 +377,20 @@ uv --version</code></pre>
       </div>
     </footer>
 
-    <script id="site-links" type="application/json">
-      {
-        "github": "https://github.com/Keith-CY/melix",
-        "discussions": "https://github.com/Keith-CY/melix/discussions",
-        "issues": "https://github.com/Keith-CY/melix/issues"
-      }
-    </script>
-    <script src="./app.js" defer></script>
-  </body>
-</html>
+	    <script id="site-links" type="application/json">
+	      {
+	        "github": "https://github.com/Keith-CY/melix",
+	        "discussions": "https://github.com/Keith-CY/melix/discussions",
+	        "issues": "https://github.com/Keith-CY/melix/issues"
+	      }
+	    </script>
+	    <script id="build-meta" type="application/json">
+	      {
+	        "branch": "main",
+	        "commit": "",
+	        "source": "main"
+	      }
+	    </script>
+	    <script src="./app.js" defer></script>
+	  </body>
+	</html>

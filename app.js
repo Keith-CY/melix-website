@@ -55,6 +55,10 @@ const copy = {
           copied: "Copied to clipboard",
           copyFailed: "Copy failed. Please select and copy manually.",
           mustCopyText: "Please copy commands first.",
+          nextNothingText: "No check commands to copy.",
+          nextCopyBtn: "Copy checks",
+          nextCopySuccess: "Check commands copied.",
+          nextCopyFailed: "Copy checks failed. Please copy manually.",
           commands: [
             "git clone https://github.com/Keith-CY/melix.git",
             "cd melix",
@@ -68,6 +72,12 @@ const copy = {
             "python --version",
             "uv --version",
           ],
+          runHeading: "Then continue with project setup",
+          runCopy:
+            "Go to setup guide to follow the right command for starting the service.",
+          runLinkText: "Open setup guide",
+          runLinkAria: "Open project setup documentation",
+          runUrl: "https://github.com/Keith-CY/melix#readme",
         },
       },
       status: {
@@ -76,8 +86,11 @@ const copy = {
         releaseLabel: "Deployment source",
         releaseSource: "main",
         updatedLabel: "Updated",
+        branchLabel: "Branch",
         deployIdLabel: "Deployment id",
         deployIdFallback: "n/a",
+        commitLabel: "Commit",
+        commitFallback: "n/a",
         available: {
           title: "v0.1.0-alpha / Available now",
           body: "v0.1.0-alpha · local model workflow, LoRA, benchmark/eval, CLI and macOS surfaces",
@@ -154,6 +167,10 @@ const copy = {
           copied: "已复制到剪贴板",
           copyFailed: "复制失败，请手动选中并复制。",
           mustCopyText: "请先复制命令。",
+          nextNothingText: "没有可复制的校验命令。",
+          nextCopyBtn: "复制校验命令",
+          nextCopySuccess: "校验命令已复制。",
+          nextCopyFailed: "复制校验命令失败，请手动复制。",
           commands: [
             "git clone https://github.com/Keith-CY/melix.git",
             "cd melix",
@@ -167,6 +184,11 @@ const copy = {
             "python --version",
             "uv --version",
           ],
+          runHeading: "继续项目设置",
+          runCopy: "查看仓库说明执行服务启动步骤。",
+          runLinkText: "打开设置文档",
+          runLinkAria: "打开设置文档",
+          runUrl: "https://github.com/Keith-CY/melix#readme",
         },
       },
       status: {
@@ -175,8 +197,11 @@ const copy = {
         releaseLabel: "部署来源",
         releaseSource: "main",
         updatedLabel: "更新于",
+        branchLabel: "分支",
         deployIdLabel: "部署 ID",
         deployIdFallback: "未提供",
+        commitLabel: "提交",
+        commitFallback: "无信息",
         available: {
           title: "v0.1.0-alpha / 已支持",
           body: "v0.1.0-alpha · 本地模型工作流、LoRA、基准与评测、CLI 与 macOS 界面",
@@ -208,17 +233,25 @@ const quickStartChecks = document.getElementById("quickstart-checks");
 const quickStartCheckCmd = document.getElementById("quickstart-check-cmd");
 const quickStartCheckTitle = document.getElementById("quickstart-check-heading");
 const quickStartCheckIntro = document.getElementById("quickstart-check-copy");
+const copyQuickStartChecks = document.getElementById("copy-quickstart-checks");
+const quickStartRun = document.getElementById("quickstart-run");
+const quickStartRunTitle = document.getElementById("quickstart-run-heading");
+const quickStartRunIntro = document.getElementById("quickstart-run-copy");
+const quickStartRunLink = document.getElementById("quickstart-run-link");
 const copyQuickStart = document.getElementById("copy-quickstart");
 const copyQuickStartFeedback = document.getElementById("quickstart-feedback");
 const quickStartNext = document.getElementById("quickstart-next");
 const statusSource = document.getElementById("status-source");
 const statusLastUpdated = document.getElementById("status-last-updated");
+const statusBranch = document.getElementById("status-branch");
 const statusDeployId = document.getElementById("status-deploy-id");
+const statusCommit = document.getElementById("status-commit");
 const langToggle = document.getElementById("lang-toggle");
 const linkGithub = document.getElementById("link-github");
 const linkCommunity = document.getElementById("link-community");
 const linkIssue = document.getElementById("link-issue");
 let lang = "en";
+let checksCopied = false;
 
 const defaultLinks = {
   github: "",
@@ -302,6 +335,53 @@ function showNextPhase() {
   quickStartChecks.hidden = false;
 }
 
+function showRunPhase() {
+  if (!quickStartRun) {
+    return;
+  }
+  quickStartRun.hidden = false;
+}
+
+function setRunLinkReady(isReady) {
+  if (!quickStartRunLink) {
+    return;
+  }
+  if (isReady) {
+    quickStartRunLink.classList.remove("is-disabled-link");
+    quickStartRunLink.removeAttribute("aria-disabled");
+    return;
+  }
+  quickStartRunLink.classList.add("is-disabled-link");
+  quickStartRunLink.setAttribute("aria-disabled", "true");
+}
+
+function updateRunPhase(localeCopy) {
+  if (!quickStartRun) {
+    return;
+  }
+  if (quickStartRunTitle) {
+    quickStartRunTitle.textContent = localeCopy.section.get.quick.runHeading;
+  }
+  if (quickStartRunIntro) {
+    quickStartRunIntro.textContent = localeCopy.section.get.quick.runCopy;
+  }
+  if (quickStartRunLink) {
+    const runUrl = localeCopy.section.get.quick.runUrl || "";
+    quickStartRunLink.dataset.readyRunUrl = runUrl ? "true" : "false";
+    quickStartRunLink.textContent = localeCopy.section.get.quick.runLinkText || "Open setup guide";
+    quickStartRunLink.setAttribute(
+      "aria-label",
+      localeCopy.section.get.quick.runLinkAria || "Open setup guide"
+    );
+    if (runUrl) {
+      quickStartRunLink.href = runUrl;
+    } else {
+      quickStartRunLink.href = "#";
+    }
+    setRunLinkReady(checksCopied && quickStartRunLink.dataset.readyRunUrl === "true");
+  }
+}
+
 async function fetchDeploymentMeta() {
   try {
     const response = await fetch(window.location.href, {
@@ -319,15 +399,66 @@ async function fetchDeploymentMeta() {
   }
 }
 
+function getDeploymentContext() {
+  const context = {
+    branch: "",
+    commit: "",
+    source: "",
+  };
+
+  try {
+    const buildMeta = document.getElementById("build-meta");
+    if (buildMeta && buildMeta.textContent) {
+      const parsed = JSON.parse(buildMeta.textContent);
+      context.branch = typeof parsed.branch === "string" ? parsed.branch.trim() : "";
+      context.commit = typeof parsed.commit === "string" ? parsed.commit.trim() : "";
+      context.source = typeof parsed.source === "string" ? parsed.source.trim() : "";
+    }
+  } catch {
+    // ignore invalid meta JSON
+  }
+
+  const query = new URLSearchParams(window.location.search);
+  if (!context.branch) {
+    const branch = query.get("branch");
+    if (branch) {
+      context.branch = branch.trim();
+    }
+  }
+  if (!context.commit) {
+    const commit = query.get("commit");
+    if (commit) {
+      context.commit = commit.trim();
+    }
+  }
+  if (!context.source) {
+    const source = query.get("source");
+    if (source) {
+      context.source = source.trim();
+    }
+  }
+
+  return context;
+}
+
 async function refreshStatusMeta(localeCopy) {
   if (!statusSource || !statusLastUpdated) {
     return;
   }
-
-  statusSource.textContent = localeCopy.section.status.releaseSource || "main";
+  const deploymentContext = getDeploymentContext();
+  statusSource.textContent =
+    deploymentContext.source || localeCopy.section.status.releaseSource || "main";
+  if (statusBranch) {
+    statusBranch.textContent =
+      deploymentContext.branch || localeCopy.section.status.releaseSource || "main";
+  }
   const deploymentMeta = await fetchDeploymentMeta();
   statusLastUpdated.textContent =
     formatDate(lang, deploymentMeta.lastModified) || formatDate(lang);
+  if (statusCommit) {
+    const commitText = deploymentContext.commit || localeCopy.section.status.commitFallback || "n/a";
+    statusCommit.textContent = commitText;
+  }
   if (statusDeployId) {
     const deployId = deploymentMeta.deploymentId
       ? deploymentMeta.deploymentId.split("::").pop()
@@ -447,16 +578,43 @@ function setLang(next) {
       quickStartNext.textContent = locale.section.get.quick.nextLink;
     }
   }
+  if (copyQuickStartChecks) {
+    copyQuickStartChecks.textContent =
+      locale.section.get.quick.nextCopyBtn || "Copy checks";
+    copyQuickStartChecks.dataset.nothingText =
+      locale.section.get.quick.nextNothingText || "No check commands to copy.";
+    copyQuickStartChecks.dataset.copiedText =
+      locale.section.get.quick.nextCopySuccess || "Check commands copied.";
+    copyQuickStartChecks.dataset.copyFailedText =
+      locale.section.get.quick.nextCopyFailed || "Copy checks failed. Please copy manually.";
+    copyQuickStartChecks.dataset.mustCopyText =
+      locale.section.get.quick.mustCopyText || "Please copy checks first.";
+  }
+  if (quickStartRun) {
+    if (quickStartRunLink) {
+      quickStartRunLink.textContent =
+        locale.section.get.quick.runLinkText || "Open setup guide";
+      quickStartRunLink.setAttribute(
+        "aria-label",
+        locale.section.get.quick.runLinkAria || "Open setup guide"
+      );
+    }
+  }
   setText(
     "section.get.quick.nextHeading",
     locale.section.get.quick.nextHeading
   );
   setText("section.get.quick.nextCopy", locale.section.get.quick.nextCopy);
+  setText("section.get.quick.runHeading", locale.section.get.quick.runHeading);
+  setText("section.get.quick.runCopy", locale.section.get.quick.runCopy);
   setText("section.status.deployIdLabel", locale.section.status.deployIdLabel);
+  setText("section.status.branchLabel", locale.section.status.branchLabel);
+  setText("section.status.commitLabel", locale.section.status.commitLabel);
   if (quickStartCheckCmd) {
     quickStartCheckCmd.textContent = locale.section.get.quick.nextCommands.join("\n");
   }
   updateNextPhase(locale);
+  updateRunPhase(locale);
 
   setText("section.status.heading", locale.section.status.heading);
   setText("section.status.tag", locale.section.status.tag);
@@ -536,6 +694,40 @@ if (copyQuickStart) {
   });
 }
 
+if (copyQuickStartChecks) {
+  copyQuickStartChecks.addEventListener("click", async () => {
+    const text = quickStartCheckCmd ? quickStartCheckCmd.textContent.trim() : "";
+    if (!text) {
+      const nothingText = copyQuickStartChecks.dataset.nothingText || "No check commands to copy.";
+      setCopyFeedback(nothingText);
+      return;
+    }
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        throw new Error("clipboard-api-not-available");
+      }
+      checksCopied = true;
+      setCopyFeedback(copyQuickStartChecks.dataset.copiedText || "Check commands copied.");
+      showRunPhase();
+      setRunLinkReady(true);
+    } catch (err) {
+      if (getFallbackCopyText(text)) {
+        checksCopied = true;
+        setCopyFeedback(copyQuickStartChecks.dataset.copiedText || "Check commands copied.");
+        showRunPhase();
+        setRunLinkReady(true);
+      } else {
+        const failedText =
+          copyQuickStartChecks.dataset.copyFailedText || "Copy checks failed. Please copy manually.";
+        setCopyFeedback(failedText, true);
+      }
+    }
+  });
+}
+
 if (quickStartNext) {
   quickStartNext.addEventListener("click", (event) => {
     if (quickStartNext.getAttribute("aria-disabled") === "true") {
@@ -543,6 +735,15 @@ if (quickStartNext) {
       const message =
         copyQuickStart?.dataset.mustCopyText || "Please copy commands first.";
       setCopyFeedback(message, true);
+    }
+  });
+}
+
+if (quickStartRunLink) {
+  quickStartRunLink.addEventListener("click", (event) => {
+    if (quickStartRunLink.getAttribute("aria-disabled") === "true") {
+      event.preventDefault();
+      setCopyFeedback(copyQuickStartChecks?.dataset.mustCopyText || "Copy checks first, then open setup guide.");
     }
   });
 }
