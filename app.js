@@ -47,6 +47,18 @@ const copy = {
         heading: "Start from the repo.",
         requirements: "Requirements",
         steps: "Quick Start",
+        quick: {
+          title: "Start in 3 minutes",
+          copy: "Copy and run the commands below.",
+          copyBtn: "Copy commands",
+          copied: "Copied to clipboard",
+          copyFailed: "Copy failed. Please select and copy manually.",
+          commands: [
+            "git clone https://github.com/Keith-CY/melix.git",
+            "cd melix",
+            "cat README.md",
+          ],
+        },
       },
       status: {
         heading: "Current Status",
@@ -119,6 +131,18 @@ const copy = {
         heading: "从仓库开始。",
         requirements: "要求 / Requirements",
         steps: "快速开始",
+        quick: {
+          title: "三分钟快速开始",
+          copy: "复制下面命令并执行。",
+          copyBtn: "复制命令",
+          copied: "已复制到剪贴板",
+          copyFailed: "复制失败，请手动选中并复制。",
+          commands: [
+            "git clone https://github.com/Keith-CY/melix.git",
+            "cd melix",
+            "cat README.md",
+          ],
+        },
       },
       status: {
         heading: "当前状态",
@@ -149,6 +173,9 @@ const requirementsEn = document.getElementById("requirements-en");
 const requirementsZh = document.getElementById("requirements-zh");
 const stepsEn = document.getElementById("steps-en");
 const stepsZh = document.getElementById("steps-zh");
+const quickStartCmd = document.getElementById("quickstart-cmd");
+const copyQuickStart = document.getElementById("copy-quickstart");
+const copyQuickStartFeedback = document.getElementById("quickstart-feedback");
 const langToggle = document.getElementById("lang-toggle");
 const linkGithub = document.getElementById("link-github");
 const linkCommunity = document.getElementById("link-community");
@@ -165,6 +192,38 @@ function setText(key, value) {
   document.querySelectorAll(`[data-i18n="${key}"]`).forEach((el) => {
     el.textContent = value;
   });
+}
+
+function getFallbackCopyText(text) {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.style.position = "fixed";
+  textarea.style.top = "-9999px";
+  textarea.style.left = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.select();
+  textarea.focus();
+  let copied = false;
+  try {
+    copied = document.execCommand("copy");
+  } finally {
+    document.body.removeChild(textarea);
+  }
+  return copied;
+}
+
+function setCopyFeedback(message, isError = false) {
+  if (!copyQuickStartFeedback) {
+    return;
+  }
+  copyQuickStartFeedback.textContent = message;
+  copyQuickStartFeedback.style.color = isError ? "var(--danger)" : "var(--teal)";
+  copyQuickStartFeedback.classList.add("visible");
+  clearTimeout(setCopyFeedback._timer);
+  setCopyFeedback._timer = setTimeout(() => {
+    copyQuickStartFeedback.textContent = "";
+    copyQuickStartFeedback.classList.remove("visible");
+  }, 1800);
 }
 
 function getLinksConfig() {
@@ -257,6 +316,17 @@ function setLang(next) {
   setText("section.get.heading", locale.section.get.heading);
   setText("section.get.requirements", locale.section.get.requirements);
   setText("section.get.steps", locale.section.get.steps);
+  setText("section.get.quick.title", locale.section.get.quick.title);
+  setText("section.get.quick.copy", locale.section.get.quick.copy);
+
+  if (quickStartCmd) {
+    quickStartCmd.textContent = locale.section.get.quick.commands.join("\n");
+  }
+  if (copyQuickStart) {
+    copyQuickStart.textContent = locale.section.get.quick.copyBtn;
+    copyQuickStart.dataset.copiedText = locale.section.get.quick.copied;
+    copyQuickStart.dataset.copyFailedText = locale.section.get.quick.copyFailed;
+  }
 
   setText("section.status.heading", locale.section.status.heading);
   setText("section.status.tag", locale.section.status.tag);
@@ -290,6 +360,35 @@ langToggle.addEventListener("click", () => {
   setLang(lang === "en" ? "zh" : "en");
   langToggle.setAttribute("aria-pressed", lang === "zh" ? "true" : "false");
 });
+
+if (copyQuickStart) {
+  copyQuickStart.addEventListener("click", async () => {
+    const text = quickStartCmd ? quickStartCmd.textContent.trim() : "";
+    if (!text) {
+      setCopyFeedback("Nothing to copy", true);
+      return;
+    }
+
+    const copiedText = copyQuickStart.dataset.copiedText || "Copied";
+    const failedText =
+      copyQuickStart.dataset.copyFailedText || "Copy failed. Please retry.";
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        throw new Error("clipboard-api-not-available");
+      }
+      setCopyFeedback(copiedText);
+    } catch (err) {
+      if (getFallbackCopyText(text)) {
+        setCopyFeedback(copiedText);
+      } else {
+        setCopyFeedback(failedText, true);
+      }
+    }
+  });
+}
 
 const preferred = navigator.language.toLowerCase();
 if (preferred.startsWith("zh")) {

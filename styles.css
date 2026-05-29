@@ -364,6 +364,10 @@ h2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.start-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .macos-cards {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -395,6 +399,37 @@ ol {
   margin: 0.7rem 0 0;
   color: #bfd3ff;
   line-height: 1.85;
+}
+
+.code-block {
+  margin: 0.7rem 0 0.95rem;
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(4, 8, 16, 0.78);
+  color: #c8d8ff;
+  overflow: auto;
+  line-height: 1.45;
+  font-family: "SFMono-Regular", Consolas, Menlo, Monaco, "Courier New", monospace;
+  font-size: 0.92rem;
+}
+
+.command-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.copy-feedback {
+  color: var(--teal);
+  font-size: 0.9rem;
+  min-height: 1.3rem;
+}
+
+.btn-sm {
+  padding: 0.58rem 1rem;
+  font-size: 0.9rem;
 }
 
 .footer {
@@ -452,6 +487,7 @@ button:focus-visible {
   .loop-grid,
   .arch-canvas,
   .grid-2,
+  .start-grid,
   .macos-cards,
   .status-grid {
     grid-template-columns: 1fr;
@@ -480,6 +516,7 @@ button:focus-visible {
   .ambient-orb,
   .reveal,
   .pulse,
+  .code-block,
   .btn,
   .btn:hover,
   .card:hover,

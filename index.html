@@ -193,7 +193,7 @@
       <section id="get-started" class="section reveal">
         <div class="wrap">
           <h2 data-i18n="section.get.heading">Start from the repo.</h2>
-          <div class="grid-2">
+          <div class="grid-2 start-grid">
             <article class="card">
               <h3 data-i18n="section.get.requirements">Requirements</h3>
               <ul id="requirements-en">
@@ -227,6 +227,26 @@
                 <li>打开 App 或执行 CLI 工作流。</li>
                 <li>运行首次模型推理 / 基准测试 / 评测。</li>
               </ol>
+            </article>
+            <article class="card command-card">
+              <h3 data-i18n="section.get.quick.title">Start in 3 minutes</h3>
+              <p class="section-subtitle" data-i18n="section.get.quick.copy">
+                Copy and run the commands below.
+              </p>
+              <pre class="code-block" aria-label="quick start command"><code id="quickstart-cmd">git clone https://github.com/Keith-CY/melix.git
+cd melix
+cat README.md</code></pre>
+              <div class="command-actions">
+                <button
+                  id="copy-quickstart"
+                  type="button"
+                  class="btn btn-ghost btn-sm"
+                  data-i18n="section.get.quick.copyBtn"
+                >
+                  Copy commands
+                </button>
+                <span id="quickstart-feedback" role="status" aria-live="polite"></span>
+              </div>
             </article>
           </div>
         </div>
