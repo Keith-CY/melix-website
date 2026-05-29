@@ -75,9 +75,14 @@ const copy = {
           runHeading: "Then continue with project setup",
           runCopy:
             "Go to setup guide to follow the right command for starting the service.",
+          runCommands: ["make bootstrap", "make proto", "bash scripts/dev_up.sh"],
+          runCopyBtn: "Copy start commands",
+          runCopySuccess: "Start commands copied.",
+          runCopyFailed: "Copy start commands failed. Please copy manually.",
+          runCopyNothingText: "No start commands to copy.",
           runLinkText: "Open setup guide",
           runLinkAria: "Open project setup documentation",
-          runUrl: "https://github.com/Keith-CY/melix#readme",
+          runUrl: "https://github.com/Keith-CY/melix/blob/main/docs/getting-started.md",
         },
       },
       status: {
@@ -186,9 +191,14 @@ const copy = {
           ],
           runHeading: "继续项目设置",
           runCopy: "查看仓库说明执行服务启动步骤。",
+          runCommands: ["make bootstrap", "make proto", "bash scripts/dev_up.sh"],
+          runCopyBtn: "复制启动命令",
+          runCopySuccess: "启动命令已复制。",
+          runCopyFailed: "复制启动命令失败，请手动复制。",
+          runCopyNothingText: "没有可复制的启动命令。",
           runLinkText: "打开设置文档",
           runLinkAria: "打开设置文档",
-          runUrl: "https://github.com/Keith-CY/melix#readme",
+          runUrl: "https://github.com/Keith-CY/melix/blob/main/docs/getting-started.md",
         },
       },
       status: {
@@ -237,7 +247,9 @@ const copyQuickStartChecks = document.getElementById("copy-quickstart-checks");
 const quickStartRun = document.getElementById("quickstart-run");
 const quickStartRunTitle = document.getElementById("quickstart-run-heading");
 const quickStartRunIntro = document.getElementById("quickstart-run-copy");
+const quickStartRunCmd = document.getElementById("quickstart-run-cmd");
 const quickStartRunLink = document.getElementById("quickstart-run-link");
+const copyQuickStartRun = document.getElementById("copy-quickstart-run");
 const copyQuickStart = document.getElementById("copy-quickstart");
 const copyQuickStartFeedback = document.getElementById("quickstart-feedback");
 const quickStartNext = document.getElementById("quickstart-next");
@@ -364,6 +376,9 @@ function updateRunPhase(localeCopy) {
   }
   if (quickStartRunIntro) {
     quickStartRunIntro.textContent = localeCopy.section.get.quick.runCopy;
+  }
+  if (quickStartRunCmd && Array.isArray(localeCopy.section.get.quick.runCommands)) {
+    quickStartRunCmd.textContent = localeCopy.section.get.quick.runCommands.join("\n");
   }
   if (quickStartRunLink) {
     const runUrl = localeCopy.section.get.quick.runUrl || "";
@@ -590,6 +605,16 @@ function setLang(next) {
     copyQuickStartChecks.dataset.mustCopyText =
       locale.section.get.quick.mustCopyText || "Please copy checks first.";
   }
+  if (copyQuickStartRun) {
+    copyQuickStartRun.textContent =
+      locale.section.get.quick.runCopyBtn || "Copy start commands";
+    copyQuickStartRun.dataset.nothingText =
+      locale.section.get.quick.runCopyNothingText || "No start commands to copy.";
+    copyQuickStartRun.dataset.copiedText =
+      locale.section.get.quick.runCopySuccess || "Start commands copied.";
+    copyQuickStartRun.dataset.copyFailedText =
+      locale.section.get.quick.runCopyFailed || "Copy start commands failed. Please copy manually.";
+  }
   if (quickStartRun) {
     if (quickStartRunLink) {
       quickStartRunLink.textContent =
@@ -722,6 +747,35 @@ if (copyQuickStartChecks) {
       } else {
         const failedText =
           copyQuickStartChecks.dataset.copyFailedText || "Copy checks failed. Please copy manually.";
+        setCopyFeedback(failedText, true);
+      }
+    }
+  });
+}
+
+if (copyQuickStartRun) {
+  copyQuickStartRun.addEventListener("click", async () => {
+    const text = quickStartRunCmd ? quickStartRunCmd.textContent.trim() : "";
+    if (!text) {
+      const nothingText = copyQuickStartRun.dataset.nothingText || "No start commands to copy.";
+      setCopyFeedback(nothingText);
+      return;
+    }
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        throw new Error("clipboard-api-not-available");
+      }
+      setCopyFeedback(copyQuickStartRun.dataset.copiedText || "Start commands copied.");
+    } catch (err) {
+      if (getFallbackCopyText(text)) {
+        setCopyFeedback(copyQuickStartRun.dataset.copiedText || "Start commands copied.");
+      } else {
+        const failedText =
+          copyQuickStartRun.dataset.copyFailedText ||
+          "Copy start commands failed. Please copy manually.";
         setCopyFeedback(failedText, true);
       }
     }
