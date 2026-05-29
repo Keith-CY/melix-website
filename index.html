@@ -247,15 +247,26 @@ cat README.md</code></pre>
                 </button>
                 <a
                   id="quickstart-next"
-                  href="#setup-steps"
+                  href="#quickstart-checks"
                   class="btn btn-ghost btn-sm is-disabled-link"
                   aria-disabled="true"
                   data-i18n="section.get.quick.nextLink"
                 >
-                  Continue setup
+                  Run checks
                 </a>
                 <span id="quickstart-feedback" role="status" aria-live="polite"></span>
               </div>
+            </article>
+            <article class="card command-card" id="quickstart-checks" hidden>
+              <h3 id="quickstart-check-heading" data-i18n="section.get.quick.nextHeading">
+                Run your first local checks
+              </h3>
+              <p class="section-subtitle" id="quickstart-check-copy" data-i18n="section.get.quick.nextCopy">
+                Run these commands after cloning to verify your environment.
+              </p>
+              <pre class="code-block" aria-label="quick start follow-up command"><code id="quickstart-check-cmd">swift --version
+python --version
+uv --version</code></pre>
             </article>
           </div>
         </div>
@@ -296,6 +307,9 @@ cat README.md</code></pre>
             ·
             <span data-i18n="section.status.updatedLabel">Updated</span>
             <span id="status-last-updated"></span>
+            ·
+            <span data-i18n="section.status.deployIdLabel">Deployment id</span>
+            <span id="status-deploy-id">n/a</span>
           </p>
         </div>
       </section>

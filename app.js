@@ -60,7 +60,14 @@ const copy = {
             "cd melix",
             "cat README.md",
           ],
-          nextLink: "Continue setup",
+          nextLink: "Run checks",
+          nextHeading: "Run your first local checks",
+          nextCopy: "Run these commands after cloning to verify your environment.",
+          nextCommands: [
+            "swift --version",
+            "python --version",
+            "uv --version",
+          ],
         },
       },
       status: {
@@ -69,6 +76,8 @@ const copy = {
         releaseLabel: "Deployment source",
         releaseSource: "main",
         updatedLabel: "Updated",
+        deployIdLabel: "Deployment id",
+        deployIdFallback: "n/a",
         available: {
           title: "v0.1.0-alpha / Available now",
           body: "v0.1.0-alpha · local model workflow, LoRA, benchmark/eval, CLI and macOS surfaces",
@@ -150,7 +159,14 @@ const copy = {
             "cd melix",
             "cat README.md",
           ],
-          nextLink: "继续设置",
+          nextLink: "进行校验",
+          nextHeading: "先做环境检查",
+          nextCopy: "克隆后先执行这些命令，确认本机环境。",
+          nextCommands: [
+            "swift --version",
+            "python --version",
+            "uv --version",
+          ],
         },
       },
       status: {
@@ -159,6 +175,8 @@ const copy = {
         releaseLabel: "部署来源",
         releaseSource: "main",
         updatedLabel: "更新于",
+        deployIdLabel: "部署 ID",
+        deployIdFallback: "未提供",
         available: {
           title: "v0.1.0-alpha / 已支持",
           body: "v0.1.0-alpha · 本地模型工作流、LoRA、基准与评测、CLI 与 macOS 界面",
@@ -186,11 +204,16 @@ const requirementsZh = document.getElementById("requirements-zh");
 const stepsEn = document.getElementById("steps-en");
 const stepsZh = document.getElementById("steps-zh");
 const quickStartCmd = document.getElementById("quickstart-cmd");
+const quickStartChecks = document.getElementById("quickstart-checks");
+const quickStartCheckCmd = document.getElementById("quickstart-check-cmd");
+const quickStartCheckTitle = document.getElementById("quickstart-check-heading");
+const quickStartCheckIntro = document.getElementById("quickstart-check-copy");
 const copyQuickStart = document.getElementById("copy-quickstart");
 const copyQuickStartFeedback = document.getElementById("quickstart-feedback");
 const quickStartNext = document.getElementById("quickstart-next");
 const statusSource = document.getElementById("status-source");
 const statusLastUpdated = document.getElementById("status-last-updated");
+const statusDeployId = document.getElementById("status-deploy-id");
 const langToggle = document.getElementById("lang-toggle");
 const linkGithub = document.getElementById("link-github");
 const linkCommunity = document.getElementById("link-community");
@@ -254,20 +277,46 @@ function formatDate(locale, rawDate) {
   }).format(d);
 }
 
-async function fetchDeploymentLastModified() {
+function updateNextPhase(localeCopy) {
+  if (!quickStartChecks || !quickStartCheckCmd) {
+    return;
+  }
+
+  if (quickStartCheckTitle) {
+    quickStartCheckTitle.textContent = localeCopy.section.get.quick.nextHeading;
+  }
+  if (quickStartCheckIntro) {
+    quickStartCheckIntro.textContent = localeCopy.section.get.quick.nextCopy;
+  }
+  if (quickStartCheckCmd) {
+    quickStartCheckCmd.textContent = localeCopy.section.get.quick.nextCommands.join(
+      "\n"
+    );
+  }
+}
+
+function showNextPhase() {
+  if (!quickStartChecks) {
+    return;
+  }
+  quickStartChecks.hidden = false;
+}
+
+async function fetchDeploymentMeta() {
   try {
     const response = await fetch(window.location.href, {
       method: "HEAD",
       cache: "no-store",
     });
-    const lastModified = response.headers.get("last-modified");
-    if (lastModified) {
-      return lastModified;
-    }
+    const deploymentId = response.headers.get("x-vercel-id") || "";
+    const lastModified = response.headers.get("last-modified") || "";
+    return {
+      deploymentId,
+      lastModified,
+    };
   } catch {
-    return "";
+    return { deploymentId: "", lastModified: "" };
   }
-  return "";
 }
 
 async function refreshStatusMeta(localeCopy) {
@@ -276,8 +325,16 @@ async function refreshStatusMeta(localeCopy) {
   }
 
   statusSource.textContent = localeCopy.section.status.releaseSource || "main";
-  const deploymentUpdated = await fetchDeploymentLastModified();
-  statusLastUpdated.textContent = formatDate(lang, deploymentUpdated) || formatDate(lang);
+  const deploymentMeta = await fetchDeploymentMeta();
+  statusLastUpdated.textContent =
+    formatDate(lang, deploymentMeta.lastModified) || formatDate(lang);
+  if (statusDeployId) {
+    const deployId = deploymentMeta.deploymentId
+      ? deploymentMeta.deploymentId.split("::").pop()
+      : "";
+    statusDeployId.textContent =
+      deployId || localeCopy.section.status.deployIdFallback || "n/a";
+  }
   if (!statusLastUpdated.textContent) {
     statusLastUpdated.textContent = "--";
   }
@@ -390,6 +447,16 @@ function setLang(next) {
       quickStartNext.textContent = locale.section.get.quick.nextLink;
     }
   }
+  setText(
+    "section.get.quick.nextHeading",
+    locale.section.get.quick.nextHeading
+  );
+  setText("section.get.quick.nextCopy", locale.section.get.quick.nextCopy);
+  setText("section.status.deployIdLabel", locale.section.status.deployIdLabel);
+  if (quickStartCheckCmd) {
+    quickStartCheckCmd.textContent = locale.section.get.quick.nextCommands.join("\n");
+  }
+  updateNextPhase(locale);
 
   setText("section.status.heading", locale.section.status.heading);
   setText("section.status.tag", locale.section.status.tag);
@@ -449,6 +516,7 @@ if (copyQuickStart) {
         throw new Error("clipboard-api-not-available");
       }
       setCopyFeedback(copiedText);
+      showNextPhase();
       if (quickStartNext) {
         quickStartNext.classList.remove("is-disabled-link");
         quickStartNext.removeAttribute("aria-disabled");
@@ -456,6 +524,7 @@ if (copyQuickStart) {
     } catch (err) {
       if (getFallbackCopyText(text)) {
         setCopyFeedback(copiedText);
+        showNextPhase();
         if (quickStartNext) {
           quickStartNext.classList.remove("is-disabled-link");
           quickStartNext.removeAttribute("aria-disabled");
