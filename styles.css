@@ -284,6 +284,12 @@ h2 {
   color: #c5cfed;
 }
 
+.status-meta {
+  margin-top: 0.95rem;
+  color: #9fb0dd;
+  font-size: 0.95rem;
+}
+
 .loop-grid {
   margin-top: 1.3rem;
   display: grid;

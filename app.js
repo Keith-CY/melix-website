@@ -59,11 +59,15 @@ const copy = {
             "cd melix",
             "cat README.md",
           ],
+          nextLink: "I copied it",
         },
       },
       status: {
         heading: "Current Status",
         tag: "v0.1.0-alpha · developer preview",
+        releaseLabel: "Deployment source",
+        releaseSource: "main",
+        updatedLabel: "Updated",
         available: {
           title: "v0.1.0-alpha / Available now",
           body: "v0.1.0-alpha · local model workflow, LoRA, benchmark/eval, CLI and macOS surfaces",
@@ -144,11 +148,15 @@ const copy = {
             "cd melix",
             "cat README.md",
           ],
+          nextLink: "我已复制",
         },
       },
       status: {
         heading: "当前状态",
         tag: "v0.1.0-alpha · 开发者预览",
+        releaseLabel: "部署来源",
+        releaseSource: "main",
+        updatedLabel: "更新于",
         available: {
           title: "v0.1.0-alpha / 已支持",
           body: "v0.1.0-alpha · 本地模型工作流、LoRA、基准与评测、CLI 与 macOS 界面",
@@ -178,6 +186,9 @@ const stepsZh = document.getElementById("steps-zh");
 const quickStartCmd = document.getElementById("quickstart-cmd");
 const copyQuickStart = document.getElementById("copy-quickstart");
 const copyQuickStartFeedback = document.getElementById("quickstart-feedback");
+const quickStartNext = document.getElementById("quickstart-next");
+const statusSource = document.getElementById("status-source");
+const statusLastUpdated = document.getElementById("status-last-updated");
 const langToggle = document.getElementById("lang-toggle");
 const linkGithub = document.getElementById("link-github");
 const linkCommunity = document.getElementById("link-community");
@@ -226,6 +237,31 @@ function setCopyFeedback(message, isError = false) {
     copyQuickStartFeedback.textContent = "";
     copyQuickStartFeedback.classList.remove("visible");
   }, 1800);
+}
+
+function formatDate(locale) {
+  const modified = document.lastModified;
+  const d = new Date(modified);
+  if (Number.isNaN(d.getTime())) {
+    return "";
+  }
+  return new Intl.DateTimeFormat(locale === "zh" ? "zh-CN" : "en-US", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    hour12: locale === "en",
+  }).format(d);
+}
+
+function refreshStatusMeta(localeCopy) {
+  if (!statusSource || !statusLastUpdated) {
+    return;
+  }
+
+  statusSource.textContent = localeCopy.section.status.releaseSource || "main";
+  statusLastUpdated.textContent = formatDate(lang);
+  if (!statusLastUpdated.textContent) {
+    statusLastUpdated.textContent = "--";
+  }
 }
 
 function getLinksConfig() {
@@ -320,6 +356,7 @@ function setLang(next) {
   setText("section.get.steps", locale.section.get.steps);
   setText("section.get.quick.title", locale.section.get.quick.title);
   setText("section.get.quick.copy", locale.section.get.quick.copy);
+  setText("section.get.quick.nextLink", locale.section.get.quick.nextLink);
 
   if (quickStartCmd) {
     quickStartCmd.textContent = locale.section.get.quick.commands.join("\n");
@@ -329,10 +366,15 @@ function setLang(next) {
     copyQuickStart.dataset.copiedText = locale.section.get.quick.copied;
     copyQuickStart.dataset.copyFailedText = locale.section.get.quick.copyFailed;
     copyQuickStart.dataset.nothingText = locale.section.get.quick.nothing;
+    if (quickStartNext) {
+      quickStartNext.textContent = locale.section.get.quick.nextLink;
+    }
   }
 
   setText("section.status.heading", locale.section.status.heading);
   setText("section.status.tag", locale.section.status.tag);
+  setText("section.status.releaseLabel", locale.section.status.releaseLabel);
+  setText("section.status.updatedLabel", locale.section.status.updatedLabel);
   setText("section.status.available.title", locale.section.status.available.title);
   setText("section.status.available.body", locale.section.status.available.body);
   setText("section.status.progress.title", locale.section.status.progress.title);
@@ -355,6 +397,8 @@ function setLang(next) {
   } else {
     setText("hero.note", `${locale.hero.note} ${locale.hero.noteSuffix}`);
   }
+
+  refreshStatusMeta(locale);
 
   langToggle.textContent = lang === "en" ? "中文" : "EN";
 }
@@ -385,9 +429,17 @@ if (copyQuickStart) {
         throw new Error("clipboard-api-not-available");
       }
       setCopyFeedback(copiedText);
+      if (quickStartNext) {
+        quickStartNext.classList.remove("is-disabled-link");
+        quickStartNext.removeAttribute("aria-disabled");
+      }
     } catch (err) {
       if (getFallbackCopyText(text)) {
         setCopyFeedback(copiedText);
+        if (quickStartNext) {
+          quickStartNext.classList.remove("is-disabled-link");
+          quickStartNext.removeAttribute("aria-disabled");
+        }
       } else {
         setCopyFeedback(failedText, true);
       }
