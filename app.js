@@ -54,12 +54,13 @@ const copy = {
           copyBtn: "Copy commands",
           copied: "Copied to clipboard",
           copyFailed: "Copy failed. Please select and copy manually.",
+          mustCopyText: "Please copy commands first.",
           commands: [
             "git clone https://github.com/Keith-CY/melix.git",
             "cd melix",
             "cat README.md",
           ],
-          nextLink: "I copied it",
+          nextLink: "Continue setup",
         },
       },
       status: {
@@ -143,12 +144,13 @@ const copy = {
           copyBtn: "复制命令",
           copied: "已复制到剪贴板",
           copyFailed: "复制失败，请手动选中并复制。",
+          mustCopyText: "请先复制命令。",
           commands: [
             "git clone https://github.com/Keith-CY/melix.git",
             "cd melix",
             "cat README.md",
           ],
-          nextLink: "我已复制",
+          nextLink: "继续设置",
         },
       },
       status: {
@@ -239,8 +241,8 @@ function setCopyFeedback(message, isError = false) {
   }, 1800);
 }
 
-function formatDate(locale) {
-  const modified = document.lastModified;
+function formatDate(locale, rawDate) {
+  const modified = rawDate || document.lastModified;
   const d = new Date(modified);
   if (Number.isNaN(d.getTime())) {
     return "";
@@ -252,13 +254,30 @@ function formatDate(locale) {
   }).format(d);
 }
 
-function refreshStatusMeta(localeCopy) {
+async function fetchDeploymentLastModified() {
+  try {
+    const response = await fetch(window.location.href, {
+      method: "HEAD",
+      cache: "no-store",
+    });
+    const lastModified = response.headers.get("last-modified");
+    if (lastModified) {
+      return lastModified;
+    }
+  } catch {
+    return "";
+  }
+  return "";
+}
+
+async function refreshStatusMeta(localeCopy) {
   if (!statusSource || !statusLastUpdated) {
     return;
   }
 
   statusSource.textContent = localeCopy.section.status.releaseSource || "main";
-  statusLastUpdated.textContent = formatDate(lang);
+  const deploymentUpdated = await fetchDeploymentLastModified();
+  statusLastUpdated.textContent = formatDate(lang, deploymentUpdated) || formatDate(lang);
   if (!statusLastUpdated.textContent) {
     statusLastUpdated.textContent = "--";
   }
@@ -366,6 +385,7 @@ function setLang(next) {
     copyQuickStart.dataset.copiedText = locale.section.get.quick.copied;
     copyQuickStart.dataset.copyFailedText = locale.section.get.quick.copyFailed;
     copyQuickStart.dataset.nothingText = locale.section.get.quick.nothing;
+    copyQuickStart.dataset.mustCopyText = locale.section.get.quick.mustCopyText;
     if (quickStartNext) {
       quickStartNext.textContent = locale.section.get.quick.nextLink;
     }
@@ -398,7 +418,7 @@ function setLang(next) {
     setText("hero.note", `${locale.hero.note} ${locale.hero.noteSuffix}`);
   }
 
-  refreshStatusMeta(locale);
+  void refreshStatusMeta(locale);
 
   langToggle.textContent = lang === "en" ? "中文" : "EN";
 }
@@ -443,6 +463,17 @@ if (copyQuickStart) {
       } else {
         setCopyFeedback(failedText, true);
       }
+    }
+  });
+}
+
+if (quickStartNext) {
+  quickStartNext.addEventListener("click", (event) => {
+    if (quickStartNext.getAttribute("aria-disabled") === "true") {
+      event.preventDefault();
+      const message =
+        copyQuickStart?.dataset.mustCopyText || "Please copy commands first.";
+      setCopyFeedback(message, true);
     }
   });
 }

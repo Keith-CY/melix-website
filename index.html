@@ -15,7 +15,7 @@
     />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self';"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self';"
     />
     <meta
       http-equiv="Permissions-Policy"
@@ -211,7 +211,7 @@
                 <li>uv</li>
               </ul>
             </article>
-            <article class="card">
+            <article class="card" id="setup-steps">
               <h3 data-i18n="section.get.steps">Quick Start</h3>
               <ol id="steps-en">
                 <li>Clone the repository.</li>
@@ -247,12 +247,12 @@ cat README.md</code></pre>
                 </button>
                 <a
                   id="quickstart-next"
-                  href="#status"
+                  href="#setup-steps"
                   class="btn btn-ghost btn-sm is-disabled-link"
                   aria-disabled="true"
                   data-i18n="section.get.quick.nextLink"
                 >
-                  What's next
+                  Continue setup
                 </a>
                 <span id="quickstart-feedback" role="status" aria-live="polite"></span>
               </div>
