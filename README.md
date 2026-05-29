@@ -1,0 +1,80 @@
+# Melix Website
+
+This workspace contains a static, production-ready landing page for Melix.
+
+## Files
+- `index.html` : Main page (中文/English switch, status/loop sections, setup path, CTAs)
+- `styles.css` : Custom visual system (no third-party stylesheet)
+- `app.js` : Inline-free interaction layer (language toggle + content binding)
+- `melix-website-copy.json` / `melix-website-copy-and-image-descriptions.md` /
+  `melix-website-image-descriptions.csv` : Source text and image-description assets
+
+## Run locally
+1. Open `/Users/ChenYu/Documents/Melix Website/index.html` directly in a browser, or
+2. Start a local static host:
+   - `python3 -m http.server 4173` (from repo root)
+   - open `http://localhost:4173`
+
+## Third-party dependency security posture
+- No frontend JavaScript frameworks/libs are used.
+- No CSS CDN/font CDN is used.
+- No analytics/telemetry script is embedded.
+- Only three local files (`index.html`, `styles.css`, `app.js`) are required for rendering.
+- Only static JSON link config is used for outbound destinations.
+
+## Dependency governance
+- There is no package manager dependency stack in the current branch (pure static page).
+- If you switch to a framework stack (for example, Next.js), use this audit sequence before enabling the new dependency:
+  1. Add/update dependency in `package.json`.
+  2. Run `bun install`.
+  3. Run `./dependency-audit.sh`.
+- `./dependency-audit.sh` enforces:
+  - `bun audit --audit-level=high` pass (no high-severity vulnerabilities).
+  - `bun outdated` clean (no update candidates).
+- If either step fails, block release until resolved.
+
+## What to replace before public launch
+- Fill outbound links in `index.html` JSON config block near the page end:
+  - `<script id="site-links" type="application/json">`
+  - Set `github`, `discussions`, `issues` URLs.
+  - If any field is empty, that CTA is disabled to avoid dead links.
+- You can also use script:
+  - `./set-site-links.sh <github> <discussions> <issues>`
+
+Example:
+```html
+<script id="site-links" type="application/json">
+  {
+    "github": "",
+    "discussions": "",
+    "issues": ""
+  }
+</script>
+```
+
+Example script usage:
+```bash
+./set-site-links.sh \
+  "<github_url>" \
+  "<discussions_url>" \
+  "<issues_url>"
+```
+
+This placeholder must be replaced before public launch.
+Do not use `your-org` or `<...>` placeholders in production.
+
+Suggested replacements:
+- Community: GitHub Discussions URL (or Telegram/Discord)
+- Issues: GitHub Issues URL
+
+## Security review checklist (recommended)
+- Verify no third-party package URLs in rendered HTML/CSS/JS.
+- Verify no embedded remote scripts/images/fonts.
+- Verify CSP/Referrer/Permissions policy are set at deployment edge (the page includes a strict inline CSP baseline in `<head>`).
+- Run `./security-checklist.sh` to confirm dependency/policy footprint before release.
+- Ensure HTTP headers include:
+  - `Content-Security-Policy`
+  - `Referrer-Policy`
+  - `Permissions-Policy` (if hosting platform supports)
+  - `Strict-Transport-Security` (when served over HTTPS)
+- Confirm no sensitive user data is persisted in client storage (the page now defaults language from browser locale).

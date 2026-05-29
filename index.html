@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Melix · Local AI runtime for Apple Silicon</title>
+    <meta
+      name="description"
+      content="Melix is a local AI runtime for Apple Silicon. Run models, fine-tune LoRA, benchmark, and evaluate on one local workflow."
+    />
+    <meta property="og:title" content="Melix - Local AI Runtime" />
+    <meta
+      property="og:description"
+      content="Build local AI workflows in one place on your Mac."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self';"
+    />
+    <meta
+      http-equiv="Permissions-Policy"
+      content="camera=(), microphone=(), geolocation=(), usb=(), payment=(), browsing-topics=(), interest-cohort=()"
+    />
+    <meta
+      name="referrer-policy"
+      content="strict-origin-when-cross-origin"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="grain"></div>
+    <div class="ambient-orb orb-left"></div>
+    <div class="ambient-orb orb-right"></div>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="#hero">Melix</a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#problem">Problem</a>
+          <a href="#loop">Product Loop</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#macos">macOS</a>
+          <a href="#status">Status</a>
+        </nav>
+        <button id="lang-toggle" type="button" aria-label="Switch language">
+          中文
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section id="hero" class="section hero reveal">
+        <div class="wrap hero-grid">
+          <p class="eyebrow" data-i18n="topline">local AI runtime</p>
+          <h1 data-i18n="hero.title">
+            A local AI runtime for Apple Silicon.
+          </h1>
+          <p class="hero-subtitle" data-i18n="hero.subtitle">
+            Run models, fine-tune LoRA, benchmark, and evaluate—on one local Mac
+            workflow.
+          </p>
+          <div class="cta-row">
+            <a
+              class="btn btn-primary is-disabled-link"
+              id="link-github"
+              href="#"
+              aria-disabled="true"
+              data-i18n="cta.primary"
+              >Get started on GitHub</a
+            >
+            <a href="#get-started" class="btn btn-ghost" data-i18n="cta.secondary"
+              >Read setup guide</a
+            >
+            <a
+              class="btn btn-ghost"
+              href="#status"
+              data-i18n="cta.tertiary"
+            >
+              View current status
+            </a>
+          </div>
+          <p class="tiny-note" data-i18n="hero.note">
+            No external frontend runtime libraries are used.
+          </p>
+        </div>
+      </section>
+
+      <section id="problem" class="section reveal">
+        <div class="wrap section-card">
+          <p class="section-kicker" data-i18n="section.problem.title">
+            Local AI is powerful. Operating it is fragmented.
+          </p>
+          <h2 data-i18n="section.problem.heading">Why this exists</h2>
+          <p data-i18n="section.problem.copy">
+            Model serving, tuning, benchmarking, and evaluation are usually split
+            across terminals, scripts, and notebooks. Melix compresses them into
+            one local-first runtime.
+          </p>
+        </div>
+      </section>
+
+      <section id="loop" class="section reveal">
+        <div class="wrap">
+          <h2 data-i18n="section.loop.heading">Product Loop</h2>
+          <p class="section-subtitle" data-i18n="section.loop.subheading">
+            Serve. Fine-tune. Benchmark. Evaluate.
+          </p>
+          <div class="loop-grid">
+            <article class="card pulse">
+              <h3 data-i18n="section.loop.cards.0.title">Serve</h3>
+              <p data-i18n="section.loop.cards.0.body">
+                Run local model sessions on Apple Silicon.
+              </p>
+            </article>
+            <article class="card pulse delay-1">
+              <h3 data-i18n="section.loop.cards.1.title">Fine-tune</h3>
+              <p data-i18n="section.loop.cards.1.body">
+                Train and manage LoRA adapters locally.
+              </p>
+            </article>
+            <article class="card pulse delay-2">
+              <h3 data-i18n="section.loop.cards.2.title">Benchmark</h3>
+              <p data-i18n="section.loop.cards.2.body">
+                Measure model and adapter behavior with repeatable runs.
+              </p>
+            </article>
+            <article class="card pulse delay-3">
+              <h3 data-i18n="section.loop.cards.3.title">Evaluate</h3>
+              <p data-i18n="section.loop.cards.3.body">
+                Compare outputs, results, and workflow quality over time.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="architecture" class="section reveal">
+        <div class="wrap">
+          <h2 data-i18n="section.arch.heading">A runtime layer between models and workflows.</h2>
+          <p class="section-subtitle" data-i18n="section.arch.flow">
+            Serve → Fine-tune → Benchmark → Evaluate
+          </p>
+          <div class="arch-canvas">
+            <div class="arch-layer">
+              <h3 data-i18n="section.arch.providers">Model Providers</h3>
+              <p>ggml, GGUF, LoRA adapters</p>
+            </div>
+            <div class="arch-layer">
+              <h3 data-i18n="section.arch.runtime">Melix Runtime</h3>
+              <p>Session runtime, workflow orchestrator, local cache</p>
+            </div>
+            <div class="arch-layer">
+              <h3 data-i18n="section.arch.workflows">Workflows</h3>
+              <p>CLI and native macOS operations</p>
+            </div>
+          </div>
+          <p data-i18n="section.arch.supporting">
+            Define your model stack once and reuse it across CLI and UI
+            operations.
+          </p>
+        </div>
+      </section>
+
+      <section id="macos" class="section reveal">
+        <div class="wrap">
+          <h2 data-i18n="section.macos.heading">Built for local operators.</h2>
+          <p data-i18n="section.macos.copy">
+            Melix is designed for developers and AI builders who operate local
+            models daily—from CLI workflows to native macOS surfaces and
+            menubar-level control.
+          </p>
+          <div class="macos-cards">
+            <article class="card">
+              <h3>CLI</h3>
+              <p data-i18n="section.macos.cli">Scriptable command flows</p>
+            </article>
+            <article class="card">
+              <h3>macOS App</h3>
+              <p data-i18n="section.macos.app">
+                Native surface, session visibility, and status monitoring
+              </p>
+            </article>
+            <article class="card">
+              <h3>Menubar</h3>
+              <p data-i18n="section.macos.menu">Quick controls and operation snapshots</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="get-started" class="section reveal">
+        <div class="wrap">
+          <h2 data-i18n="section.get.heading">Start from the repo.</h2>
+          <div class="grid-2">
+            <article class="card">
+              <h3 data-i18n="section.get.requirements">Requirements</h3>
+              <ul id="requirements-en">
+                <li>Apple Silicon Mac</li>
+                <li>Supported macOS version</li>
+                <li>Swift</li>
+                <li>Python</li>
+                <li>uv</li>
+              </ul>
+              <ul id="requirements-zh" hidden>
+                <li>Apple Silicon Mac</li>
+                <li>已支持的 macOS 版本</li>
+                <li>Swift</li>
+                <li>Python</li>
+                <li>uv</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3 data-i18n="section.get.steps">Quick Start</h3>
+              <ol id="steps-en">
+                <li>Clone the repository.</li>
+                <li>Install dependencies.</li>
+                <li>Start the local service.</li>
+                <li>Open the app or run CLI workflow.</li>
+                <li>Run your first model / benchmark / evaluation.</li>
+              </ol>
+              <ol id="steps-zh" hidden>
+                <li>克隆仓库。</li>
+                <li>安装依赖。</li>
+                <li>启动本地服务。</li>
+                <li>打开 App 或执行 CLI 工作流。</li>
+                <li>运行首次模型推理 / 基准测试 / 评测。</li>
+              </ol>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="status" class="section reveal">
+        <div class="wrap">
+          <h2 data-i18n="section.status.heading">Current Status</h2>
+          <p class="status-tag" data-i18n="section.status.tag">
+            v0.1.0-alpha · developer preview
+          </p>
+          <div class="status-grid">
+            <article class="card status now">
+              <h3 data-i18n="section.status.available.title">v0.1.0-alpha / Available now</h3>
+              <p data-i18n="section.status.available.body">
+                v0.1.0-alpha · local model workflow, LoRA, benchmark/eval, CLI
+                and macOS surfaces
+              </p>
+            </article>
+            <article class="card status next">
+              <h3 data-i18n="section.status.progress.title">v0.2.0-beta / In progress</h3>
+              <p data-i18n="section.status.progress.body">
+                v0.2.0-beta · stronger workflow state, agent/tool
+                orchestration, long-running automation
+              </p>
+            </article>
+            <article class="card status later">
+              <h3 data-i18n="section.status.planned.title">v0.3.0 / Not yet</h3>
+              <p data-i18n="section.status.planned.body">
+                v0.3.0 · production-grade autonomous agent
+                orchestration, cloud collaboration, hosted service
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <p>© 2026 Melix. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#status" data-i18n="footer.roadmap">View roadmap</a>
+          <a
+            id="link-community"
+            class="is-disabled-link"
+            href="#"
+            aria-disabled="true"
+            data-i18n="footer.community"
+            >Join community</a
+          >
+          <a
+            id="link-issue"
+            class="is-disabled-link"
+            href="#"
+            aria-disabled="true"
+            data-i18n="footer.issue"
+            >Report an issue</a
+          >
+        </div>
+      </div>
+    </footer>
+
+    <script id="site-links" type="application/json">
+      {
+        "github": "https://github.com/Keith-CY/melix",
+        "discussions": "https://github.com/Keith-CY/melix/discussions",
+        "issues": "https://github.com/Keith-CY/melix/issues"
+      }
+    </script>
+    <script src="./app.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,125 @@
+{
+  "site": {
+    "title": "Melix · Local AI runtime for Apple Silicon",
+    "seo": {
+      "description": "Melix is a local AI runtime for Apple Silicon. Run models, train LoRA locally, benchmark, evaluate, and operate through CLI and macOS tools with a single workflow.",
+      "ogTitle": "Melix - Local AI Runtime",
+      "ogDescription": "Build local AI workflows in one place on your Mac.",
+      "footer": "© 2026 Melix. All rights reserved."
+    }
+  },
+  "identity": {
+    "corePositioning": "local AI runtime",
+    "supportingPositioning": "local AI operations workspace",
+    "valueProposition": "本地模型运行、LoRA 微调、基准测试、评测、CLI 与 macOS 入口一体化。"
+  },
+  "sections": [
+    {
+      "name": "hero",
+      "title": {
+        "en": "A local AI runtime for Apple Silicon.",
+        "zh": "一款面向 Apple Silicon 的本地 AI 运行时。"
+      },
+      "subtitle": {
+        "en": "Run models, fine-tune LoRA, benchmark, and evaluate—on one local Mac workflow.",
+        "zh": "在一套本地化流程中完成模型运行、LoRA 微调、基准测试与评测。"
+      },
+      "cta": [
+        { "en": "Get started on GitHub", "zh": "GitHub 上开始" },
+        { "en": "Read setup guide", "zh": "查看安装教程" },
+        { "en": "View current status", "zh": "查看项目状态" }
+      ]
+    },
+    {
+      "name": "problem",
+      "title": {
+        "en": "Local AI is powerful. Operating it is fragmented.",
+        "zh": "本地 AI 很强大，但操作链路往往支离破碎。"
+      },
+      "copy": {
+        "en": "Model serving, tuning, benchmarking, and evaluation are usually split across terminals, scripts, and notebooks. Melix compresses them into one local-first runtime.",
+        "zh": "模型服务、微调、基准和评测常被拆散到终端、脚本、Notebook。Melix 将它们压缩为一个本地优先运行时。"
+      }
+    },
+    {
+      "name": "productLoop",
+      "heading": { "en": "Product Loop", "zh": "产品循环" },
+      "subheading": { "en": "Serve. Fine-tune. Benchmark. Evaluate.", "zh": "服务化、微调、基准测试、评测" },
+      "cards": [
+        { "key": "serve", "label": { "en": "Serve", "zh": "服务化" }, "text": { "en": "Run local model sessions on Apple Silicon.", "zh": "在 Apple Silicon 上启动本地模型会话。" } },
+        { "key": "fine_tune", "label": { "en": "Fine-tune", "zh": "微调" }, "text": { "en": "Train and manage LoRA adapters locally.", "zh": "在本地训练并管理 LoRA 适配器。" } },
+        { "key": "benchmark", "label": { "en": "Benchmark", "zh": "基准测试" }, "text": { "en": "Measure model and adapter behavior with repeatable runs.", "zh": "通过可复现的运行过程测量模型与适配器行为。" } },
+        { "key": "evaluate", "label": { "en": "Evaluate", "zh": "评测" }, "text": { "en": "Compare outputs, results, and workflow quality over time.", "zh": "持续对比输出结果与工作流质量。" } }
+      ]
+    },
+    {
+      "name": "architecture",
+      "heading": { "en": "A runtime layer between models and workflows.", "zh": "连接模型与工作流的运行时层。" },
+      "flow": {
+        "en": "Serve → Fine-tune → Benchmark → Evaluate",
+        "zh": "服务化 → 微调 → 基准测试 → 评测"
+      },
+      "supporting": {
+        "en": "Define your model stack once and reuse it across CLI and UI operations.",
+        "zh": "先定义模型栈后复用到 CLI 与界面操作。"
+      }
+    },
+    {
+      "name": "macosExperience",
+      "heading": { "en": "Built for local operators.", "zh": "为本地实践者而生。" },
+      "copy": {
+        "en": "Melix is designed for developers and AI builders who operate local models daily — from CLI workflows to native macOS surfaces and menubar-level control.",
+        "zh": "Melix 面向日常使用本地模型的开发者和 AI 构建者，覆盖 CLI、原生 macOS 界面到菜单栏级控制。"
+      }
+    },
+    {
+      "name": "getStarted",
+      "heading": { "en": "Start from the repo.", "zh": "从仓库开始。" },
+      "requirements": {
+        "en": ["Apple Silicon Mac", "Supported macOS version", "Swift", "Python", "uv"],
+        "zh": ["Apple Silicon Mac", "已支持的 macOS 版本", "Swift", "Python", "uv"]
+      },
+      "steps": {
+        "en": ["Clone the repository.", "Install dependencies.", "Start the local service.", "Open the app or run CLI workflow.", "Run your first model / benchmark / evaluation."],
+        "zh": ["克隆仓库。", "安装依赖。", "启动本地服务。", "打开 App 或执行 CLI 工作流。", "运行首次模型推理 / 基准测试 / 评测。"]
+      }
+    },
+    {
+      "name": "currentStatus",
+      "heading": { "en": "Current Status", "zh": "当前状态" },
+      "status": {
+        "availableNow": {
+          "en": "v0.1.0-alpha · local model workflow, LoRA, benchmark/eval, CLI and macOS surfaces",
+          "zh": "v0.1.0-alpha · 本地模型工作流、LoRA、基准与评测、CLI 与 macOS 界面"
+        },
+        "inProgress": {
+          "en": "v0.2.0-beta · stronger workflow state, agent/tool orchestration, long-running automation",
+          "zh": "v0.2.0-beta · 更完整的状态编排、智能体/工具编排、长时运行自动化"
+        },
+        "notYet": {
+          "en": "v0.3.0 · production-grade autonomous agent orchestration, cloud collaboration, hosted service",
+          "zh": "v0.3.0 · 生产级自治智能体编排、云协作、托管服务"
+        }
+      },
+      "tag": { "en": "v0.1.0-alpha · developer preview", "zh": "v0.1.0-alpha · 开发者预览" }
+    },
+    {
+      "name": "footer",
+      "cta": [
+        { "en": "View roadmap", "zh": "查看路线图" },
+        { "en": "Join community", "zh": "加入讨论" },
+        { "en": "Report an issue", "zh": "提交问题" }
+      ]
+    }
+  ],
+  "governance": {
+    "allowedTerms": {
+      "en": ["local AI runtime", "local-first", "model serving", "LoRA", "benchmark", "evaluation", "macOS"],
+      "zh": ["本地 AI 运行时", "本地优先", "模型服务", "LoRA", "基准测试", "评测", "macOS"]
+    },
+    "deferredTerms": {
+      "en": ["AI studio", "AI workstation", "agentic platform", "full-stack infra platform", "cloud platform"],
+      "zh": ["AI 工作室", "AI 工作站", "智能体平台", "全栈基础设施平台", "云平台"]
+    }
+  }
+}
