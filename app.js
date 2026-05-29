@@ -50,6 +50,7 @@ const copy = {
         quick: {
           title: "Start in 3 minutes",
           copy: "Copy and run the commands below.",
+          nothing: "No commands to copy yet.",
           copyBtn: "Copy commands",
           copied: "Copied to clipboard",
           copyFailed: "Copy failed. Please select and copy manually.",
@@ -134,6 +135,7 @@ const copy = {
         quick: {
           title: "三分钟快速开始",
           copy: "复制下面命令并执行。",
+          nothing: "暂无可复制命令。",
           copyBtn: "复制命令",
           copied: "已复制到剪贴板",
           copyFailed: "复制失败，请手动选中并复制。",
@@ -326,6 +328,7 @@ function setLang(next) {
     copyQuickStart.textContent = locale.section.get.quick.copyBtn;
     copyQuickStart.dataset.copiedText = locale.section.get.quick.copied;
     copyQuickStart.dataset.copyFailedText = locale.section.get.quick.copyFailed;
+    copyQuickStart.dataset.nothingText = locale.section.get.quick.nothing;
   }
 
   setText("section.status.heading", locale.section.status.heading);
@@ -365,7 +368,9 @@ if (copyQuickStart) {
   copyQuickStart.addEventListener("click", async () => {
     const text = quickStartCmd ? quickStartCmd.textContent.trim() : "";
     if (!text) {
-      setCopyFeedback("Nothing to copy", true);
+      const nothingText =
+        copyQuickStart.dataset.nothingText || "Nothing to copy yet.";
+      setCopyFeedback(nothingText, true);
       return;
     }
 
