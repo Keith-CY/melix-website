@@ -84,6 +84,24 @@ body {
   margin: 0 auto;
 }
 
+.skip-link {
+  position: fixed;
+  top: -60px;
+  left: 1rem;
+  z-index: 30;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  background: #0c1933;
+  border: 1px solid var(--line);
+  color: #e5eeff;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
 .topbar {
   position: sticky;
   top: 0;
@@ -141,6 +159,7 @@ button {
 
 .section {
   padding: 5.5rem 0 0;
+  scroll-margin-top: 90px;
 }
 
 .hero {
@@ -187,6 +206,7 @@ button {
   align-items: center;
   justify-content: center;
   font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-primary {
@@ -198,6 +218,15 @@ button {
   color: #e4edff;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.06);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-ghost:hover {
+  border-color: rgba(163, 200, 255, 0.5);
+  box-shadow: 0 12px 30px rgba(30, 75, 170, 0.2);
 }
 
 .btn.is-disabled-link,
@@ -279,6 +308,11 @@ h2 {
   margin-bottom: 0;
 }
 
+.card,
+.pulse {
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
 .pulse {
   transform: translateY(8px);
   opacity: 0.95;
@@ -289,7 +323,6 @@ h2 {
   transform: translateY(-4px);
   border-color: rgba(165, 211, 255, 0.35);
   box-shadow: 0 14px 45px rgba(30, 75, 170, 0.26);
-  transition: 0.22s;
 }
 
 .delay-1 {
@@ -390,6 +423,17 @@ ol {
   text-decoration: none;
 }
 
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
 @media (max-width: 900px) {
   .topbar {
     position: static;
@@ -421,6 +465,27 @@ ol {
 
   .hero h1 {
     font-size: clamp(2rem, 9.3vw, 2.65rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-card,
+  .card,
+  .arch-canvas,
+  .status-grid,
+  .grid-2,
+  .macos-cards,
+  .loop-grid,
+  .grain,
+  .ambient-orb,
+  .reveal,
+  .pulse,
+  .btn,
+  .btn:hover,
+  .card:hover,
+  .pulse:hover {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
   }
 }
 

@@ -288,6 +288,7 @@ function setLang(next) {
 
 langToggle.addEventListener("click", () => {
   setLang(lang === "en" ? "zh" : "en");
+  langToggle.setAttribute("aria-pressed", lang === "zh" ? "true" : "false");
 });
 
 const preferred = navigator.language.toLowerCase();
@@ -296,3 +297,5 @@ if (preferred.startsWith("zh")) {
 } else {
   setLang("en");
 }
+
+langToggle.setAttribute("aria-pressed", lang === "zh" ? "true" : "false");
