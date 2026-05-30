@@ -319,6 +319,55 @@ let lang = "en";
 let commandsCopied = false;
 let checksCopied = false;
 let runCopied = false;
+let setupGuideOpened = false;
+const quickStartStorageKey = "melixQuickStartProgressV1";
+
+function persistQuickStartProgress() {
+  try {
+    const payload = {
+      version: 1,
+      commandsCopied,
+      checksCopied: checksCopied && commandsCopied,
+      runCopied: runCopied && checksCopied,
+      setupGuideOpened: setupGuideOpened && runCopied,
+    };
+    localStorage.setItem(quickStartStorageKey, JSON.stringify(payload));
+  } catch {
+    // localStorage may be unavailable (Safari private mode / browser policy).
+  }
+}
+
+function restoreQuickStartProgress() {
+  try {
+    const raw = localStorage.getItem(quickStartStorageKey);
+    if (!raw) {
+      return;
+    }
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object") {
+      return;
+    }
+    commandsCopied = Boolean(parsed.commandsCopied);
+    checksCopied = Boolean(parsed.checksCopied) && commandsCopied;
+    runCopied = Boolean(parsed.runCopied) && checksCopied;
+    setupGuideOpened = Boolean(parsed.setupGuideOpened) && runCopied;
+  } catch {
+    // Ignore corrupted storage states.
+  }
+}
+
+function applyRestoredQuickStartState() {
+  restoreQuickStartProgress();
+  if (commandsCopied) {
+    showNextPhase();
+  }
+  if (checksCopied) {
+    showRunPhase();
+  }
+  setCheckLinkReady(checksCopied);
+  setRunLinkReady(checksCopied && quickStartRunLink?.dataset?.readyRunUrl === "true");
+  setQuickStartProgressState();
+}
 
 const defaultLinks = {
   github: "",
@@ -490,8 +539,9 @@ function setQuickStartProgressState() {
   if (!quickStartTitle || !quickStartCheckTitle || !quickStartRunTitle) {
     return;
   }
+  const isCompleted = runCopied && setupGuideOpened;
 
-  if (runCopied) {
+  if (isCompleted) {
     setQuickStartStepState(quickStartTitle, "complete");
     setQuickStartStepState(quickStartCheckTitle, "complete");
     setQuickStartStepState(quickStartRunTitle, "complete");
@@ -559,7 +609,9 @@ function setQuickStartProgressText() {
   };
   stepNodes.forEach((node) => setStepState(node, "pending"));
 
-  if (runCopied) {
+  const isCompleted = runCopied && setupGuideOpened;
+
+  if (isCompleted) {
     setStepState(quickStartProgressStep1, "complete");
     setStepState(quickStartProgressStep2, "complete");
     setStepState(quickStartProgressStep3, "complete");
@@ -1057,6 +1109,7 @@ if (copyQuickStart) {
       setCopyFeedback(copiedNextText);
       showCopyDone(copyQuickStart, copiedNextText);
       commandsCopied = true;
+      persistQuickStartProgress();
       showNextPhase();
       revealQuickStartPhase(quickStartChecks);
       setCheckLinkReady(true);
@@ -1067,6 +1120,7 @@ if (copyQuickStart) {
         setCopyFeedback(copiedNextText);
         showCopyDone(copyQuickStart, copiedNextText);
         commandsCopied = true;
+        persistQuickStartProgress();
         showNextPhase();
         revealQuickStartPhase(quickStartChecks);
         setCheckLinkReady(true);
@@ -1105,6 +1159,7 @@ if (copyQuickStartChecks) {
         throw new Error("clipboard-api-not-available");
       }
       checksCopied = true;
+      persistQuickStartProgress();
       const copiedText =
         copyQuickStartChecks.dataset.copiedText || "Check commands copied.";
       const copiedNextText =
@@ -1125,6 +1180,7 @@ if (copyQuickStartChecks) {
         setCopyFeedback(copiedNextText);
         showCopyDone(copyQuickStartChecks, copiedNextText);
         checksCopied = true;
+        persistQuickStartProgress();
         setQuickStartProgressState();
         showRunPhase();
         revealQuickStartPhase(quickStartRun);
@@ -1161,6 +1217,7 @@ if (copyQuickStartRun) {
         throw new Error("clipboard-api-not-available");
       }
       runCopied = true;
+      persistQuickStartProgress();
       setQuickStartProgressState();
       const copiedText = copyQuickStartRun.dataset.copiedText || "Start commands copied.";
       showCopyDone(copyQuickStartRun, copiedText);
@@ -1168,6 +1225,7 @@ if (copyQuickStartRun) {
     } catch (err) {
       if (getFallbackCopyText(text)) {
         runCopied = true;
+        persistQuickStartProgress();
         setQuickStartProgressState();
         const copiedText = copyQuickStartRun.dataset.copiedText || "Start commands copied.";
         showCopyDone(copyQuickStartRun, copiedText);
@@ -1200,11 +1258,18 @@ if (quickStartRunLink) {
         copyQuickStartRun?.dataset?.mustCopyText ||
         "Copy checks first, then open setup guide.";
       setCopyFeedback(message, true);
+      return;
+    }
+    if (!setupGuideOpened) {
+      setupGuideOpened = true;
+      persistQuickStartProgress();
+      setQuickStartProgressState();
     }
   });
 }
 
 const preferred = navigator.language.toLowerCase();
+applyRestoredQuickStartState();
 if (preferred.startsWith("zh")) {
   setLang("zh");
 } else {
