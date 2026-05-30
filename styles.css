@@ -953,7 +953,7 @@ ol {
   max-width: 100%;
   border-radius: 999px;
   border: 1px solid rgba(173, 188, 244, 0.3);
-  padding: 0.16rem 0.42rem;
+  padding: 0.15rem 0.4rem;
   color: #f1f7ff;
   background: rgba(6, 12, 24, 0.78);
   backdrop-filter: blur(5px);
