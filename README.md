@@ -28,10 +28,27 @@ This workspace contains a static, production-ready landing page for Melix.
   1. Add/update dependency in `package.json`.
   2. Run `bun install`.
   3. Run `./dependency-audit.sh`.
-- `./dependency-audit.sh` enforces:
+  - `./dependency-audit.sh` enforces:
   - `bun audit --audit-level=high` pass (no high-severity vulnerabilities).
   - `bun outdated` clean (no update candidates).
-- If either step fails, block release until resolved.
+  - If either step fails, block release until resolved.
+
+## Deployment to production (`www.melix.run`)
+- This repo is a static landing page. Vercel deployment should be configured as:
+  - **Project root**: repository root
+  - **Framework preset**: `Other`
+  - **Build command**: empty
+  - **Output directory**: empty
+- Push-to-deploy checklist:
+  1. Connect GitHub repo (`Keith-CY/melix-website`) to Vercel project.
+  2. Bind custom domain `www.melix.run` in the project settings.
+  3. Confirm branch filter includes `main` and automatic production deployments are enabled.
+  4. Push a tiny commit to `main`.
+  5. In Vercel dashboard, verify a new Production deployment was created.
+  6. Open `https://www.melix.run` and confirm the site content and latest status metadata update.
+
+### Notes
+- A repository-level `vercel.json` is already present (`vercel.json`) to keep URL shaping consistent.
 
 ## What to replace before public launch
 - Fill outbound links in `index.html` JSON config block near the page end:
