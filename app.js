@@ -644,6 +644,18 @@ function setCopyFeedback(message, isError = false) {
   }, showMs);
 }
 
+function hideQuickStartCompletionToast() {
+  if (!quickStartCompletionToast) {
+    return;
+  }
+  quickStartCompletionToast.classList.remove("is-shown");
+  quickStartCompletionToast.hidden = true;
+  if (quickStartCompletionToastTimer) {
+    clearTimeout(quickStartCompletionToastTimer);
+    quickStartCompletionToastTimer = null;
+  }
+}
+
 function showQuickStartCompletionToast(message) {
   if (!quickStartCompletionToast || quickStartCompletionHintShown) {
     return;
@@ -662,7 +674,11 @@ function showQuickStartCompletionToast(message) {
   const actionLink = document.createElement("a");
   actionLink.href = "#status";
   actionLink.className = "quickstart-completion-hint-action";
+  actionLink.setAttribute("aria-label", actionText);
   actionLink.textContent = actionText;
+  actionLink.addEventListener("click", () => {
+    hideQuickStartCompletionToast();
+  });
   quickStartCompletionToast.appendChild(textNode);
   quickStartCompletionToast.appendChild(actionLink);
   quickStartCompletionToast.hidden = false;
@@ -673,12 +689,7 @@ function showQuickStartCompletionToast(message) {
   }
   const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY).matches;
   quickStartCompletionToastTimer = setTimeout(() => {
-    if (!quickStartCompletionToast) {
-      return;
-    }
-    quickStartCompletionToast.classList.remove("is-shown");
-    quickStartCompletionToast.hidden = true;
-    quickStartCompletionToastTimer = null;
+    hideQuickStartCompletionToast();
   }, reducedMotion ? 1600 : 2400);
   persistQuickStartProgress();
 }
@@ -2446,6 +2457,7 @@ if (quickStartRunLink) {
       persistQuickStartProgress();
       setQuickStartProgressState();
     }
+    hideQuickStartCompletionToast();
   });
 }
 
@@ -2474,7 +2486,12 @@ sectionNavLinks.forEach((link) => {
 window.addEventListener("scroll", () => markActiveNavInteraction(true), {
   passive: true,
 });
-window.addEventListener("resize", () => markActiveNavInteraction(false));
+window.addEventListener("resize", () => {
+  markActiveNavInteraction(false);
+  if (!window.matchMedia(MOBILE_NAV_QUERY).matches) {
+    hideQuickStartCompletionToast();
+  }
+});
 
 applyRestoredQuickStartState();
 restoreLiveRefreshPreference();

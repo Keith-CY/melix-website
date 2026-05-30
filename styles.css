@@ -966,10 +966,9 @@ ol {
   display: inline-flex;
   align-items: center;
   gap: 0.48rem;
-  color: #d8e7ff;
   max-width: 100%;
   overflow: hidden;
-  pointer-events: none;
+  pointer-events: auto;
   display: none;
 }
 
