@@ -397,6 +397,7 @@ const quickStartProgressStep1 = document.getElementById("quickstart-progress-ste
 const quickStartProgressStep2 = document.getElementById("quickstart-progress-step-2");
 const quickStartProgressStep3 = document.getElementById("quickstart-progress-step-3");
 let quickStartFocusTimer = null;
+let quickStartRevealTimer = null;
 const statusSource = document.getElementById("status-source");
 const statusLastUpdated = document.getElementById("status-last-updated");
 const statusBranch = document.getElementById("status-branch");
@@ -551,6 +552,14 @@ function resetQuickStartProgress() {
   }
   if (quickStartRun) {
     quickStartRun.hidden = true;
+  }
+  if (quickStartRevealTimer) {
+    clearTimeout(quickStartRevealTimer);
+    quickStartRevealTimer = null;
+  }
+  if (quickStartFocusTimer) {
+    clearTimeout(quickStartFocusTimer);
+    quickStartFocusTimer = null;
   }
   setQuickStartProgressState();
 }
@@ -1624,14 +1633,31 @@ function revealQuickStartPhase(target) {
   if (!target) {
     return;
   }
+  if (quickStartRevealTimer) {
+    clearTimeout(quickStartRevealTimer);
+    quickStartRevealTimer = null;
+  }
   if (quickStartFocusTimer) {
     clearTimeout(quickStartFocusTimer);
+    quickStartFocusTimer = null;
   }
-  target.scrollIntoView({ behavior: "smooth", block: "start" });
-  target.classList.add("quickstart-focus");
-  quickStartFocusTimer = setTimeout(() => {
-    target.classList.remove("quickstart-focus");
-  }, 1500);
+  const runReveal = () => {
+    if (target.hidden) {
+      return;
+    }
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    target.classList.add("quickstart-focus");
+    quickStartFocusTimer = setTimeout(() => {
+      target.classList.remove("quickstart-focus");
+      quickStartFocusTimer = null;
+    }, 1500);
+  };
+  const isCompleted = runCopied && setupGuideOpened;
+  if (isCompleted) {
+    runReveal();
+    return;
+  }
+  quickStartRevealTimer = setTimeout(runReveal, 2000);
 }
 
 function updateRunPhase(localeCopy) {

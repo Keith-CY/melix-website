@@ -687,9 +687,11 @@ h2 {
 }
 
 .command-card h3[data-step].step-complete::before {
+  content: "✓";
   color: #04111f;
   background: linear-gradient(135deg, var(--teal), #9efcc6);
   border-color: transparent;
+  box-shadow: 0 0 0 2px rgba(103, 240, 190, 0.18);
 }
 
 .command-card h3[data-step].step-active::before {
