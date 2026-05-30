@@ -403,6 +403,7 @@ const footerYear = document.getElementById("footer-year");
 const sectionNavLinks = Array.from(
   document.querySelectorAll('.topbar .nav-links a[href^="#"]')
 );
+const navLinks = document.querySelector(".topbar .nav-links");
 let lang = "en";
 let currentLocale = copy.en;
 let commandsCopied = false;
@@ -413,6 +414,7 @@ let isRefreshingStatusLive = false;
 let liveStatusRefreshTimer = null;
 let isLiveAutoRefreshEnabled = true;
 let activeNavRaf = null;
+let activeNavId = "";
 const quickStartStorageKey = "melixQuickStartProgressV1";
 const liveRefreshEnabledStorageKey = "melixLiveAutoRefreshEnabled";
 const LIVE_CHECK_INTERVAL_MS = 60 * 1000;
@@ -775,6 +777,16 @@ function updateActiveNav() {
     item.link.classList.toggle("is-active", isActive);
     if (isActive) {
       item.link.setAttribute("aria-current", "page");
+      if (activeNavId !== activeItem.target.id) {
+        activeNavId = activeItem.target.id;
+        if (navLinks && window.matchMedia("(max-width: 900px)").matches) {
+          activeItem.link.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "center",
+          });
+        }
+      }
       return;
     }
     item.link.removeAttribute("aria-current");
