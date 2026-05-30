@@ -317,6 +317,22 @@ function setCopyFeedback(message, isError = false) {
   }, 1800);
 }
 
+function showCopyDone(button, doneText) {
+  if (!button) {
+    return;
+  }
+  const restoredText = button.dataset.copyIdleText || button.textContent;
+  const nextText = doneText || button.dataset.copiedText || restoredText;
+  button.dataset.copyIdleText = restoredText;
+  button.textContent = nextText;
+  button.classList.add("copy-done");
+  clearTimeout(button._copyDoneTimer);
+  button._copyDoneTimer = setTimeout(() => {
+    button.textContent = button.dataset.copyIdleText;
+    button.classList.remove("copy-done");
+  }, 1400);
+}
+
 function setLinkPhaseState(el, enabled, disabledHint = "") {
   if (!el) {
     return;
@@ -679,6 +695,7 @@ function setLang(next) {
   }
   if (copyQuickStart) {
     copyQuickStart.textContent = locale.section.get.quick.copyBtn;
+    copyQuickStart.dataset.copyIdleText = locale.section.get.quick.copyBtn || "Copy commands";
     copyQuickStart.dataset.copiedText = locale.section.get.quick.copied;
     copyQuickStart.dataset.copiedNextText =
       locale.section.get.quick.copiedNextText || "Commands copied. Continue with Run checks.";
@@ -693,6 +710,8 @@ function setLang(next) {
   }
   if (copyQuickStartChecks) {
     copyQuickStartChecks.textContent =
+      locale.section.get.quick.nextCopyBtn || "Copy checks";
+    copyQuickStartChecks.dataset.copyIdleText =
       locale.section.get.quick.nextCopyBtn || "Copy checks";
     copyQuickStartChecks.dataset.nothingText =
       locale.section.get.quick.nextNothingText || "No check commands to copy.";
@@ -709,6 +728,8 @@ function setLang(next) {
   }
   if (copyQuickStartRun) {
     copyQuickStartRun.textContent =
+      locale.section.get.quick.runCopyBtn || "Copy start commands";
+    copyQuickStartRun.dataset.copyIdleText =
       locale.section.get.quick.runCopyBtn || "Copy start commands";
     copyQuickStartRun.dataset.nothingText =
       locale.section.get.quick.runCopyNothingText || "No start commands to copy.";
@@ -812,6 +833,7 @@ if (copyQuickStart) {
         throw new Error("clipboard-api-not-available");
       }
       setCopyFeedback(copiedNextText);
+      showCopyDone(copyQuickStart, copiedNextText);
       commandsCopied = true;
       showNextPhase();
       revealQuickStartPhase(quickStartChecks);
@@ -821,6 +843,7 @@ if (copyQuickStart) {
     } catch (err) {
       if (getFallbackCopyText(text)) {
         setCopyFeedback(copiedNextText);
+        showCopyDone(copyQuickStart, copiedNextText);
         commandsCopied = true;
         showNextPhase();
         revealQuickStartPhase(quickStartChecks);
@@ -855,6 +878,7 @@ if (copyQuickStartChecks) {
       const copiedNextText =
         copyQuickStartChecks.dataset.copiedNextText || copiedText;
       setCopyFeedback(copiedNextText);
+      showCopyDone(copyQuickStartChecks, copiedNextText);
       checksCopied = true;
       setQuickStartProgressState();
       showRunPhase();
@@ -867,6 +891,7 @@ if (copyQuickStartChecks) {
         const copiedNextText =
           copyQuickStartChecks.dataset.copiedNextText || copiedText;
         setCopyFeedback(copiedNextText);
+        showCopyDone(copyQuickStartChecks, copiedNextText);
         checksCopied = true;
         setQuickStartProgressState();
         showRunPhase();
@@ -898,12 +923,16 @@ if (copyQuickStartRun) {
       }
       runCopied = true;
       setQuickStartProgressState();
-      setCopyFeedback(copyQuickStartRun.dataset.copiedText || "Start commands copied.");
+      const copiedText = copyQuickStartRun.dataset.copiedText || "Start commands copied.";
+      showCopyDone(copyQuickStartRun, copiedText);
+      setCopyFeedback(copiedText);
     } catch (err) {
       if (getFallbackCopyText(text)) {
         runCopied = true;
         setQuickStartProgressState();
-        setCopyFeedback(copyQuickStartRun.dataset.copiedText || "Start commands copied.");
+        const copiedText = copyQuickStartRun.dataset.copiedText || "Start commands copied.";
+        showCopyDone(copyQuickStartRun, copiedText);
+        setCopyFeedback(copiedText);
       } else {
         const failedText =
           copyQuickStartRun.dataset.copyFailedText ||

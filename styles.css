@@ -229,6 +229,12 @@ button {
   box-shadow: 0 12px 30px rgba(30, 75, 170, 0.2);
 }
 
+.btn.copy-done {
+  border-color: rgba(127, 255, 191, 0.65);
+  background: linear-gradient(135deg, rgba(103, 240, 190, 0.26), rgba(101, 213, 255, 0.22));
+  color: #04111f;
+}
+
 .btn.is-disabled-link,
 .footer a.is-disabled-link {
   opacity: 0.54;
