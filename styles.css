@@ -951,24 +951,24 @@ ol {
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  border: 1px solid rgba(173, 188, 244, 0.42);
-  padding: 0.12rem 0.4rem;
+  border: 1px solid rgba(173, 188, 244, 0.34);
+  padding: 0.11rem 0.38rem;
   color: #ecf2ff;
-  background: linear-gradient(135deg, rgba(11, 18, 34, 0.9), rgba(6, 12, 24, 0.84));
+  background: linear-gradient(135deg, rgba(11, 18, 34, 0.89), rgba(6, 12, 24, 0.82));
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
-  box-shadow: 0 4px 10px rgba(3, 6, 15, 0.22),
-    0 0 0 1px rgba(173, 188, 244, 0.1);
+  box-shadow: 0 3px 8px rgba(3, 6, 15, 0.18),
+    0 0 0 1px rgba(173, 188, 244, 0.08);
   z-index: 12;
   isolation: isolate;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.002em;
   text-shadow: none;
   transform: translateY(-1px);
   transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
+    opacity 0.18s ease,
+    transform 0.18s ease;
   line-height: 1.22;
   align-items: center;
   gap: 0.12rem;
@@ -997,9 +997,9 @@ ol {
 .quickstart-completion-hint::before {
   content: "✓";
   line-height: 1;
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 800;
-  color: #b2ffe0;
+  color: #9ff4c6;
   margin-right: 0.03rem;
 }
 
