@@ -2475,6 +2475,24 @@ if (quickStartRunLink) {
   });
 }
 
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    hideQuickStartCompletionToast();
+  }
+});
+
+window.addEventListener("click", (event) => {
+  if (!quickStartCompletionToast || quickStartCompletionToast.hidden) {
+    return;
+  }
+  if (
+    !quickStartCompletionToast.contains(event.target) &&
+    quickStartCompletionToast.classList.contains("is-shown")
+  ) {
+    hideQuickStartCompletionToast();
+  }
+});
+
 sectionNavLinks.forEach((link) => {
   link.addEventListener("click", (event) => {
     const href = link.getAttribute("href");
