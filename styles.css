@@ -951,14 +951,15 @@ ol {
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  border: 2.24px solid rgba(255, 255, 255, 0.96);
+  border: 2.2px solid rgba(255, 255, 255, 0.96);
   padding: 0.34rem 0.82rem;
-  color: #f7fcff;
+  color: #f8fdff;
   background: linear-gradient(
     130deg,
     rgba(236, 255, 255, 0.98) 0%,
     rgba(200, 225, 255, 0.22) 42%,
-    rgba(10, 18, 34, 0.99) 74%
+    rgba(10, 18, 34, 0.99) 74%,
+    rgba(10, 18, 34, 0.95) 100%
   );
   -webkit-backdrop-filter: saturate(620%) blur(8px);
   backdrop-filter: saturate(620%) blur(8px);
@@ -969,7 +970,7 @@ ol {
     0 0 0 3px rgba(255, 255, 255, 0.16),
     0 0 0 4px rgba(255, 255, 255, 0.11),
     0 0 0 5px rgba(255, 255, 255, 0.042),
-    0 0 0 6px rgba(255, 255, 255, 0.024),
+    0 0 0 6px rgba(255, 255, 255, 0.026),
     inset 0 1px 0 rgba(255, 255, 255, 0.84);
   position: absolute;
   left: 0;
@@ -982,8 +983,8 @@ ol {
   letter-spacing: 0.007em;
   text-shadow:
     0 1px 1px rgba(3, 6, 15, 0.9),
-    0 0 6px rgba(185, 217, 255, 0.84),
-    0 0 9px rgba(185, 217, 255, 0.34);
+    0 0 6px rgba(185, 217, 255, 0.86),
+    0 0 10px rgba(185, 217, 255, 0.34);
   transform: translateY(-1px);
   transform-origin: left top;
   transition:
@@ -1124,7 +1125,8 @@ ol {
     0 0 0 3px rgba(255, 255, 255, 0.18),
     0 0 0 4px rgba(255, 255, 255, 0.08),
     0 0 0 5px rgba(255, 255, 255, 0.034),
-    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+    0 0 0 6px rgba(255, 255, 255, 0.018),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
   filter: saturate(1.08) contrast(1.02);
 }
 
