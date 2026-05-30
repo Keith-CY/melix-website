@@ -986,11 +986,10 @@ ol {
   pointer-events: none;
   visibility: hidden;
   display: inline-flex;
-  will-change: opacity, transform;
+  will-change: opacity, transform, box-shadow;
   position: absolute;
   left: 0;
   top: calc(100% + 0.16rem);
-  transform: translate(0, 0);
 }
 
 .quickstart-completion-hint::after {
