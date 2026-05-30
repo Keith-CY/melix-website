@@ -393,6 +393,15 @@ function resetQuickStartProgress() {
   setQuickStartProgressState();
 }
 
+function updateQuickStartResetVisibility() {
+  if (!quickStartReset) {
+    return;
+  }
+  const hasProgress =
+    commandsCopied || checksCopied || runCopied || setupGuideOpened;
+  quickStartReset.hidden = !hasProgress;
+}
+
 const defaultLinks = {
   github: "",
   discussions: "",
@@ -597,6 +606,7 @@ function setQuickStartProgressState() {
     runNeedHint
   );
   setQuickStartProgressText();
+  updateQuickStartResetVisibility();
 }
 
 function setQuickStartProgressText() {
