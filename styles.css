@@ -978,7 +978,8 @@ ol {
   max-width: 100%;
   overflow: hidden;
   pointer-events: none;
-  display: none;
+  visibility: hidden;
+  will-change: opacity, transform;
   position: absolute;
   left: 0;
   top: calc(100% + 0.16rem);
@@ -994,8 +995,8 @@ ol {
 }
 
 .quickstart-completion-hint.is-shown {
-  display: inline-flex;
   opacity: 1;
+  visibility: visible;
   transform: translateY(0);
   max-height: 1.9rem;
 }
