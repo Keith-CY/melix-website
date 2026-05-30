@@ -155,6 +155,7 @@ const copy = {
         copyHint: "Click to copy",
         copiedText: "Copied",
         copyUnavailableText: "No value yet",
+        copyHintRow: "Tip: click Deployment id or Commit to copy.",
         autoRefresh: "Auto refresh",
         autoRefreshOn: "Auto refresh: ON",
         autoRefreshOff: "Auto refresh: OFF",
@@ -331,6 +332,7 @@ const copy = {
         copyHint: "点击复制",
         copiedText: "已复制",
         copyUnavailableText: "暂无可复制值",
+        copyHintRow: "提示：点击“部署 ID”或“提交”可复制。",
         autoRefresh: "自动刷新",
         autoRefreshOn: "自动刷新：开启",
         autoRefreshOff: "自动刷新：关闭",
@@ -1998,6 +2000,7 @@ function setLang(next) {
   setText("section.status.deployIdLabel", locale.section.status.deployIdLabel);
   setText("section.status.branchLabel", locale.section.status.branchLabel);
   setText("section.status.commitLabel", locale.section.status.commitLabel);
+  setText("section.status.copyHintRow", locale.section.status.copyHintRow);
   if (quickStartCheckCmd) {
     quickStartCheckCmd.textContent = locale.section.get.quick.nextCommands.join("\n");
   }
