@@ -1015,7 +1015,7 @@ ol {
   filter: blur(1.2px);
   opacity: 1;
   transform-origin: center center;
-  animation: quickstart-completion-halo 4.4s ease-in-out infinite;
+  animation: quickstart-completion-halo 6s ease-in-out infinite;
 }
 
 @supports not (backdrop-filter: blur(1px)) {
@@ -1049,7 +1049,7 @@ ol {
 }
 
 .quickstart-completion-hint.is-shown::before {
-  animation: quickstart-completion-badge-pop 0.58s cubic-bezier(0.15, 1, 0.33, 1);
+  animation: quickstart-completion-badge-pop 0.72s cubic-bezier(0.18, 1, 0.33, 1);
 }
 
 @media (max-width: 640px) {
@@ -1122,7 +1122,7 @@ ol {
     0 0 0 2px rgba(175, 215, 255, 0.44),
     0 0 0 3px rgba(255, 255, 255, 0.18),
     0 0 0 4px rgba(255, 255, 255, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
   filter: saturate(1.1) contrast(1.04);
 }
 
@@ -1156,12 +1156,12 @@ ol {
   100% {
     transform: scale(1);
     opacity: 0.93;
-    filter: blur(1.25px);
+    filter: blur(1.2px);
   }
   50% {
-    transform: scale(1.01);
+    transform: scale(1.007);
     opacity: 1;
-    filter: blur(1.35px);
+    filter: blur(1.3px);
   }
 }
 
