@@ -951,24 +951,24 @@ ol {
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  border: 1px solid rgba(233, 242, 255, 1);
-  padding: 0.32rem 1.06rem;
+  border: 1px solid rgba(246, 252, 255, 1);
+  padding: 0.34rem 1.12rem;
   color: #ecf2ff;
-  background: linear-gradient(135deg, rgba(84, 118, 179, 1), rgba(14, 24, 45, 1));
-  -webkit-backdrop-filter: saturate(185%) blur(8px);
-  backdrop-filter: saturate(185%) blur(8px);
+  background: linear-gradient(135deg, rgba(98, 135, 206, 1), rgba(15, 26, 50, 1));
+  -webkit-backdrop-filter: saturate(205%) blur(9px);
+  backdrop-filter: saturate(205%) blur(9px);
   box-shadow:
-    0 22px 56px rgba(1, 3, 10, 0.8),
-    0 0 0 1px rgba(233, 242, 255, 0.9),
-    0 0 0 3px rgba(233, 242, 255, 0.24),
-    inset 0 1px 0 rgba(240, 246, 255, 0.28);
+    0 26px 64px rgba(1, 3, 10, 0.84),
+    0 0 0 1px rgba(246, 252, 255, 0.92),
+    0 0 0 3px rgba(246, 252, 255, 0.28),
+    inset 0 1px 0 rgba(246, 252, 255, 0.34);
   position: absolute;
   left: 0;
   top: calc(100% + 0.2rem);
   z-index: 20;
   overflow: visible;
   isolation: isolate;
-  font-size: 0.95rem;
+  font-size: 0.96rem;
   font-weight: 700;
   letter-spacing: 0.002em;
   text-shadow: 0 1px 10px rgba(3, 6, 15, 0.72),
@@ -995,12 +995,12 @@ ol {
 .quickstart-completion-hint::after {
   content: "";
   position: absolute;
-  inset: -5px;
+  inset: -5.5px;
   border-radius: inherit;
   pointer-events: none;
   z-index: -1;
-  background: radial-gradient(circle at 50% 50%, rgba(238, 247, 255, 0.34), rgba(9, 16, 32, 0));
-  filter: blur(4.5px);
+  background: radial-gradient(circle at 50% 50%, rgba(247, 252, 255, 0.38), rgba(9, 16, 32, 0));
+  filter: blur(5px);
   opacity: 0.96;
 }
 
@@ -1024,12 +1024,12 @@ ol {
 @media (prefers-contrast: more) {
   .quickstart-completion-hint {
     border-color: rgba(255, 255, 255, 1);
-    background: linear-gradient(135deg, rgba(86, 109, 160, 1), rgba(21, 33, 57, 0.99));
+    background: linear-gradient(135deg, rgba(110, 141, 193, 1), rgba(27, 41, 67, 0.99));
     box-shadow:
-      0 22px 56px rgba(1, 3, 10, 0.86),
+      0 26px 64px rgba(1, 3, 10, 0.9),
       0 0 0 1px rgba(255, 255, 255, 1),
-      0 0 0 3px rgba(255, 255, 255, 0.34),
-      inset 0 1px 0 rgba(255, 255, 255, 0.34);
+      0 0 0 3px rgba(255, 255, 255, 0.42),
+      inset 0 1px 0 rgba(255, 255, 255, 0.42);
     color: #ffffff;
   }
 
