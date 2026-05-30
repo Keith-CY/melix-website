@@ -985,7 +985,8 @@ ol {
     0 0 10px rgba(185, 217, 255, 0.36),
     0 0 14px rgba(226, 238, 255, 0.2),
     0 0 18px rgba(210, 233, 255, 0.08),
-    0 0 12px rgba(180, 225, 255, 0.16);
+    0 0 12px rgba(180, 225, 255, 0.16),
+    0 0 6px rgba(250, 252, 255, 0.38);
   transform: translateY(-1px);
   transform-origin: left top;
   transition:
@@ -1129,10 +1130,11 @@ ol {
     0 0 0 1px rgba(255, 255, 255, 0.99),
     0 0 0 2px rgba(175, 215, 255, 0.46),
     0 0 0 3px rgba(255, 255, 255, 0.22),
-    0 0 0 4px rgba(255, 255, 255, 0.09),
+    0 0 0 4px rgba(255, 255, 255, 0.11),
     0 0 0 5px rgba(173, 235, 255, 0.12),
+    0 0 0 6px rgba(255, 255, 255, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.96);
-  filter: saturate(1.12) contrast(1.04);
+  filter: saturate(1.13) contrast(1.06);
 }
 
 .quickstart-completion-anchor {
@@ -1173,9 +1175,9 @@ ol {
     filter: blur(1.13px);
   }
   50% {
-    transform: scale(1.006);
+    transform: scale(1.0045);
     opacity: 1;
-    filter: blur(1.2px);
+    filter: blur(1.16px);
   }
   75% {
     transform: scale(1.0025);
