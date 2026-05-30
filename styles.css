@@ -951,17 +951,17 @@ ol {
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  border: 1px solid rgba(173, 188, 244, 0.42);
-  padding: 0.11rem 0.38rem;
+  border: 1px solid rgba(173, 188, 244, 0.46);
+  padding: 0.12rem 0.4rem;
   color: #ecf2ff;
-  background: linear-gradient(135deg, rgba(12, 18, 35, 0.9), rgba(7, 11, 24, 0.84));
+  background: linear-gradient(135deg, rgba(13, 20, 37, 0.93), rgba(8, 14, 26, 0.86));
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   box-shadow: 0 4px 9px rgba(3, 6, 15, 0.2),
-    0 0 0 1px rgba(173, 188, 244, 0.1);
+    0 0 0 1px rgba(173, 188, 244, 0.11);
   z-index: 12;
   isolation: isolate;
-  font-size: 0.79rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.002em;
   text-shadow: none;
@@ -969,12 +969,12 @@ ol {
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
-  line-height: 1.21;
+  line-height: 1.2;
   align-items: center;
   gap: 0.11rem;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  max-width: min(92vw, 17.1rem);
+  max-width: min(92vw, 17.2rem);
   white-space: normal;
   word-break: break-word;
   text-align: left;
@@ -990,16 +990,16 @@ ol {
 @supports not (backdrop-filter: blur(1px)) {
   .quickstart-completion-hint {
     backdrop-filter: none;
-    background: linear-gradient(135deg, rgba(15, 22, 36, 0.95), rgba(8, 13, 26, 0.88));
+    background: linear-gradient(135deg, rgba(16, 24, 42, 0.96), rgba(9, 16, 30, 0.9));
   }
 }
 
 .quickstart-completion-hint::before {
   content: "✓";
   line-height: 1;
-  font-size: 0.82rem;
+  font-size: 0.83rem;
   font-weight: 800;
-  color: #a1f5c8;
+  color: #a7f5ca;
   margin-right: 0.03rem;
 }
 
