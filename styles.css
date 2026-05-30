@@ -972,7 +972,7 @@ ol {
   line-height: 1.18;
   display: inline-flex;
   align-items: center;
-  gap: 0.18rem;
+  gap: 0.14rem;
   flex-wrap: nowrap;
   box-sizing: border-box;
   max-width: 100%;
@@ -988,9 +988,9 @@ ol {
 .quickstart-completion-hint::before {
   content: "✓";
   line-height: 1;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  color: #9efcc6;
+  color: #b2ffe0;
 }
 
 .quickstart-completion-hint.is-shown {
