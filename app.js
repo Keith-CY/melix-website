@@ -418,12 +418,15 @@ let isLiveAutoRefreshEnabled = true;
 let activeNavRaf = null;
 let activeNavId = "";
 let activeNavObserver = null;
+let activeNavStableTimer = null;
+let activeNavStableTarget = null;
 const quickStartStorageKey = "melixQuickStartProgressV1";
 const liveRefreshEnabledStorageKey = "melixLiveAutoRefreshEnabled";
 const LIVE_CHECK_INTERVAL_MS = 60 * 1000;
 const LIVE_CHECK_PATHS = ["/api/health", "/api/status", "/health", "/healthz", "/"];
 const MOBILE_NAV_QUERY = "(max-width: 900px)";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+const ACTIVE_NAV_STABILITY_MS = 110;
 
 function persistQuickStartProgress() {
   try {
@@ -835,7 +838,26 @@ function applyActiveNav(activeItem) {
 }
 
 function updateActiveNav() {
-  applyActiveNav(getActiveNavByScrollY());
+  scheduleActiveNavCommit(getActiveNavByScrollY());
+}
+
+function scheduleActiveNavCommit(candidateItem) {
+  if (!candidateItem) {
+    return;
+  }
+  if (activeNavStableTarget === candidateItem && activeNavStableTimer) {
+    return;
+  }
+  activeNavStableTarget = candidateItem;
+  if (activeNavStableTimer) {
+    clearTimeout(activeNavStableTimer);
+  }
+  activeNavStableTimer = setTimeout(() => {
+    activeNavStableTimer = null;
+    const nextActive = activeNavStableTarget;
+    activeNavStableTarget = null;
+    applyActiveNav(nextActive);
+  }, ACTIVE_NAV_STABILITY_MS);
 }
 
 function setupActiveNavObserver() {
@@ -848,6 +870,10 @@ function setupActiveNavObserver() {
   if (activeNavObserver) {
     activeNavObserver.disconnect();
   }
+  if (activeNavStableTimer) {
+    clearTimeout(activeNavStableTimer);
+    activeNavStableTimer = null;
+  }
   activeNavObserver = new IntersectionObserver(
     (entries) => {
       const activeEntry = getActiveNavFromEntries(entries);
@@ -858,7 +884,7 @@ function setupActiveNavObserver() {
         (item) => item.target === activeEntry.target
       );
       if (activeItem) {
-        applyActiveNav(activeItem);
+        scheduleActiveNavCommit(activeItem);
       }
     },
     {
