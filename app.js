@@ -398,6 +398,8 @@ const quickStartProgressStep2 = document.getElementById("quickstart-progress-ste
 const quickStartProgressStep3 = document.getElementById("quickstart-progress-step-3");
 let quickStartFocusTimer = null;
 let quickStartRevealTimer = null;
+let quickStartPhaseTargetHint = "";
+let quickStartPhaseHintTimer = null;
 const statusSource = document.getElementById("status-source");
 const statusLastUpdated = document.getElementById("status-last-updated");
 const statusBranch = document.getElementById("status-branch");
@@ -561,6 +563,11 @@ function resetQuickStartProgress() {
     clearTimeout(quickStartFocusTimer);
     quickStartFocusTimer = null;
   }
+  if (quickStartPhaseHintTimer) {
+    clearTimeout(quickStartPhaseHintTimer);
+    quickStartPhaseHintTimer = null;
+  }
+  quickStartPhaseTargetHint = "";
   setQuickStartProgressState();
 }
 
@@ -1500,6 +1507,10 @@ function setQuickStartProgressText() {
     }
     quickStartProgressTarget.textContent = targetText || "";
   };
+  const setTargetAndAnnounce = (targetText) => {
+    setStepTarget(targetText);
+    maybeHintQuickStartPhaseTarget(targetText || "");
+  };
   const stepNodes = [
     quickStartProgressStep1,
     quickStartProgressStep2,
@@ -1539,7 +1550,7 @@ function setQuickStartProgressText() {
     quickStartProgressSummary.textContent =
       quickStartProgressLabel.dataset.done ||
       "Quick start ready. Continue with your setup.";
-    setStepTarget(
+    setTargetAndAnnounce(
       quickStartProgressLabel.dataset.targetDone ||
         "Next step: continue reading docs."
     );
@@ -1559,7 +1570,7 @@ function setQuickStartProgressText() {
       quickStartProgressLabel.dataset.phase3Pending ||
       quickStartProgressLabel.dataset.phase3 ||
       "Step 3/3 · Start commands copied; open setup guide to complete.";
-    setStepTarget(
+    setTargetAndAnnounce(
       quickStartProgressLabel.dataset.target3Pending ||
         quickStartProgressLabel.dataset.target3 ||
         "Next step: open the setup guide."
@@ -1580,7 +1591,7 @@ function setQuickStartProgressText() {
     quickStartProgressSummary.textContent =
       quickStartProgressLabel.dataset.phase3 ||
       "Step 3/3 · Copy start commands, then open setup guide.";
-    setStepTarget(
+    setTargetAndAnnounce(
       quickStartProgressLabel.dataset.target3 || "Next step: open the setup guide."
     );
     return;
@@ -1598,7 +1609,7 @@ function setQuickStartProgressText() {
     quickStartProgressSummary.textContent =
       quickStartProgressLabel.dataset.phase2 ||
       "Step 2/3 · Copy checks, then copy start command.";
-    setStepTarget(
+    setTargetAndAnnounce(
       quickStartProgressLabel.dataset.target2 || "Next step: copy start commands."
     );
     return;
@@ -1614,7 +1625,7 @@ function setQuickStartProgressText() {
   quickStartProgressSummary.textContent =
     quickStartProgressLabel.dataset.phase1 ||
     "Step 1/3 · Copy commands above, then copy checks.";
-  setStepTarget(
+  setTargetAndAnnounce(
     quickStartProgressLabel.dataset.target1 ||
       "Next step: copy check commands."
   );
@@ -1629,8 +1640,36 @@ function showManualCopyFallback(button, text) {
   setCopyFeedback(`${hint}${fallbackText}`, true);
 }
 
+function shouldAutoRevealQuickStartPhase() {
+  return (
+    !window.matchMedia(MOBILE_NAV_QUERY).matches &&
+    !window.matchMedia(REDUCED_MOTION_QUERY).matches
+  );
+}
+
+function maybeHintQuickStartPhaseTarget(targetText) {
+  if (!targetText || shouldAutoRevealQuickStartPhase()) {
+    return;
+  }
+  const normalized = targetText.trim();
+  if (!normalized || quickStartPhaseTargetHint === normalized) {
+    return;
+  }
+  quickStartPhaseTargetHint = normalized;
+  if (quickStartPhaseHintTimer) {
+    clearTimeout(quickStartPhaseHintTimer);
+  }
+  quickStartPhaseHintTimer = setTimeout(() => {
+    setCopyFeedback(normalized);
+  }, 300);
+}
+
 function revealQuickStartPhase(target) {
   if (!target) {
+    return;
+  }
+  if (!shouldAutoRevealQuickStartPhase()) {
+    quickStartPhaseTargetHint = "";
     return;
   }
   if (quickStartRevealTimer) {
