@@ -420,6 +420,7 @@ let activeNavId = "";
 let activeNavObserver = null;
 let activeNavStableTimer = null;
 let activeNavStableTarget = null;
+let activeNavStaleTimer = null;
 const quickStartStorageKey = "melixQuickStartProgressV1";
 const liveRefreshEnabledStorageKey = "melixLiveAutoRefreshEnabled";
 const LIVE_CHECK_INTERVAL_MS = 60 * 1000;
@@ -427,6 +428,7 @@ const LIVE_CHECK_PATHS = ["/api/health", "/api/status", "/health", "/healthz", "
 const MOBILE_NAV_QUERY = "(max-width: 900px)";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const ACTIVE_NAV_STABILITY_MS = 110;
+const ACTIVE_NAV_STALE_FALLBACK_MS = 2000;
 
 function persistQuickStartProgress() {
   try {
@@ -860,6 +862,19 @@ function scheduleActiveNavCommit(candidateItem) {
   }, ACTIVE_NAV_STABILITY_MS);
 }
 
+function scheduleActiveNavFallback() {
+  if (!("requestAnimationFrame" in window)) {
+    return;
+  }
+  if (activeNavStaleTimer) {
+    clearTimeout(activeNavStaleTimer);
+  }
+  activeNavStaleTimer = setTimeout(() => {
+    activeNavStaleTimer = null;
+    scheduleActiveNavCommit(getActiveNavByScrollY());
+  }, ACTIVE_NAV_STALE_FALLBACK_MS);
+}
+
 function setupActiveNavObserver() {
   if (!("IntersectionObserver" in window)) {
     return false;
@@ -874,11 +889,20 @@ function setupActiveNavObserver() {
     clearTimeout(activeNavStableTimer);
     activeNavStableTimer = null;
   }
+  if (activeNavStaleTimer) {
+    clearTimeout(activeNavStaleTimer);
+    activeNavStaleTimer = null;
+  }
   activeNavObserver = new IntersectionObserver(
     (entries) => {
       const activeEntry = getActiveNavFromEntries(entries);
       if (!activeEntry) {
+        scheduleActiveNavFallback();
         return;
+      }
+      if (activeNavStaleTimer) {
+        clearTimeout(activeNavStaleTimer);
+        activeNavStaleTimer = null;
       }
       const activeItem = navScrollTargets.find(
         (item) => item.target === activeEntry.target
