@@ -989,23 +989,6 @@ ol {
   border-color: rgba(103, 240, 190, 0.45);
 }
 
-.quickstart-completion-hint-action {
-  margin-left: 0.24rem;
-  color: #9efcc6;
-  text-decoration: none;
-  font-weight: 650;
-  font-size: 0.8rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.14rem;
-}
-
-.quickstart-completion-hint-action::after {
-  content: "↗";
-  color: #b4ddff;
-  font-size: 0.74rem;
-}
-
 .copy-feedback.visible {
   opacity: 1;
 }
