@@ -1050,6 +1050,13 @@ ol {
   color: #8aa9e6;
 }
 
+.quickstart-status-link {
+  margin-top: 0.38rem;
+  align-self: flex-start;
+  border-style: solid;
+  border-width: 1px;
+}
+
 .quickstart-progress-state-done .quickstart-progress-target {
   color: #a7ffd6;
 }

@@ -386,6 +386,7 @@ const quickStartReset = document.getElementById("quickstart-reset");
 const copyQuickStartFeedback = document.getElementById("quickstart-feedback");
 const quickStartNext = document.getElementById("quickstart-next");
 const quickStartProgressLabel = document.getElementById("quickstart-progress");
+const quickStartStatusLink = document.getElementById("quickstart-status-link");
 const quickStartProgressTarget = document.getElementById(
   "quickstart-progress-target"
 );
@@ -1410,6 +1411,10 @@ function setQuickStartProgressState() {
   if (!quickStartTitle || !quickStartCheckTitle || !quickStartRunTitle) {
     return;
   }
+  const isCompleted = runCopied && setupGuideOpened;
+  if (quickStartStatusLink) {
+    quickStartStatusLink.hidden = !isCompleted;
+  }
   const quickStartCards = [
     quickStartTitle.closest(".command-card"),
     quickStartCheckTitle.closest(".command-card"),
@@ -1423,8 +1428,6 @@ function setQuickStartProgressState() {
       card.classList.toggle("step-active", cardIndex === index);
     });
   };
-
-  const isCompleted = runCopied && setupGuideOpened;
 
   if (isCompleted) {
     setActiveCard(-1);
