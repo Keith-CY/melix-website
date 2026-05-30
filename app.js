@@ -384,15 +384,20 @@ function setLinkPhaseState(el, enabled, disabledHint = "") {
   if (!el) {
     return;
   }
-  el.disabled = !enabled;
   if (enabled) {
     el.classList.remove("is-disabled-link");
+    el.removeAttribute("disabled");
     el.removeAttribute("aria-disabled");
     el.removeAttribute("title");
+    el.removeAttribute("tabindex");
     return;
   }
   el.classList.add("is-disabled-link");
   el.setAttribute("aria-disabled", "true");
+  el.setAttribute("tabindex", "-1");
+  if (el.tagName && el.tagName.toLowerCase() === "button") {
+    el.setAttribute("disabled", "true");
+  }
   if (disabledHint) {
     el.setAttribute("title", disabledHint);
   }
