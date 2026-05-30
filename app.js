@@ -400,6 +400,9 @@ const linkCommunity = document.getElementById("link-community");
 const linkIssue = document.getElementById("link-issue");
 const linkRoadmap = document.getElementById("link-roadmap");
 const footerYear = document.getElementById("footer-year");
+const sectionNavLinks = Array.from(
+  document.querySelectorAll('.topbar .nav-links a[href^="#"]')
+);
 let lang = "en";
 let currentLocale = copy.en;
 let commandsCopied = false;
@@ -409,6 +412,7 @@ let setupGuideOpened = false;
 let isRefreshingStatusLive = false;
 let liveStatusRefreshTimer = null;
 let isLiveAutoRefreshEnabled = true;
+let activeNavRaf = null;
 const quickStartStorageKey = "melixQuickStartProgressV1";
 const liveRefreshEnabledStorageKey = "melixLiveAutoRefreshEnabled";
 const LIVE_CHECK_INTERVAL_MS = 60 * 1000;
@@ -740,6 +744,52 @@ document.addEventListener("visibilitychange", () => {
   }
   startLiveStatusTimer();
 });
+
+const navScrollTargets = sectionNavLinks
+  .map((link) => {
+    const href = link.getAttribute("href");
+    const target = href ? document.querySelector(href) : null;
+    if (!target) {
+      return null;
+    }
+    return { link, target };
+  })
+  .filter(Boolean);
+
+function updateActiveNav() {
+  if (!navScrollTargets.length) {
+    return;
+  }
+  const offset = 150;
+  const viewY = window.scrollY + offset;
+  let activeItem = navScrollTargets[0];
+
+  for (const item of navScrollTargets) {
+    if (item.target.offsetTop <= viewY) {
+      activeItem = item;
+    }
+  }
+
+  navScrollTargets.forEach((item) => {
+    const isActive = item === activeItem;
+    item.link.classList.toggle("is-active", isActive);
+    if (isActive) {
+      item.link.setAttribute("aria-current", "page");
+      return;
+    }
+    item.link.removeAttribute("aria-current");
+  });
+}
+
+function scheduleActiveNavUpdate() {
+  if (activeNavRaf) {
+    return;
+  }
+  activeNavRaf = requestAnimationFrame(() => {
+    activeNavRaf = null;
+    updateActiveNav();
+  });
+}
 
 function getStatusLocale(localeCopy) {
   return localeCopy && localeCopy.section && localeCopy.section.status
@@ -1537,6 +1587,12 @@ function setLang(next) {
   startLiveStatusTimer();
 
   langToggle.textContent = lang === "en" ? "中文" : "EN";
+  langToggle.setAttribute(
+    "aria-label",
+    lang === "en"
+      ? "Switch language to 中文"
+      : "Switch language to English"
+  );
 
   const runReady = quickStartRunLink?.dataset?.readyRunUrl === "true";
   setRunLinkReady(checksCopied && runReady);
@@ -1771,3 +1827,10 @@ if (preferred.startsWith("zh")) {
 }
 
 langToggle.setAttribute("aria-pressed", lang === "zh" ? "true" : "false");
+langToggle.setAttribute(
+  "aria-label",
+  lang === "en" ? "Switch language to 中文" : "Switch language to English"
+);
+window.addEventListener("scroll", scheduleActiveNavUpdate, { passive: true });
+window.addEventListener("resize", scheduleActiveNavUpdate);
+scheduleActiveNavUpdate();
