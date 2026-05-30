@@ -495,9 +495,110 @@ ol {
 .quickstart-progress {
   margin: 0.55rem 0 0;
   color: #9bd3ff;
-  font-size: 0.9rem;
-  font-weight: 650;
   min-height: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.48rem;
+}
+
+.quickstart-progress-rail {
+  display: flex;
+  align-items: center;
+  gap: 0.52rem;
+  flex-wrap: nowrap;
+}
+
+.quickstart-progress-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 1.55rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #d9e5ff;
+  border: 1px solid rgba(173, 188, 244, 0.32);
+  background: rgba(173, 188, 244, 0.14);
+  position: relative;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.quickstart-progress-step::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  transition: inherit;
+  pointer-events: none;
+}
+
+.quickstart-progress-connector {
+  width: 1.2rem;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(173, 188, 244, 0.35);
+}
+
+.quickstart-progress-step-complete {
+  box-shadow: 0 0 0 1px rgba(103, 240, 190, 0.2);
+  color: #04111f;
+  background: linear-gradient(135deg, var(--teal), #9efcc6);
+  border-color: transparent;
+  transform: translateY(-1px);
+}
+
+.quickstart-progress-step-active {
+  box-shadow: 0 8px 26px rgba(101, 213, 255, 0.26);
+  color: #04111f;
+  background: linear-gradient(135deg, var(--blue), #9dd8ff);
+  border-color: transparent;
+  transform: translateY(-1px);
+  animation: quickstartPulse 1.45s ease-in-out infinite;
+}
+
+.quickstart-progress-step-pending {
+  opacity: 0.48;
+}
+
+.quickstart-progress-step-complete + .quickstart-progress-connector,
+.quickstart-progress-step-active + .quickstart-progress-connector {
+  background: linear-gradient(90deg, rgba(103, 240, 190, 0.9), rgba(101, 213, 255, 0.9));
+}
+
+.quickstart-progress-state-done .quickstart-progress-summary {
+  color: #a7ffd6;
+}
+
+.quickstart-progress-state-3 .quickstart-progress-summary {
+  color: #9fddff;
+}
+
+.quickstart-progress-state-2 .quickstart-progress-summary {
+  color: #bfdeff;
+}
+
+.quickstart-progress-state-1 .quickstart-progress-summary {
+  color: #a6c5fb;
+}
+
+.quickstart-progress-summary {
+  margin: 0.48rem 0 0;
+  font-size: 0.9rem;
+  color: #a6c5fb;
+  font-weight: 560;
+}
+
+@keyframes quickstartPulse {
+  0%,
+  100% {
+    box-shadow: 0 8px 24px rgba(101, 213, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 12px 32px rgba(162, 124, 242, 0.28);
+  }
 }
 
 .btn-sm {

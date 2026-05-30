@@ -57,6 +57,11 @@ const copy = {
           copiedNextText: "Commands copied. Continue with Run checks.",
           mustCopyText: "Please copy commands first.",
           progress: {
+            labels: {
+              step1: "1/3",
+              step2: "2/3",
+              step3: "3/3",
+            },
             phase1: "Step 1/3 · Copy commands above, then copy checks.",
             phase2: "Step 2/3 · Copy checks, then copy start command.",
             phase3: "Step 3/3 · Copy start commands, then open setup guide.",
@@ -182,6 +187,11 @@ const copy = {
           copiedNextText: "已复制。继续执行校验。",
           mustCopyText: "请先复制命令。",
           progress: {
+            labels: {
+              step1: "1/3",
+              step2: "2/3",
+              step3: "3/3",
+            },
             phase1: "第 1/3 步 · 已复制仓库命令，请复制校验命令。",
             phase2: "第 2/3 步 · 已复制校验命令，请复制启动命令。",
             phase3: "第 3/3 步 · 已复制启动命令，请打开设置文档。",
@@ -271,6 +281,12 @@ const copyQuickStart = document.getElementById("copy-quickstart");
 const copyQuickStartFeedback = document.getElementById("quickstart-feedback");
 const quickStartNext = document.getElementById("quickstart-next");
 const quickStartProgressLabel = document.getElementById("quickstart-progress");
+const quickStartProgressSummary = document.getElementById(
+  "quickstart-progress-summary"
+);
+const quickStartProgressStep1 = document.getElementById("quickstart-progress-step-1");
+const quickStartProgressStep2 = document.getElementById("quickstart-progress-step-2");
+const quickStartProgressStep3 = document.getElementById("quickstart-progress-step-3");
 let quickStartFocusTimer = null;
 const statusSource = document.getElementById("status-source");
 const statusLastUpdated = document.getElementById("status-last-updated");
@@ -471,32 +487,88 @@ function setQuickStartProgressState() {
 }
 
 function setQuickStartProgressText() {
-  if (!quickStartProgressLabel) {
+  if (!quickStartProgressLabel || !quickStartProgressSummary) {
     return;
   }
+  const stepNodes = [
+    quickStartProgressStep1,
+    quickStartProgressStep2,
+    quickStartProgressStep3,
+  ];
+  const clearStepState = (node) => {
+    if (!node) {
+      return;
+    }
+    node.classList.remove(
+      "quickstart-progress-step-complete",
+      "quickstart-progress-step-active",
+      "quickstart-progress-step-pending"
+    );
+  };
+  const setStepState = (node, state) => {
+    if (!node) {
+      return;
+    }
+    clearStepState(node);
+    node.classList.add(`quickstart-progress-step-${state}`);
+  };
+  stepNodes.forEach((node) => setStepState(node, "pending"));
 
   if (runCopied) {
-    quickStartProgressLabel.textContent =
+    setStepState(quickStartProgressStep1, "complete");
+    setStepState(quickStartProgressStep2, "complete");
+    setStepState(quickStartProgressStep3, "complete");
+    quickStartProgressLabel.classList.remove(
+      "quickstart-progress-state-1",
+      "quickstart-progress-state-2",
+      "quickstart-progress-state-3"
+    );
+    quickStartProgressLabel.classList.add("quickstart-progress-state-done");
+    quickStartProgressSummary.textContent =
       quickStartProgressLabel.dataset.done ||
       "Quick start ready. Continue with your setup.";
     return;
   }
 
   if (checksCopied) {
-    quickStartProgressLabel.textContent =
+    setStepState(quickStartProgressStep1, "complete");
+    setStepState(quickStartProgressStep2, "complete");
+    setStepState(quickStartProgressStep3, "active");
+    quickStartProgressLabel.classList.remove(
+      "quickstart-progress-state-1",
+      "quickstart-progress-state-2",
+      "quickstart-progress-state-done"
+    );
+    quickStartProgressLabel.classList.add("quickstart-progress-state-3");
+    quickStartProgressSummary.textContent =
       quickStartProgressLabel.dataset.phase3 ||
       "Step 3/3 · Copy start commands, then open setup guide.";
     return;
   }
 
   if (commandsCopied) {
-    quickStartProgressLabel.textContent =
+    setStepState(quickStartProgressStep1, "complete");
+    setStepState(quickStartProgressStep2, "active");
+    quickStartProgressLabel.classList.remove(
+      "quickstart-progress-state-1",
+      "quickstart-progress-state-3",
+      "quickstart-progress-state-done"
+    );
+    quickStartProgressLabel.classList.add("quickstart-progress-state-2");
+    quickStartProgressSummary.textContent =
       quickStartProgressLabel.dataset.phase2 ||
       "Step 2/3 · Copy checks, then copy start command.";
     return;
   }
 
-  quickStartProgressLabel.textContent =
+  setStepState(quickStartProgressStep1, "active");
+  quickStartProgressLabel.classList.remove(
+    "quickstart-progress-state-2",
+    "quickstart-progress-state-3",
+    "quickstart-progress-state-done"
+  );
+  quickStartProgressLabel.classList.add("quickstart-progress-state-1");
+  quickStartProgressSummary.textContent =
     quickStartProgressLabel.dataset.phase1 ||
     "Step 1/3 · Copy commands above, then copy checks.";
 }
@@ -778,6 +850,7 @@ function setLang(next) {
   }
   if (quickStartProgressLabel) {
     const progressText = locale.section.get.quick.progress || {};
+    const labels = progressText.labels || {};
     quickStartProgressLabel.dataset.phase1 =
       progressText.phase1 || "Step 1/3 · Copy commands above, then copy checks.";
     quickStartProgressLabel.dataset.phase2 =
@@ -786,6 +859,18 @@ function setLang(next) {
       progressText.phase3 || "Step 3/3 · Copy start commands, then open setup guide.";
     quickStartProgressLabel.dataset.done =
       progressText.done || "Quick start ready. Continue with your setup.";
+    if (quickStartProgressStep1) {
+      quickStartProgressStep1.textContent = labels.step1 || "1/3";
+      quickStartProgressStep1.setAttribute("aria-label", progressText.phase1 || "Step 1");
+    }
+    if (quickStartProgressStep2) {
+      quickStartProgressStep2.textContent = labels.step2 || "2/3";
+      quickStartProgressStep2.setAttribute("aria-label", progressText.phase2 || "Step 2");
+    }
+    if (quickStartProgressStep3) {
+      quickStartProgressStep3.textContent = labels.step3 || "3/3";
+      quickStartProgressStep3.setAttribute("aria-label", progressText.phase3 || "Step 3");
+    }
   }
   if (quickStartRun) {
     if (quickStartRunLink) {
