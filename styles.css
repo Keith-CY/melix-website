@@ -978,7 +978,7 @@ ol {
   font-size: 0.94rem;
   font-weight: 900;
   letter-spacing: 0.01em;
-  line-height: 1.03;
+  line-height: 1.02;
   text-shadow:
     0 1px 1px rgba(3, 6, 15, 0.9),
     0 0 6px rgba(185, 217, 255, 0.88),
@@ -994,7 +994,6 @@ ol {
     transform 0.2s ease,
     box-shadow 0.45s ease,
     filter 0.3s ease;
-  line-height: 1.02;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   align-items: center;
@@ -1022,7 +1021,7 @@ ol {
   filter: blur(1.08px);
   opacity: 1;
   transform-origin: center center;
-  animation: quickstart-completion-halo 10.2s ease-in-out infinite;
+  animation: quickstart-completion-halo 12s ease-in-out infinite;
 }
 
 @supports not (backdrop-filter: blur(1px)) {
@@ -1167,22 +1166,22 @@ ol {
   100% {
     transform: scale(1);
     opacity: 0.96;
-    filter: blur(1.03px);
+    filter: blur(1.0px);
   }
   25% {
     transform: scale(1.002);
     opacity: 0.98;
-    filter: blur(1.13px);
+    filter: blur(1.06px);
   }
   50% {
-    transform: scale(1.0035);
+    transform: scale(1.0022);
     opacity: 1;
-    filter: blur(1.18px);
+    filter: blur(1.07px);
   }
   75% {
-    transform: scale(1.0025);
+    transform: scale(1.0021);
     opacity: 0.98;
-    filter: blur(1.13px);
+    filter: blur(1.06px);
   }
 }
 
