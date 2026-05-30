@@ -790,10 +790,10 @@ function updateActiveNav() {
           if (needsVisible && shouldAutoScroll) {
             const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY).matches;
             activeItem.link.scrollIntoView({
-            behavior: reducedMotion ? "auto" : "smooth",
-            block: "nearest",
-            inline: "nearest",
-          });
+              behavior: reducedMotion ? "auto" : "smooth",
+              block: "nearest",
+              inline: "nearest",
+            });
           }
         }
       }
