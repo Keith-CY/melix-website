@@ -974,6 +974,9 @@ ol {
   overflow: hidden;
   pointer-events: auto;
   display: none;
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.16rem);
 }
 
 .quickstart-completion-hint::before {
@@ -988,6 +991,17 @@ ol {
   opacity: 1;
   transform: translateY(0);
   max-height: 1.9rem;
+}
+
+.quickstart-completion-anchor {
+  display: inline-flex;
+  position: relative;
+  width: fit-content;
+  margin-top: 0.38rem;
+}
+
+.quickstart-status-link {
+  margin-top: 0;
 }
 
 .copy-feedback.visible {
