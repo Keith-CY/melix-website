@@ -1006,33 +1006,6 @@ ol {
   font-size: 0.74rem;
 }
 
-.quickstart-completion-hint-dismiss {
-  margin-left: auto;
-  color: #c8d7f8;
-  background: rgba(173, 188, 244, 0.18);
-  border: 1px solid rgba(173, 188, 244, 0.4);
-  width: 1.55rem;
-  height: 1.55rem;
-  border-radius: 999px;
-  font-size: 0.96rem;
-  line-height: 1;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.quickstart-completion-hint-dismiss:focus-visible {
-  outline: none;
-  border-color: #9efcc6;
-  box-shadow: 0 0 0 2px rgba(103, 240, 190, 0.24);
-}
-
-.quickstart-completion-hint-dismiss:hover {
-  border-color: rgba(158, 252, 198, 0.55);
-}
-
 .copy-feedback.visible {
   opacity: 1;
 }
