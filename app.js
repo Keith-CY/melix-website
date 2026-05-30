@@ -675,9 +675,8 @@ function setQuickStartProgressText() {
     setStepState(quickStartProgressStep2, "complete");
     setStepState(quickStartProgressStep3, "active");
     quickStartProgressLabel.classList.remove(
-      "quickstart-progress-state-1",
-      "quickstart-progress-state-2",
-      "quickstart-progress-state-done"
+      "quickstart-progress-state-done",
+      "quickstart-progress-state-3"
     );
     quickStartProgressLabel.classList.add("quickstart-progress-state-3");
     quickStartProgressSummary.textContent =
