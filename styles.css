@@ -965,9 +965,8 @@ ol {
     0 0 0 4px rgba(255, 255, 255, 0.64),
     0 0 0 5px rgba(255, 255, 255, 0.42),
     0 0 0 6px rgba(255, 255, 255, 0.26),
-    0 0 0 7px rgba(255, 255, 255, 0.14),
-    0 0 0 8px rgba(255, 255, 255, 0.03),
-    inset 0 1px 0 rgba(255, 255, 255, 0.58);
+    0 0 0 7px rgba(255, 255, 255, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.68);
   position: absolute;
   left: 0;
   top: calc(100% + 0.2rem);
@@ -977,8 +976,8 @@ ol {
   font-size: 1.4rem;
   font-weight: 800;
   letter-spacing: 0.006em;
-  text-shadow: 0 1px 5px rgba(3, 6, 15, 0.96),
-    0 0 7px rgba(185, 205, 255, 0.78);
+  text-shadow: 0 1px 4px rgba(3, 6, 15, 0.98),
+    0 0 6px rgba(185, 205, 255, 0.82);
   transform: translateY(-1px);
   transition:
     opacity 0.2s ease,
@@ -1006,7 +1005,7 @@ ol {
   pointer-events: none;
   z-index: -1;
   background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 1), rgba(7, 12, 24, 0));
-  filter: blur(2.6px);
+  filter: blur(2.2px);
   opacity: 1;
 }
 
