@@ -205,7 +205,7 @@ button {
   margin: 0.25rem 0 0.85rem;
   max-width: 58ch;
   color: #a8baea;
-  font-size: 0.94rem;
+  font-size: 0.95rem;
   line-height: 1.55;
 }
 
@@ -978,7 +978,7 @@ ol {
   font-size: 0.94rem;
   font-weight: 900;
   letter-spacing: 0.01em;
-  line-height: 1.02;
+  line-height: 1.03;
   text-shadow:
     0 1px 1px rgba(3, 6, 15, 0.9),
     0 0 6px rgba(185, 217, 255, 0.88),
@@ -1022,7 +1022,7 @@ ol {
   filter: blur(1.08px);
   opacity: 1;
   transform-origin: center center;
-  animation: quickstart-completion-halo 9.8s ease-in-out infinite;
+  animation: quickstart-completion-halo 10.2s ease-in-out infinite;
 }
 
 @supports not (backdrop-filter: blur(1px)) {
@@ -1134,7 +1134,7 @@ ol {
     0 0 0 5px rgba(173, 235, 255, 0.12),
     0 0 0 6px rgba(255, 255, 255, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.96);
-  filter: saturate(1.16) contrast(1.08);
+    filter: saturate(1.17) contrast(1.08);
 }
 
 .quickstart-completion-anchor {
@@ -1177,7 +1177,7 @@ ol {
   50% {
     transform: scale(1.0035);
     opacity: 1;
-    filter: blur(1.17px);
+    filter: blur(1.18px);
   }
   75% {
     transform: scale(1.0025);
