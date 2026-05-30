@@ -951,8 +951,8 @@ ol {
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  border: 2.68px solid rgba(255, 255, 255, 1);
-  padding: 0.52rem 1.56rem;
+	  border: 2.65px solid rgba(255, 255, 255, 1);
+	  padding: 0.51rem 1.52rem;
   color: #ffffff;
   background: linear-gradient(135deg, rgba(242, 255, 255, 1), rgba(0, 2, 6, 1));
   -webkit-backdrop-filter: saturate(620%) blur(8px);
@@ -987,7 +987,7 @@ ol {
   gap: 0.09rem;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  max-width: min(77vw, 13.3rem);
+	  max-width: min(77vw, 13.2rem);
   white-space: normal;
   word-break: break-word;
   text-align: left;
