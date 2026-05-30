@@ -975,6 +975,7 @@ ol {
     0 1px 1px rgba(3, 6, 15, 0.9),
     0 0 3px rgba(185, 205, 255, 0.72);
   transform: translateY(-1px);
+  transform-origin: left top;
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
