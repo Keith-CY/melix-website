@@ -1414,6 +1414,19 @@ function setQuickStartProgressState() {
   const isCompleted = runCopied && setupGuideOpened;
   if (quickStartStatusLink) {
     quickStartStatusLink.hidden = !isCompleted;
+    if (isCompleted && quickStartStatusLink.dataset.autoFocused !== "1") {
+      requestAnimationFrame(() => {
+        if (quickStartStatusLink.hidden) {
+          return;
+        }
+        quickStartStatusLink.dataset.autoFocused = "1";
+        quickStartStatusLink.classList.add("quickstart-status-link-ready");
+        quickStartStatusLink.focus({ preventScroll: true });
+      });
+    } else if (!isCompleted) {
+      quickStartStatusLink.dataset.autoFocused = "0";
+      quickStartStatusLink.classList.remove("quickstart-status-link-ready");
+    }
   }
   const quickStartCards = [
     quickStartTitle.closest(".command-card"),
