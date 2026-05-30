@@ -1030,20 +1030,28 @@ ol {
   .quickstart-completion-hint {
     border-color: rgba(255, 255, 255, 1);
     background: linear-gradient(135deg, rgba(133, 166, 221, 1), rgba(35, 52, 82, 0.99));
-    box-shadow:
-    0 24px 64px rgba(1, 3, 10, 0.64),
-    0 0 0 1px rgba(255, 255, 255, 1),
-    0 0 0 2px rgba(255, 255, 255, 1),
-    0 0 0 3px rgba(255, 255, 255, 0.96),
-    0 0 0 4px rgba(255, 255, 255, 0.2),
-    0 0 0 5px rgba(255, 255, 255, 0.1),
-    0 0 0 6px rgba(255, 255, 255, 0.05),
-    0 0 0 7px rgba(255, 255, 255, 0.02),
-      inset 0 1px 0 rgba(255, 255, 255, 0.66);
     color: #ffffff;
   }
 
+  .quickstart-completion-hint {
+    box-shadow:
+      0 24px 54px rgba(1, 3, 10, 0.66),
+      0 0 0 1px rgba(255, 255, 255, 1),
+      0 0 0 2px rgba(255, 255, 255, 1),
+      0 0 0 3px rgba(255, 255, 255, 1),
+      0 0 0 4px rgba(255, 255, 255, 0.22),
+      0 0 0 5px rgba(255, 255, 255, 0.12),
+      0 0 0 6px rgba(255, 255, 255, 0.08),
+      0 0 0 7px rgba(255, 255, 255, 0.03),
+      inset 0 1px 0 rgba(255, 255, 255, 0.66);
+  }
+
+  .quickstart-completion-hint::after {
+    filter: blur(1.5px);
+  }
+
   .quickstart-completion-hint::before {
+    margin-right: 0.24rem;
     color: #f7fffb;
     text-shadow: none;
   }
