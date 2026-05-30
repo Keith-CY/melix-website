@@ -951,14 +951,14 @@ ol {
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  border: 1px solid rgba(173, 188, 244, 0.46);
-  padding: 0.11rem 0.39rem;
+  border: 1px solid rgba(173, 188, 244, 0.5);
+  padding: 0.12rem 0.41rem;
   color: #ecf2ff;
-  background: linear-gradient(135deg, rgba(14, 22, 44, 0.93), rgba(8, 14, 28, 0.86));
+  background: linear-gradient(135deg, rgba(14, 22, 44, 0.96), rgba(8, 14, 28, 0.88));
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
-  box-shadow: 0 3px 9px rgba(3, 6, 15, 0.18),
-    0 0 0 1px rgba(173, 188, 244, 0.09);
+  box-shadow: 0 4px 10px rgba(3, 6, 15, 0.2),
+    0 0 0 1px rgba(173, 188, 244, 0.11);
   z-index: 12;
   isolation: isolate;
   font-size: 0.8rem;
@@ -974,7 +974,7 @@ ol {
   gap: 0.11rem;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  max-width: min(92vw, 16.7rem);
+  max-width: min(92vw, 17rem);
   white-space: normal;
   word-break: break-word;
   text-align: left;
@@ -997,7 +997,7 @@ ol {
 .quickstart-completion-hint::before {
   content: "✓";
   line-height: 1;
-  font-size: 0.82rem;
+  font-size: 0.83rem;
   font-weight: 800;
   color: #a0eec4;
   margin-right: 0.03rem;
