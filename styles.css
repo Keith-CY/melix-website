@@ -976,7 +976,7 @@ ol {
   gap: 0.14rem;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  max-width: min(92vw, 20rem);
+  max-width: min(92vw, 16rem);
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
