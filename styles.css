@@ -979,7 +979,7 @@ ol {
   isolation: isolate;
   font-size: 0.95rem;
   font-weight: 900;
-  letter-spacing: 0.007em;
+  letter-spacing: 0.009em;
   text-shadow:
     0 1px 1px rgba(3, 6, 15, 0.9),
     0 0 6px rgba(185, 217, 255, 0.88),
@@ -1127,7 +1127,7 @@ ol {
     0 0 0 5px rgba(255, 255, 255, 0.036),
     0 0 0 6px rgba(255, 255, 255, 0.02),
     inset 0 1px 0 rgba(255, 255, 255, 0.94);
-  filter: saturate(1.08) contrast(1.02);
+  filter: saturate(1.1) contrast(1.04);
 }
 
 .quickstart-completion-anchor {
