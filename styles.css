@@ -962,7 +962,6 @@ ol {
     0 0 0 1px rgba(173, 188, 244, 0.68),
     0 0 0 3px rgba(173, 188, 244, 0.09),
     inset 0 1px 0 rgba(205, 222, 255, 0.08);
-  z-index: 12;
   isolation: isolate;
   font-size: 0.88rem;
   font-weight: 600;
@@ -987,7 +986,8 @@ ol {
   will-change: opacity, transform;
   position: absolute;
   left: 0;
-  top: calc(100% + 0.16rem);
+  top: calc(100% + 0.2rem);
+  z-index: 20;
 }
 
 @supports not (backdrop-filter: blur(1px)) {
