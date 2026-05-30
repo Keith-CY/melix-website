@@ -124,11 +124,28 @@ body {
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.58rem;
   font-weight: 900;
   font-size: 1.35rem;
   letter-spacing: 0.08em;
   text-decoration: none;
   color: var(--text);
+}
+
+.brand-logo {
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  object-fit: cover;
+  box-shadow: 0 8px 24px rgba(101, 213, 255, 0.34);
+  background: rgba(10, 17, 32, 0.3);
+}
+
+.brand-text {
+  display: inline-block;
+  line-height: 1;
 }
 
 .nav-links {

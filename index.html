@@ -6,13 +6,32 @@
     <title>Melix · Local AI runtime for Apple Silicon</title>
     <meta
       name="description"
-      content="Melix is a local AI runtime for Apple Silicon. Run models, fine-tune LoRA, benchmark, and evaluate on one local workflow."
+      content="Melix is a local AI runtime for Apple Silicon. Run models, fine-tune LoRA, benchmark, and evaluate locally with a single workflow."
     />
+    <meta
+      name="keywords"
+      content="Melix, Apple Silicon, local AI runtime, local LLM, LoRA, model serving, benchmark, evaluation, macOS"
+    />
+    <link rel="canonical" href="https://www.melix.run/" />
+    <meta property="og:type" content="website" />
     <meta property="og:title" content="Melix - Local AI Runtime" />
     <meta
       property="og:description"
-      content="Build local AI workflows in one place on your Mac."
+      content="Build local AI workflows on Apple Silicon with one runtime for serving, fine-tuning, benchmarking, and evaluation."
     />
+    <meta property="og:url" content="https://www.melix.run/" />
+    <meta property="og:site_name" content="Melix" />
+    <meta property="og:image" content="https://www.melix.run/logo.svg" />
+    <meta property="og:image:alt" content="Melix logo and brand mark" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Melix - Local AI Runtime" />
+    <meta
+      name="twitter:description"
+      content="Run models, fine-tune LoRA, benchmark, and evaluate locally with Melix."
+    />
+    <meta name="twitter:image" content="https://www.melix.run/logo.svg" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/logo.svg" />
     <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self';"
@@ -36,7 +55,16 @@
 
     <header class="topbar">
       <div class="wrap topbar-inner">
-        <a class="brand" href="#hero">Melix</a>
+        <a class="brand" href="#hero" aria-label="Melix homepage">
+          <img
+            src="/logo.svg"
+            alt="Melix logo"
+            class="brand-logo"
+            width="24"
+            height="24"
+          />
+          <span class="brand-text">Melix</span>
+        </a>
         <nav class="nav-links" aria-label="Main navigation">
           <a href="#problem" data-i18n="nav.problem">Problem</a>
           <a href="#loop" data-i18n="nav.loop">Product Loop</a>
