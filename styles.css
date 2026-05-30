@@ -952,7 +952,7 @@ ol {
   max-width: 100%;
   border-radius: 999px;
   border: 3.48px solid rgba(255, 255, 255, 1);
-  padding: 0.8rem 2.64rem;
+  padding: 0.78rem 2.46rem;
   color: #ffffff;
   background: linear-gradient(135deg, rgba(242, 255, 255, 1), rgba(0, 2, 6, 1));
   -webkit-backdrop-filter: saturate(620%) blur(8px);
@@ -982,12 +982,12 @@ ol {
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
-  line-height: 1.2;
+  line-height: 1.16;
   align-items: center;
   gap: 0.11rem;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  max-width: min(92vw, 17rem);
+  max-width: min(90vw, 16.3rem);
   white-space: normal;
   word-break: break-word;
   text-align: left;
@@ -1019,10 +1019,10 @@ ol {
 .quickstart-completion-hint::before {
   content: "✓";
   line-height: 1;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: #e8fff7;
-  margin-right: 0.26rem;
+  margin-right: 0.22rem;
   text-shadow: 0 1px 10px rgba(226, 255, 246, 0.62);
 }
 
