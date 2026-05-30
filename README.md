@@ -47,8 +47,49 @@ This workspace contains a static, production-ready landing page for Melix.
   5. In Vercel dashboard, verify a new Production deployment was created.
   6. Open `https://www.melix.run` and confirm the site content and latest status metadata update.
 
+### Scripted deployment check (optional)
+- Run after each deployment-related push:
+- Quick check:
+  ```bash
+  ./scripts/deploy-check.sh
+  ```
+- Full strict check (recommended before announcing release readiness):
+  ```bash
+  ./scripts/deploy-check.sh --strict --use-gh-fallback
+  ```
+- You can also run:
+  - `REPO=owner/repo BRANCH=main SITE_URL=https://www.melix.run ./scripts/deploy-check.sh`
+  - `./scripts/deploy-check.sh --repo Keith-CY/melix-website --branch main --url https://www.melix.run`
+  - `./scripts/deploy-check.sh --strict --expect-deploy-id <x-vercel-id>`
+    (only succeeds when the live edge header contains the expected deployment id)
+
 ### Notes
 - A repository-level `vercel.json` is already present (`vercel.json`) to keep URL shaping consistent.
+
+### Deployment checklist for this repository
+1. Merge/commit changes to `main`.
+2. Confirm branch sync: `./scripts/deploy-check.sh --use-gh-fallback`
+   (or `--strict` in CI/release validation).
+3. In Vercel, confirm the deployment appears on Production channel.
+4. Confirm website response + edge metadata:
+   `./scripts/deploy-check.sh --strict --use-gh-fallback`.
+
+### GitHub Actions gate (optional, recommended)
+
+- If you want CI to continuously enforce deployment correctness, this repo includes:
+  - [`.github/workflows/deploy-gate.yml`](./.github/workflows/deploy-gate.yml)
+- It runs on each push to `main`.
+- It requires:
+  - `gh` CLI available in runner (comes preinstalled on GitHub-hosted Linux runners).
+  - `GITHUB_TOKEN` (provided automatically as `${{ github.token }}`).
+- The workflow executes:
+  - wait 60 seconds (deployment settle window),
+  - `./scripts/deploy-check.sh --strict --use-gh-fallback`.
+
+If this check fails on a push, deployment and/or DNS propagation is not yet in the expected state.
+
+If strict mode succeeds, the local git HEAD is synchronized with GitHub for the target
+branch, `https://www.melix.run` returns HTTP 200, and `x-vercel-id` is present.
 
 ## What to replace before public launch
 - Fill outbound links in `index.html` JSON config block near the page end:

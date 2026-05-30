@@ -1,0 +1,41 @@
+name: Melix Website Deployment Gate
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-deploy:
+    name: Verify https://www.melix.run is in sync with main
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run strict deploy verification
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          BRANCH: main
+          SITE_URL: https://www.melix.run
+          TIMEOUT_SECONDS: 30
+          EXPECT_DEPLOY_ID: ""
+        run: |
+          set -euo pipefail
+          # Allow Vercel a short settle window after push before validation.
+          sleep 60
+          if ! command -v gh >/dev/null 2>&1; then
+            echo "GitHub CLI is required for remote fallback in this job."
+            exit 2
+          fi
+          gh auth status >/dev/null 2>&1 || {
+            echo "GitHub CLI authentication is required in the runner for gh api fallback.";
+            exit 2;
+          }
+          ./scripts/deploy-check.sh --strict --use-gh-fallback
