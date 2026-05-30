@@ -38,11 +38,11 @@
       <div class="wrap topbar-inner">
         <a class="brand" href="#hero">Melix</a>
         <nav class="nav-links" aria-label="Main navigation">
-          <a href="#problem">Problem</a>
-          <a href="#loop">Product Loop</a>
-          <a href="#architecture">Architecture</a>
-          <a href="#macos">macOS</a>
-          <a href="#status">Status</a>
+          <a href="#problem" data-i18n="nav.problem">Problem</a>
+          <a href="#loop" data-i18n="nav.loop">Product Loop</a>
+          <a href="#architecture" data-i18n="nav.architecture">Architecture</a>
+          <a href="#macos" data-i18n="nav.macos">macOS</a>
+          <a href="#status" data-i18n="nav.status">Status</a>
         </nav>
         <button id="lang-toggle" type="button" aria-label="Switch language">
           中文
@@ -60,6 +60,10 @@
           <p class="hero-subtitle" data-i18n="hero.subtitle">
             Run models, fine-tune LoRA, benchmark, and evaluate—on one local Mac
             workflow.
+          </p>
+          <p class="hero-pitch" data-i18n="hero.pitch">
+            Start in minutes, keep all inference and tuning workflows on your own
+            machine.
           </p>
           <div class="cta-row">
             <a
@@ -80,6 +84,11 @@
             >
               View current status
             </a>
+          </div>
+          <div class="hero-metrics" aria-label="hero highlights">
+            <span class="hero-metric" data-i18n="hero.metric1">Apple Silicon-first</span>
+            <span class="hero-metric" data-i18n="hero.metric2">Local AI workflows</span>
+            <span class="hero-metric" data-i18n="hero.metric3">No external UI runtime</span>
           </div>
           <p class="tiny-note" data-i18n="hero.note">
             No external frontend runtime libraries are used.
@@ -233,6 +242,9 @@
               <p class="section-subtitle" data-i18n="section.get.quick.copy">
                 Copy and run the commands below.
               </p>
+              <p class="command-label" id="quickstart-step1-label" data-i18n="section.get.quick.step1Label">
+                Step 1 · Clone and read the repo
+              </p>
               <pre class="code-block" aria-label="quick start command"><code id="quickstart-cmd">git clone https://github.com/Keith-CY/melix.git
 cd melix
 cat README.md</code></pre>
@@ -308,6 +320,13 @@ cat README.md</code></pre>
               <p class="section-subtitle" id="quickstart-check-copy" data-i18n="section.get.quick.nextCopy">
                 Run these commands after cloning to verify your environment.
               </p>
+              <p
+                class="command-label"
+                id="quickstart-step2-label"
+                data-i18n="section.get.quick.step2Label"
+              >
+                Step 2 · Verify tooling versions
+              </p>
               <pre class="code-block" aria-label="quick start follow-up command"><code id="quickstart-check-cmd">swift --version
 python --version
 uv --version</code></pre>
@@ -328,6 +347,9 @@ uv --version</code></pre>
               </h3>
               <p class="section-subtitle" id="quickstart-run-copy" data-i18n="section.get.quick.runCopy">
                 Go to setup guide to follow the right command for starting the service.
+              </p>
+              <p class="command-label" id="quickstart-step3-label" data-i18n="section.get.quick.step3Label">
+                Step 3 · Start local services
               </p>
               <pre class="code-block" aria-label="quick start run command"><code id="quickstart-run-cmd">make bootstrap && make proto && bash scripts/dev_up.sh</code></pre>
               <div class="command-actions">
@@ -401,15 +423,51 @@ uv --version</code></pre>
             <span data-i18n="section.status.commitLabel">Commit</span>
             <span id="status-commit">n/a</span>
           </p>
+          <div class="status-live" id="status-live-wrap">
+            <p class="status-live-label" id="status-live-label" data-i18n="section.status.liveLabel">
+              Live deployment check
+            </p>
+            <div class="status-live-controls">
+              <span class="status-live-pill" id="status-live-pill" aria-live="polite"
+                >Checking...</span
+              >
+              <button
+                id="status-live-refresh"
+                class="btn btn-ghost btn-sm"
+                type="button"
+                data-i18n="section.status.refreshNow"
+              >
+                Check now
+              </button>
+              <button
+                id="status-live-autorefresh"
+                class="btn btn-ghost btn-sm btn-subtle"
+                type="button"
+                data-i18n="section.status.autoRefresh"
+                aria-pressed="true"
+              >
+                Auto refresh
+              </button>
+            </div>
+            <p class="status-live-metrics" id="status-live-metrics" role="status" aria-live="polite"></p>
+            <p class="status-live-detail" id="status-live-detail" role="status" aria-live="polite"></p>
+          </div>
         </div>
       </section>
     </main>
 
     <footer class="footer">
       <div class="wrap footer-inner">
-        <p>© 2026 Melix. All rights reserved.</p>
+        <p>© <span id="footer-year">2026</span> Melix. All rights reserved.</p>
         <div class="footer-links">
-          <a href="#status" data-i18n="footer.roadmap">View roadmap</a>
+          <a
+            id="link-roadmap"
+            class="is-disabled-link"
+            href="#"
+            aria-disabled="true"
+            data-i18n="footer.roadmap"
+            >View roadmap</a
+          >
           <a
             id="link-community"
             class="is-disabled-link"
@@ -434,7 +492,8 @@ uv --version</code></pre>
 	      {
 	        "github": "https://github.com/Keith-CY/melix",
 	        "discussions": "https://github.com/Keith-CY/melix/discussions",
-	        "issues": "https://github.com/Keith-CY/melix/issues"
+	        "issues": "https://github.com/Keith-CY/melix/issues",
+	        "roadmap": "https://github.com/Keith-CY/melix/milestones"
 	      }
 	    </script>
 	    <script id="build-meta" type="application/json">

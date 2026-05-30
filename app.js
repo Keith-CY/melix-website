@@ -4,6 +4,10 @@ const copy = {
     hero: {
       title: "A local AI runtime for Apple Silicon.",
       subtitle: "Run models, fine-tune LoRA, benchmark, and evaluate—on one local Mac workflow.",
+      pitch: "Start in minutes, keep all inference and tuning workflows on your own machine.",
+      metric1: "Apple Silicon-first",
+      metric2: "Local-first runtime",
+      metric3: "No external UI runtime",
       note: "No external frontend runtime libraries are used.",
       noteSuffix: "Configure outbound links below to enable all actions.",
     },
@@ -11,6 +15,13 @@ const copy = {
       primary: "Get started on GitHub",
       secondary: "Read setup guide",
       tertiary: "View current status",
+    },
+    nav: {
+      problem: "Problem",
+      loop: "Product Loop",
+      architecture: "Architecture",
+      macos: "macOS",
+      status: "Status",
     },
     section: {
       problem: {
@@ -50,6 +61,7 @@ const copy = {
         quick: {
           title: "Start in 3 minutes",
           copy: "Copy and run the commands below.",
+          step1Label: "Step 1 · Clone and read the repo",
           nothing: "No commands to copy yet.",
           copyBtn: "Copy commands",
           resetText: "Reset quick start",
@@ -82,6 +94,7 @@ const copy = {
           nextNothingText: "No check commands to copy.",
           nextCopyBtn: "Copy checks",
           nextReadyText: "Checks copied. Continue with setup.",
+          step2Label: "Step 2 · Verify tooling versions",
           nextCopySuccess: "Check commands copied.",
           nextCopyFailed: "Copy checks failed. Please copy manually.",
           commands: [
@@ -101,6 +114,7 @@ const copy = {
           runCopy:
             "Go to setup guide to follow the right command for starting the service.",
           runCommands: ["make bootstrap && make proto && bash scripts/dev_up.sh"],
+          step3Label: "Step 3 · Start local services",
           runCopyBtn: "Copy start commands",
           runCopySuccess: "Start commands copied.",
           runCopyFailed: "Copy start commands failed. Please copy manually.",
@@ -121,6 +135,26 @@ const copy = {
         deployIdFallback: "n/a",
         commitLabel: "Commit",
         commitFallback: "n/a",
+        liveLabel: "Live deployment check",
+        liveChecking: "Checking deployment now",
+        liveOnline: "Online now",
+        liveOffline: "Could not reach deployment",
+        liveError: "Connection check failed",
+        liveUnknown: "Unknown",
+        liveDetailChecking: "Issuing request to verify deployment status...",
+        liveDetailOnline:
+          "Deployment responded normally. Traffic is flowing to the latest build.",
+        liveDetailOffline:
+          "Deployment returned a non-200 response. Please check Vercel logs.",
+        liveDetailError:
+          "Request failed before receiving headers. Check network or security headers.",
+        liveCheckedLabel: "Checked",
+        liveLatencyLabel: "Latency",
+        liveEndpoint: "Endpoint",
+        autoRefresh: "Auto refresh",
+        autoRefreshOn: "Auto refresh: ON",
+        autoRefreshOff: "Auto refresh: OFF",
+        refreshNow: "Check now",
         available: {
           title: "v0.1.0-alpha / Available now",
           body: "v0.1.0-alpha · local model workflow, LoRA, benchmark/eval, CLI and macOS surfaces",
@@ -146,6 +180,10 @@ const copy = {
     hero: {
       title: "一款面向 Apple Silicon 的本地 AI 运行时。",
       subtitle: "在一套本地化流程中完成模型运行、LoRA 微调、基准测试与评测。",
+      pitch: "几分钟内启动本地 AI 工作流，推理与微调全部留在你的机器上。",
+      metric1: "苹果芯片优先",
+      metric2: "本地优先运行时",
+      metric3: "无额外前端运行时依赖",
       note: "页面不引入任何第三方前端运行时库。",
       noteSuffix: "请先配置站点外部链接后再启用全部操作入口。",
     },
@@ -153,6 +191,13 @@ const copy = {
       primary: "GitHub 上开始",
       secondary: "查看安装教程",
       tertiary: "查看项目状态",
+    },
+    nav: {
+      problem: "问题",
+      loop: "产品循环",
+      architecture: "架构",
+      macos: "macOS",
+      status: "状态",
     },
     section: {
       problem: {
@@ -192,6 +237,7 @@ const copy = {
         quick: {
           title: "三分钟快速开始",
           copy: "复制下面命令并执行。",
+          step1Label: "第 1 步 · 克隆仓库并读取说明",
           nothing: "暂无可复制命令。",
           copyBtn: "复制命令",
           resetText: "重置快速开始",
@@ -224,6 +270,7 @@ const copy = {
           nextNothingText: "没有可复制的校验命令。",
           nextCopyBtn: "复制校验命令",
           nextReadyText: "校验命令已复制。继续设置。",
+          step2Label: "第 2 步 · 核对本地工具版本",
           nextCopySuccess: "校验命令已复制。",
           nextCopyFailed: "复制校验命令失败，请手动复制。",
           commands: [
@@ -242,6 +289,7 @@ const copy = {
           runHeading: "继续项目设置",
           runCopy: "查看仓库说明执行服务启动步骤。",
           runCommands: ["make bootstrap && make proto && bash scripts/dev_up.sh"],
+          step3Label: "第 3 步 · 启动本地服务",
           runCopyBtn: "复制启动命令",
           runCopySuccess: "启动命令已复制。",
           runCopyFailed: "复制启动命令失败，请手动复制。",
@@ -262,6 +310,23 @@ const copy = {
         deployIdFallback: "未提供",
         commitLabel: "提交",
         commitFallback: "无信息",
+        liveLabel: "实时部署检查",
+        liveChecking: "正在实时检查",
+        liveOnline: "目前在线",
+        liveOffline: "无法访问部署",
+        liveError: "连接检查失败",
+        liveUnknown: "未知",
+        liveDetailChecking: "正在请求以确认当前部署状态...",
+        liveDetailOnline: "部署返回正常响应，流量可达最新构建。",
+        liveDetailOffline: "部署返回非 200 响应，请检查 Vercel 日志。",
+        liveDetailError: "请求未能拿到响应头，请检查网络或安全策略。",
+        liveCheckedLabel: "上次检查",
+        liveLatencyLabel: "延迟",
+        liveEndpoint: "检测端点",
+        autoRefresh: "自动刷新",
+        autoRefreshOn: "自动刷新：开启",
+        autoRefreshOff: "自动刷新：关闭",
+        refreshNow: "立即检查",
         available: {
           title: "v0.1.0-alpha / 已支持",
           body: "v0.1.0-alpha · 本地模型工作流、LoRA、基准与评测、CLI 与 macOS 界面",
@@ -301,6 +366,9 @@ const quickStartRunIntro = document.getElementById("quickstart-run-copy");
 const quickStartRunCmd = document.getElementById("quickstart-run-cmd");
 const quickStartRunLink = document.getElementById("quickstart-run-link");
 const copyQuickStartRun = document.getElementById("copy-quickstart-run");
+const quickStartStep1Label = document.getElementById("quickstart-step1-label");
+const quickStartStep2Label = document.getElementById("quickstart-step2-label");
+const quickStartStep3Label = document.getElementById("quickstart-step3-label");
 const copyQuickStart = document.getElementById("copy-quickstart");
 const quickStartReset = document.getElementById("quickstart-reset");
 const copyQuickStartFeedback = document.getElementById("quickstart-feedback");
@@ -321,16 +389,30 @@ const statusLastUpdated = document.getElementById("status-last-updated");
 const statusBranch = document.getElementById("status-branch");
 const statusDeployId = document.getElementById("status-deploy-id");
 const statusCommit = document.getElementById("status-commit");
+const statusLivePill = document.getElementById("status-live-pill");
+const statusLiveDetail = document.getElementById("status-live-detail");
+const statusLiveRefresh = document.getElementById("status-live-refresh");
+const statusLiveAutoRefresh = document.getElementById("status-live-autorefresh");
+const statusLiveMetrics = document.getElementById("status-live-metrics");
 const langToggle = document.getElementById("lang-toggle");
 const linkGithub = document.getElementById("link-github");
 const linkCommunity = document.getElementById("link-community");
 const linkIssue = document.getElementById("link-issue");
+const linkRoadmap = document.getElementById("link-roadmap");
+const footerYear = document.getElementById("footer-year");
 let lang = "en";
+let currentLocale = copy.en;
 let commandsCopied = false;
 let checksCopied = false;
 let runCopied = false;
 let setupGuideOpened = false;
+let isRefreshingStatusLive = false;
+let liveStatusRefreshTimer = null;
+let isLiveAutoRefreshEnabled = true;
 const quickStartStorageKey = "melixQuickStartProgressV1";
+const liveRefreshEnabledStorageKey = "melixLiveAutoRefreshEnabled";
+const LIVE_CHECK_INTERVAL_MS = 60 * 1000;
+const LIVE_CHECK_PATHS = ["/api/health", "/api/status", "/health", "/healthz", "/"];
 
 function persistQuickStartProgress() {
   try {
@@ -411,6 +493,7 @@ const defaultLinks = {
   github: "",
   discussions: "",
   issues: "",
+  roadmap: "",
 };
 
 function setText(key, value) {
@@ -504,6 +587,260 @@ function formatDate(locale, rawDate) {
   }).format(d);
 }
 
+function formatDuration(ms) {
+  if (!Number.isFinite(ms) || ms <= 0) {
+    return "0ms";
+  }
+  if (ms < 1000) {
+    return `${Math.round(ms)}ms`;
+  }
+  return `${(ms / 1000).toFixed(2)}s`;
+}
+
+function stopLiveStatusTimer() {
+  if (!liveStatusRefreshTimer) {
+    return;
+  }
+  clearInterval(liveStatusRefreshTimer);
+  liveStatusRefreshTimer = null;
+}
+
+function startLiveStatusTimer() {
+  if (!isLiveAutoRefreshEnabled) {
+    return;
+  }
+  if (document && document.visibilityState === "hidden") {
+    return;
+  }
+  stopLiveStatusTimer();
+  liveStatusRefreshTimer = setInterval(() => {
+    void refreshLiveDeployment(currentLocale);
+  }, LIVE_CHECK_INTERVAL_MS);
+}
+
+async function fetchLiveProbeStatus(path) {
+  const url = new URL(path, window.location.origin);
+  const startedAt = performance.now();
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    cache: "no-store",
+    headers: { Accept: "application/json,text/plain,*/*;q=0.8" },
+  });
+  const finishedAt = performance.now();
+
+  const statusCode = response.status || 0;
+  const latencyMs = Math.max(0, finishedAt - startedAt);
+  const checkedAt = formatDate(lang, new Date().toISOString());
+  const lastModified = formatDate(lang, response.headers.get("last-modified"));
+  const statusType = response.headers.get("content-type") || "";
+  let probeNotes = "";
+
+  if (response.ok && statusType.includes("application/json")) {
+    try {
+      const payload = await response.json();
+      if (payload && typeof payload === "object") {
+        const parts = [];
+        if (Object.prototype.hasOwnProperty.call(payload, "status")) {
+          parts.push(`status:${payload.status}`);
+        }
+        if (Object.prototype.hasOwnProperty.call(payload, "ok")) {
+          parts.push(`ok:${payload.ok}`);
+        }
+        if (Object.prototype.hasOwnProperty.call(payload, "healthy")) {
+          parts.push(`healthy:${payload.healthy}`);
+        }
+        if (parts.length) {
+          probeNotes = ` · ${parts.join(", ")}`;
+        }
+      }
+    } catch {
+      // keep fallback behavior for non-json parse payloads.
+    }
+  }
+
+  return {
+    path,
+    response,
+    statusCode,
+    checkedAt,
+    latencyMs,
+    lastModified,
+    probeNotes,
+    statusType,
+  };
+}
+
+async function performLiveProbe() {
+  let lastError = null;
+
+  for (const path of LIVE_CHECK_PATHS) {
+    try {
+      const probe = await fetchLiveProbeStatus(path);
+      if (probe.response.status === 404 && path !== "/") {
+        lastError = new Error("Health endpoint missing");
+        continue;
+      }
+      return probe;
+    } catch (error) {
+      lastError = error;
+      if (path === LIVE_CHECK_PATHS[LIVE_CHECK_PATHS.length - 1]) {
+        throw lastError;
+      }
+    }
+  }
+  if (lastError) {
+    throw lastError;
+  }
+  throw new Error("No health probes available");
+}
+
+function persistLiveRefreshPreference(enabled) {
+  try {
+    localStorage.setItem(liveRefreshEnabledStorageKey, enabled ? "1" : "0");
+  } catch {
+    // localStorage not writable.
+  }
+}
+
+function restoreLiveRefreshPreference() {
+  try {
+    const stored = localStorage.getItem(liveRefreshEnabledStorageKey);
+    if (stored === "0") {
+      isLiveAutoRefreshEnabled = false;
+    }
+  } catch {
+    // localStorage may be blocked.
+  }
+}
+
+function setLiveRefreshControl(localeCopy = currentLocale) {
+  if (!statusLiveAutoRefresh) {
+    return;
+  }
+  const statusLocale = getStatusLocale(localeCopy);
+  statusLiveAutoRefresh.textContent = isLiveAutoRefreshEnabled
+    ? statusLocale.autoRefreshOn || "Auto refresh: ON"
+    : statusLocale.autoRefreshOff || "Auto refresh: OFF";
+  statusLiveAutoRefresh.setAttribute(
+    "aria-pressed",
+    isLiveAutoRefreshEnabled ? "true" : "false"
+  );
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (!document) {
+    return;
+  }
+  if (document.visibilityState === "hidden") {
+    stopLiveStatusTimer();
+    return;
+  }
+  if (isLiveAutoRefreshEnabled) {
+    void refreshLiveDeployment(currentLocale);
+  }
+  startLiveStatusTimer();
+});
+
+function getStatusLocale(localeCopy) {
+  return localeCopy && localeCopy.section && localeCopy.section.status
+    ? localeCopy.section.status
+    : copy.en.section.status;
+}
+
+function renderStatusLive(state, pillText, detailText) {
+  if (!statusLivePill || !statusLiveDetail) {
+    return;
+  }
+  statusLivePill.classList.remove(
+    "status-live-pill-checking",
+    "status-live-pill-online",
+    "status-live-pill-offline",
+    "status-live-pill-error",
+    "status-live-pill-unknown"
+  );
+  statusLivePill.classList.add(`status-live-pill-${state}`);
+  statusLivePill.textContent = pillText;
+  statusLiveDetail.textContent = detailText;
+}
+
+function renderStatusLiveMetrics(statusLocale, checkedAt, latencyMs = null) {
+  if (!statusLiveMetrics) {
+    return;
+  }
+  const checkedLabel =
+    statusLocale.liveCheckedLabel || copy.en.section.status.liveCheckedLabel || "Checked";
+  const latencyLabel =
+    statusLocale.liveLatencyLabel || copy.en.section.status.liveLatencyLabel || "Latency";
+  const latencyValue =
+    typeof latencyMs === "number"
+      ? formatDuration(latencyMs)
+      : statusLocale.liveUnknown || copy.en.section.status.liveUnknown || "Unknown";
+  const checkedValue = checkedAt || statusLocale.liveUnknown || copy.en.section.status.liveUnknown || "Unknown";
+  statusLiveMetrics.textContent = `${checkedLabel}: ${checkedValue} · ${latencyLabel}: ${latencyValue}`;
+}
+
+async function refreshLiveDeployment(localeCopy = currentLocale) {
+  if (!statusLiveRefresh || isRefreshingStatusLive) {
+    return;
+  }
+  const statusLocale = getStatusLocale(localeCopy);
+  const checking = statusLocale.liveChecking || copy.en.section.status.liveChecking;
+  const checkingDetail =
+    statusLocale.liveDetailChecking || copy.en.section.status.liveDetailChecking;
+  isRefreshingStatusLive = true;
+  statusLiveRefresh.disabled = true;
+  const originalText = statusLiveRefresh.textContent;
+  statusLiveRefresh.textContent = statusLocale.refreshNow || "Checking...";
+  renderStatusLiveMetrics(statusLocale, "Checking", null);
+
+  renderStatusLive("checking", checking, checkingDetail);
+  try {
+    const probe = await performLiveProbe();
+    const { response, statusCode, checkedAt, latencyMs, lastModified, path, probeNotes } =
+      probe;
+    renderStatusLiveMetrics(statusLocale, checkedAt, latencyMs);
+    const sourceSuffix =
+      path && path !== "/"
+        ? ` · ${statusLocale.liveEndpoint || "Endpoint"}: ${path}`
+        : "";
+    if (response.ok) {
+      renderStatusLive(
+        "online",
+        `${statusLocale.liveOnline || "Online"} (HTTP ${statusCode})`,
+        `${statusLocale.liveDetailOnline || "Deployment responded normally."}${
+          lastModified ? ` · ${lastModified}` : ""
+        }${sourceSuffix}${probeNotes}`
+      );
+    } else {
+      renderStatusLive(
+        "offline",
+        `${statusLocale.liveOffline || "Offline"} (HTTP ${statusCode})`,
+        `${statusLocale.liveDetailOffline || "Deployment returned a non-200 response."}${
+          lastModified ? ` · ${lastModified}` : ""
+        }${sourceSuffix}`
+      );
+    }
+  } catch {
+    const checkedAt = formatDate(lang, new Date().toISOString());
+    renderStatusLiveMetrics(statusLocale, checkedAt, null);
+    renderStatusLive(
+      "error",
+      statusLocale.liveError || "Connection check failed",
+      `${statusLocale.liveDetailError || "Request failed before receiving headers."}${
+        checkedAt ? ` · ${checkedAt}` : ""
+      }`
+    );
+  } finally {
+    isRefreshingStatusLive = false;
+    statusLiveRefresh.disabled = false;
+    statusLiveRefresh.textContent =
+      statusLocale.refreshNow || originalText || "Check now";
+    if (!liveStatusRefreshTimer) {
+      startLiveStatusTimer();
+    }
+  }
+}
+
 function updateNextPhase(localeCopy) {
   if (!quickStartChecks || !quickStartCheckCmd) {
     return;
@@ -577,21 +914,39 @@ function setQuickStartProgressState() {
   if (!quickStartTitle || !quickStartCheckTitle || !quickStartRunTitle) {
     return;
   }
+  const quickStartCards = [
+    quickStartTitle.closest(".command-card"),
+    quickStartCheckTitle.closest(".command-card"),
+    quickStartRunTitle.closest(".command-card"),
+  ];
+  const setActiveCard = (index) => {
+    quickStartCards.forEach((card, cardIndex) => {
+      if (!card) {
+        return;
+      }
+      card.classList.toggle("step-active", cardIndex === index);
+    });
+  };
+
   const isCompleted = runCopied && setupGuideOpened;
 
   if (isCompleted) {
+    setActiveCard(-1);
     setQuickStartStepState(quickStartTitle, "complete");
     setQuickStartStepState(quickStartCheckTitle, "complete");
     setQuickStartStepState(quickStartRunTitle, "complete");
   } else if (checksCopied) {
+    setActiveCard(2);
     setQuickStartStepState(quickStartTitle, "complete");
     setQuickStartStepState(quickStartCheckTitle, "complete");
     setQuickStartStepState(quickStartRunTitle, "active");
   } else if (commandsCopied) {
+    setActiveCard(1);
     setQuickStartStepState(quickStartTitle, "complete");
     setQuickStartStepState(quickStartCheckTitle, "active");
     setQuickStartStepState(quickStartRunTitle, "pending");
   } else {
+    setActiveCard(0);
     setQuickStartStepState(quickStartTitle, "active");
     setQuickStartStepState(quickStartCheckTitle, "pending");
     setQuickStartStepState(quickStartRunTitle, "pending");
@@ -930,24 +1285,37 @@ function applyLinkConfig() {
   const githubReady = setLinkState(linkGithub, links.github);
   const communityReady = setLinkState(linkCommunity, links.discussions);
   const issueReady = setLinkState(linkIssue, links.issues);
+  const roadmapReady = setLinkState(linkRoadmap, links.roadmap);
   return {
     githubReady,
     communityReady,
     issueReady,
+    roadmapReady,
   };
 }
 
 function setLang(next) {
   lang = next;
   const locale = copy[lang];
+  currentLocale = locale;
   document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
 
   setText("topline", locale.topline);
   setText("hero.title", locale.hero.title);
   setText("hero.subtitle", locale.hero.subtitle);
+  setText("hero.pitch", locale.hero.pitch);
+  setText("hero.metric1", locale.hero.metric1);
+  setText("hero.metric2", locale.hero.metric2);
+  setText("hero.metric3", locale.hero.metric3);
   setText("cta.primary", locale.cta.primary);
   setText("cta.secondary", locale.cta.secondary);
   setText("cta.tertiary", locale.cta.tertiary);
+
+  setText("nav.problem", locale.nav.problem);
+  setText("nav.loop", locale.nav.loop);
+  setText("nav.architecture", locale.nav.architecture);
+  setText("nav.macos", locale.nav.macos);
+  setText("nav.status", locale.nav.status);
 
   setText("section.problem.title", locale.section.problem.title);
   setText("section.problem.heading", locale.section.problem.heading);
@@ -978,7 +1346,23 @@ function setLang(next) {
   setText("section.get.steps", locale.section.get.steps);
   setText("section.get.quick.title", locale.section.get.quick.title);
   setText("section.get.quick.copy", locale.section.get.quick.copy);
+  setText("section.get.quick.step1Label", locale.section.get.quick.step1Label);
+  setText("section.get.quick.step2Label", locale.section.get.quick.step2Label);
+  setText("section.get.quick.step3Label", locale.section.get.quick.step3Label);
   setText("section.get.quick.nextLink", locale.section.get.quick.nextLink);
+
+  if (quickStartStep1Label) {
+    quickStartStep1Label.textContent =
+      locale.section.get.quick.step1Label || "Step 1";
+  }
+  if (quickStartStep2Label) {
+    quickStartStep2Label.textContent =
+      locale.section.get.quick.step2Label || "Step 2";
+  }
+  if (quickStartStep3Label) {
+    quickStartStep3Label.textContent =
+      locale.section.get.quick.step3Label || "Step 3";
+  }
 
   if (quickStartCmd) {
     quickStartCmd.textContent = locale.section.get.quick.commands.join("\n");
@@ -1118,6 +1502,10 @@ function setLang(next) {
   setText("section.status.tag", locale.section.status.tag);
   setText("section.status.releaseLabel", locale.section.status.releaseLabel);
   setText("section.status.updatedLabel", locale.section.status.updatedLabel);
+  setText("section.status.liveLabel", locale.section.status.liveLabel);
+  setText("section.status.autoRefresh", locale.section.status.autoRefresh);
+  setText("section.status.refreshNow", locale.section.status.refreshNow);
+  setLiveRefreshControl(locale);
   setText("section.status.available.title", locale.section.status.available.title);
   setText("section.status.available.body", locale.section.status.available.body);
   setText("section.status.progress.title", locale.section.status.progress.title);
@@ -1128,6 +1516,9 @@ function setLang(next) {
   setText("footer.roadmap", locale.footer.roadmap);
   setText("footer.community", locale.footer.community);
   setText("footer.issue", locale.footer.issue);
+  if (footerYear) {
+    footerYear.textContent = String(new Date().getFullYear());
+  }
 
   requirementsEn.hidden = lang === "zh";
   requirementsZh.hidden = lang !== "zh";
@@ -1142,6 +1533,8 @@ function setLang(next) {
   }
 
   void refreshStatusMeta(locale);
+  void refreshLiveDeployment(locale);
+  startLiveStatusTimer();
 
   langToggle.textContent = lang === "en" ? "中文" : "EN";
 
@@ -1317,6 +1710,26 @@ if (quickStartReset) {
   });
 }
 
+if (statusLiveRefresh) {
+  statusLiveRefresh.addEventListener("click", () => {
+    void refreshLiveDeployment(currentLocale);
+  });
+}
+
+if (statusLiveAutoRefresh) {
+  statusLiveAutoRefresh.addEventListener("click", () => {
+    isLiveAutoRefreshEnabled = !isLiveAutoRefreshEnabled;
+    persistLiveRefreshPreference(isLiveAutoRefreshEnabled);
+    setLiveRefreshControl();
+    if (!isLiveAutoRefreshEnabled) {
+      stopLiveStatusTimer();
+      return;
+    }
+    startLiveStatusTimer();
+    void refreshLiveDeployment(currentLocale);
+  });
+}
+
 if (quickStartNext) {
   quickStartNext.addEventListener("click", (event) => {
     if (quickStartNext.getAttribute("aria-disabled") === "true") {
@@ -1350,6 +1763,7 @@ if (quickStartRunLink) {
 
 const preferred = navigator.language.toLowerCase();
 applyRestoredQuickStartState();
+restoreLiveRefreshPreference();
 if (preferred.startsWith("zh")) {
   setLang("zh");
 } else {
