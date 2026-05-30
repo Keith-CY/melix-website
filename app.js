@@ -5,6 +5,7 @@ const copy = {
       title: "A local AI runtime for Apple Silicon.",
       subtitle: "Run models, fine-tune LoRA, benchmark, and evaluate—on one local Mac workflow.",
       pitch: "Start in minutes, keep all inference and tuning workflows on your own machine.",
+      ctaHint: "Start with Quick Start (3 commands, 3 minutes).",
       metric1: "Apple Silicon-first",
       metric2: "Local-first runtime",
       metric3: "No external UI runtime",
@@ -186,6 +187,7 @@ const copy = {
       title: "一款面向 Apple Silicon 的本地 AI 运行时。",
       subtitle: "在一套本地化流程中完成模型运行、LoRA 微调、基准测试与评测。",
       pitch: "几分钟内启动本地 AI 工作流，推理与微调全部留在你的机器上。",
+      ctaHint: "从“快速开始”入手，3 步 3 分钟起步。",
       metric1: "苹果芯片优先",
       metric2: "本地优先运行时",
       metric3: "无额外前端运行时依赖",
@@ -1811,6 +1813,7 @@ function setLang(next) {
   setText("hero.title", locale.hero.title);
   setText("hero.subtitle", locale.hero.subtitle);
   setText("hero.pitch", locale.hero.pitch);
+  setText("hero.ctaHint", locale.hero.ctaHint);
   setText("hero.metric1", locale.hero.metric1);
   setText("hero.metric2", locale.hero.metric2);
   setText("hero.metric3", locale.hero.metric3);

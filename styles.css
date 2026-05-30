@@ -213,6 +213,41 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+  align-items: center;
+}
+
+.cta-primary {
+  min-height: 3rem;
+  padding: 0.82rem 1.3rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 46px rgba(101, 213, 255, 0.3);
+}
+
+.cta-primary:hover {
+  box-shadow: 0 22px 52px rgba(101, 213, 255, 0.45);
+}
+
+.cta-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.22) 48%, transparent 100%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+.cta-primary:hover::after {
+  animation: ctaShine 0.8s ease;
+}
+
+.hero-cta-hint {
+  margin: 0.05rem 0 0;
+  color: #8eb2e4;
+  font-size: 0.82rem;
+  font-weight: 560;
+  letter-spacing: 0.01em;
+  max-width: 58ch;
 }
 
 .hero-metrics {
@@ -286,6 +321,17 @@ button {
 .btn-ghost:hover {
   border-color: rgba(163, 200, 255, 0.5);
   box-shadow: 0 12px 30px rgba(30, 75, 170, 0.2);
+}
+
+@keyframes ctaShine {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
 }
 
 .btn.copy-done {
@@ -1122,6 +1168,16 @@ button:focus-visible {
     flex: 1 1 auto;
     min-width: 9.5rem;
     justify-content: center;
+  }
+
+  .cta-row .btn {
+    min-height: 2.65rem;
+    width: 100%;
+  }
+
+  .hero-cta-hint {
+    max-width: none;
+    line-height: 1.38;
   }
 }
 
