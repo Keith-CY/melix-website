@@ -951,17 +951,17 @@ ol {
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  border: 1px solid rgba(173, 188, 244, 0.52);
-  padding: 0.12rem 0.41rem;
+  border: 1px solid rgba(173, 188, 244, 0.5);
+  padding: 0.12rem 0.4rem;
   color: #ecf2ff;
-  background: linear-gradient(135deg, rgba(14, 23, 44, 0.95), rgba(8, 15, 29, 0.88));
+  background: linear-gradient(135deg, rgba(14, 22, 40, 0.94), rgba(8, 14, 28, 0.87));
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   box-shadow: 0 4px 9px rgba(3, 6, 15, 0.2),
-    0 0 0 1px rgba(173, 188, 244, 0.14);
+    0 0 0 1px rgba(173, 188, 244, 0.12);
   z-index: 12;
   isolation: isolate;
-  font-size: 0.81rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.002em;
   text-shadow: none;
@@ -969,7 +969,7 @@ ol {
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
-  line-height: 1.22;
+  line-height: 1.21;
   align-items: center;
   gap: 0.11rem;
   flex-wrap: nowrap;
@@ -990,14 +990,14 @@ ol {
 @supports not (backdrop-filter: blur(1px)) {
   .quickstart-completion-hint {
     backdrop-filter: none;
-    background: linear-gradient(135deg, rgba(17, 27, 46, 0.97), rgba(10, 19, 34, 0.91));
+    background: linear-gradient(135deg, rgba(16, 25, 42, 0.96), rgba(9, 16, 30, 0.9));
   }
 }
 
 .quickstart-completion-hint::before {
   content: "✓";
   line-height: 1;
-  font-size: 0.83rem;
+  font-size: 0.82rem;
   font-weight: 800;
   color: #a7f5ca;
   margin-right: 0.03rem;
