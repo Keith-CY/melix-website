@@ -951,16 +951,17 @@ ol {
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  border: 2.8px solid rgba(255, 255, 255, 1);
-  padding: 0.38rem 0.9rem;
+  border: 3px solid rgba(255, 255, 255, 1);
+  padding: 0.4rem 0.92rem;
   color: #ffffff;
   background: linear-gradient(135deg, rgba(242, 255, 255, 1), rgba(0, 2, 6, 1));
   -webkit-backdrop-filter: saturate(620%) blur(8px);
   backdrop-filter: saturate(620%) blur(8px);
   box-shadow:
-    0 14px 28px rgba(1, 3, 10, 0.66),
+    0 16px 32px rgba(1, 3, 10, 0.7),
     0 0 0 1px rgba(255, 255, 255, 1),
     0 0 0 2px rgba(185, 205, 255, 0.24),
+    0 0 0 3px rgba(255, 255, 255, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.75);
   position: absolute;
   left: 0;
@@ -968,23 +969,23 @@ ol {
   z-index: 20;
   overflow: visible;
   isolation: isolate;
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   font-weight: 900;
   letter-spacing: 0.006em;
   text-shadow:
     0 1px 1px rgba(3, 6, 15, 0.9),
-    0 0 3px rgba(185, 205, 255, 0.72);
+    0 0 5px rgba(185, 205, 255, 0.75);
   transform: translateY(-1px);
   transform-origin: left top;
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
-  line-height: 0.98;
+  line-height: 1;
   align-items: center;
-  gap: 0.07rem;
+  gap: 0.08rem;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  max-width: min(81vw, 11.9rem);
+  max-width: min(82vw, 12rem);
   white-space: normal;
   word-break: break-word;
   text-align: left;
@@ -1016,26 +1017,26 @@ ol {
 .quickstart-completion-hint::before {
   content: "✓";
   line-height: 1;
-  font-size: 0.93rem;
+  font-size: 0.95rem;
   font-weight: 900;
   color: #e8fff7;
-  margin-right: 0.07rem;
+  margin-right: 0.08rem;
   text-shadow: 0 1px 12px rgba(226, 255, 246, 0.72);
 }
 
 @media (max-width: 640px) {
   .quickstart-completion-hint {
-    padding: 0.34rem 0.82rem;
-    font-size: 0.85rem;
+    padding: 0.35rem 0.84rem;
+    font-size: 0.86rem;
     line-height: 0.9;
-    max-width: min(84vw, 11.1rem);
+    max-width: min(84vw, 11.2rem);
     top: calc(100% + 0.04rem);
-    gap: 0.07rem;
+    gap: 0.08rem;
   }
 
   .quickstart-completion-hint::before {
-    font-size: 0.86rem;
-    margin-right: 0.07rem;
+    font-size: 0.87rem;
+    margin-right: 0.08rem;
   }
 }
 
