@@ -970,7 +970,6 @@ ol {
     padding 0.2s ease,
     border-color 0.2s ease;
   line-height: 1.15;
-  display: inline-flex;
   align-items: center;
   gap: 0.14rem;
   flex-wrap: nowrap;
@@ -979,6 +978,7 @@ ol {
   overflow: hidden;
   pointer-events: none;
   visibility: hidden;
+  display: inline-flex;
   will-change: opacity, transform;
   position: absolute;
   left: 0;
@@ -999,6 +999,7 @@ ol {
   visibility: visible;
   transform: translateY(0);
   max-height: 1.9rem;
+  animation: quickstart-completion-in 170ms ease-out;
 }
 
 .quickstart-completion-anchor {
@@ -1011,9 +1012,21 @@ ol {
 .quickstart-completion-hint.quickstart-completion-hint-overlay {
   left: auto;
   right: 0;
-  top: 0.15rem;
+  top: 0.12rem;
   transform: translateY(-55%);
   pointer-events: none;
+}
+
+@keyframes quickstart-completion-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .quickstart-status-link {
