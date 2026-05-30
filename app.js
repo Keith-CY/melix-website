@@ -426,6 +426,8 @@ let activeNavLastInteractionAt = 0;
 let activeNavStrongInteractionToken = 0;
 let activeNavLastStrongInteractionAt = 0;
 let revealObserver = null;
+
+let statusMetaCopyTimer = null;
 const quickStartStorageKey = "melixQuickStartProgressV1";
 const liveRefreshEnabledStorageKey = "melixLiveAutoRefreshEnabled";
 const LIVE_CHECK_INTERVAL_MS = 60 * 1000;
@@ -1063,6 +1065,82 @@ function setupRevealAnimations() {
 
   revealNodes.forEach((node) => {
     revealObserver.observe(node);
+  });
+}
+
+function setupStatusMetaCopyHandlers() {
+  const copyItems = Array.from(document.querySelectorAll(".status-meta-item.is-copyable"));
+  if (!copyItems.length) {
+    return;
+  }
+
+  const canCopy = !!(
+    navigator.clipboard && typeof navigator.clipboard.writeText === "function"
+  );
+
+  copyItems.forEach((item) => {
+    if (item.dataset.boundStatusCopy === "1") {
+      return;
+    }
+    item.dataset.boundStatusCopy = "1";
+    item.setAttribute("tabindex", "0");
+    item.setAttribute("role", "button");
+    const label =
+      item.querySelector("span[data-i18n], span:first-child")?.textContent?.trim() ||
+      "Status value";
+    item.setAttribute("aria-label", `Copy ${label}`);
+
+    const copyStatusMeta = async () => {
+      const targetId = item.dataset.copyTarget;
+      const target = targetId ? document.getElementById(targetId) : null;
+      const text = target ? (target.textContent || "").trim() : "";
+      if (!text || text === "n/a") {
+        return;
+      }
+
+      let copied = false;
+      if (canCopy) {
+        try {
+          await navigator.clipboard.writeText(text);
+          copied = true;
+        } catch {
+          copied = false;
+        }
+      }
+
+      if (!copied) {
+        copied = getFallbackCopyText(text);
+      }
+
+      if (!copied) {
+        showManualCopyFallback(item, text);
+        return;
+      }
+
+      if (statusMetaCopyTimer) {
+        clearTimeout(statusMetaCopyTimer);
+      }
+      item.dataset.copied = "1";
+      statusMetaCopyTimer = setTimeout(() => {
+        delete item.dataset.copied;
+      }, 1300);
+    };
+
+    item.addEventListener("click", async () => {
+      await copyStatusMeta();
+    });
+
+    item.addEventListener("keydown", (event) => {
+      if (
+        event.key !== "Enter" &&
+        event.key !== " " &&
+        event.key !== "Spacebar"
+      ) {
+        return;
+      }
+      event.preventDefault();
+      void copyStatusMeta();
+    });
   });
 }
 
@@ -2137,6 +2215,7 @@ restoreLiveRefreshPreference();
 const preferredLang = resolvePreferredLanguage();
 setLang(preferredLang);
 setupRevealAnimations();
+setupStatusMetaCopyHandlers();
 
 langToggle.setAttribute("aria-pressed", lang === "zh" ? "true" : "false");
 langToggle.setAttribute(
