@@ -1135,8 +1135,10 @@ function setupStatusMetaCopyHandlers() {
         clearTimeout(statusMetaCopyTimer);
       }
       item.dataset.copied = "1";
+      item.classList.add("is-copyable-copied");
       statusMetaCopyTimer = setTimeout(() => {
         delete item.dataset.copied;
+        item.classList.remove("is-copyable-copied");
       }, 1300);
     };
 

@@ -397,6 +397,8 @@ h2 {
 .status-meta-item.is-copyable {
   cursor: pointer;
   transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  position: relative;
+  padding-right: 0.95rem;
 }
 
 .status-meta-item.is-copyable::after {
@@ -404,6 +406,17 @@ h2 {
   font-size: 0.76rem;
   color: #89a8df;
   opacity: 0.95;
+  margin-left: 0.4rem;
+  white-space: nowrap;
+}
+
+.status-meta-item.is-copyable::before {
+  content: "⎘";
+  font-size: 0.74rem;
+  line-height: 1;
+  color: #9eb1dd;
+  opacity: 0.9;
+  margin-right: 0.32rem;
 }
 
 .status-meta-item.is-copyable.is-copyable-copied::after,
