@@ -54,9 +54,11 @@ const copy = {
           copyBtn: "Copy commands",
           copied: "Copied to clipboard",
           copyFailed: "Copy failed. Please select and copy manually.",
+          copiedNextText: "Commands copied. Continue with Run checks.",
           mustCopyText: "Please copy commands first.",
           nextNothingText: "No check commands to copy.",
           nextCopyBtn: "Copy checks",
+          nextReadyText: "Checks copied. Continue with setup.",
           nextCopySuccess: "Check commands copied.",
           nextCopyFailed: "Copy checks failed. Please copy manually.",
           commands: [
@@ -171,9 +173,11 @@ const copy = {
           copyBtn: "复制命令",
           copied: "已复制到剪贴板",
           copyFailed: "复制失败，请手动选中并复制。",
+          copiedNextText: "已复制。继续执行校验。",
           mustCopyText: "请先复制命令。",
           nextNothingText: "没有可复制的校验命令。",
           nextCopyBtn: "复制校验命令",
+          nextReadyText: "校验命令已复制。继续设置。",
           nextCopySuccess: "校验命令已复制。",
           nextCopyFailed: "复制校验命令失败，请手动复制。",
           commands: [
@@ -309,6 +313,23 @@ function setCopyFeedback(message, isError = false) {
   }, 1800);
 }
 
+function setLinkPhaseState(el, enabled, disabledHint = "") {
+  if (!el) {
+    return;
+  }
+  if (enabled) {
+    el.classList.remove("is-disabled-link");
+    el.removeAttribute("aria-disabled");
+    el.removeAttribute("title");
+    return;
+  }
+  el.classList.add("is-disabled-link");
+  el.setAttribute("aria-disabled", "true");
+  if (disabledHint) {
+    el.setAttribute("title", disabledHint);
+  }
+}
+
 function formatDate(locale, rawDate) {
   const modified = rawDate || document.lastModified;
   const d = new Date(modified);
@@ -358,13 +379,29 @@ function setRunLinkReady(isReady) {
   if (!quickStartRunLink) {
     return;
   }
-  if (isReady) {
-    quickStartRunLink.classList.remove("is-disabled-link");
-    quickStartRunLink.removeAttribute("aria-disabled");
+  const waitHint = copyQuickStartChecks?.dataset?.readyHint || "Copy check commands first.";
+  const urlReady =
+    quickStartRunLink.dataset.readyRunUrl === "true" && quickStartRunLink.href;
+  if (!urlReady) {
+    const missingHint =
+      quickStartRunLink.dataset.missingRunUrlHint ||
+      "Setup guide link is not configured.";
+    setLinkPhaseState(quickStartRunLink, false, missingHint);
     return;
   }
-  quickStartRunLink.classList.add("is-disabled-link");
-  quickStartRunLink.setAttribute("aria-disabled", "true");
+  if (isReady) {
+    setLinkPhaseState(quickStartRunLink, true, waitHint);
+    return;
+  }
+  setLinkPhaseState(quickStartRunLink, false, waitHint);
+}
+
+function setCheckLinkReady(isReady) {
+  if (!quickStartNext) {
+    return;
+  }
+  const waitHint = copyQuickStart?.dataset?.mustCopyText || "Copy commands first.";
+  setLinkPhaseState(quickStartNext, isReady, waitHint);
 }
 
 function updateRunPhase(localeCopy) {
@@ -586,11 +623,15 @@ function setLang(next) {
   if (copyQuickStart) {
     copyQuickStart.textContent = locale.section.get.quick.copyBtn;
     copyQuickStart.dataset.copiedText = locale.section.get.quick.copied;
+    copyQuickStart.dataset.copiedNextText =
+      locale.section.get.quick.copiedNextText || "Commands copied. Continue with Run checks.";
     copyQuickStart.dataset.copyFailedText = locale.section.get.quick.copyFailed;
     copyQuickStart.dataset.nothingText = locale.section.get.quick.nothing;
     copyQuickStart.dataset.mustCopyText = locale.section.get.quick.mustCopyText;
     if (quickStartNext) {
       quickStartNext.textContent = locale.section.get.quick.nextLink;
+      quickStartNext.dataset.waitHint =
+        locale.section.get.quick.mustCopyText || "Copy commands first.";
     }
   }
   if (copyQuickStartChecks) {
@@ -604,6 +645,10 @@ function setLang(next) {
       locale.section.get.quick.nextCopyFailed || "Copy checks failed. Please copy manually.";
     copyQuickStartChecks.dataset.mustCopyText =
       locale.section.get.quick.mustCopyText || "Please copy checks first.";
+    copyQuickStartChecks.dataset.readyHint =
+      locale.section.get.quick.mustCopyText || "Please copy checks first.";
+    copyQuickStartChecks.dataset.copiedNextText =
+      locale.section.get.quick.nextReadyText || "Checks copied. Continue with setup.";
   }
   if (copyQuickStartRun) {
     copyQuickStartRun.textContent =
@@ -623,6 +668,9 @@ function setLang(next) {
         "aria-label",
         locale.section.get.quick.runLinkAria || "Open setup guide"
       );
+      quickStartRunLink.dataset.missingRunUrlHint =
+        locale.section.get.quick.runCopyNothingText ||
+        "Setup guide link is not configured.";
     }
   }
   setText(
@@ -671,6 +719,10 @@ function setLang(next) {
   void refreshStatusMeta(locale);
 
   langToggle.textContent = lang === "en" ? "中文" : "EN";
+
+  const runReady = quickStartRunLink?.dataset?.readyRunUrl === "true";
+  setRunLinkReady(checksCopied && runReady);
+  setCheckLinkReady(checksCopied);
 }
 
 langToggle.addEventListener("click", () => {
@@ -689,6 +741,8 @@ if (copyQuickStart) {
     }
 
     const copiedText = copyQuickStart.dataset.copiedText || "Copied";
+    const copiedNextText =
+      copyQuickStart.dataset.copiedNextText || copiedText;
     const failedText =
       copyQuickStart.dataset.copyFailedText || "Copy failed. Please retry.";
 
@@ -698,20 +752,14 @@ if (copyQuickStart) {
       } else {
         throw new Error("clipboard-api-not-available");
       }
-      setCopyFeedback(copiedText);
+      setCopyFeedback(copiedNextText);
       showNextPhase();
-      if (quickStartNext) {
-        quickStartNext.classList.remove("is-disabled-link");
-        quickStartNext.removeAttribute("aria-disabled");
-      }
+      setCheckLinkReady(true);
     } catch (err) {
       if (getFallbackCopyText(text)) {
-        setCopyFeedback(copiedText);
+        setCopyFeedback(copiedNextText);
         showNextPhase();
-        if (quickStartNext) {
-          quickStartNext.classList.remove("is-disabled-link");
-          quickStartNext.removeAttribute("aria-disabled");
-        }
+        setCheckLinkReady(true);
       } else {
         setCopyFeedback(failedText, true);
       }
@@ -735,13 +783,22 @@ if (copyQuickStartChecks) {
         throw new Error("clipboard-api-not-available");
       }
       checksCopied = true;
-      setCopyFeedback(copyQuickStartChecks.dataset.copiedText || "Check commands copied.");
+      const copiedText =
+        copyQuickStartChecks.dataset.copiedText || "Check commands copied.";
+      const copiedNextText =
+        copyQuickStartChecks.dataset.copiedNextText || copiedText;
+      setCopyFeedback(copiedNextText);
+      checksCopied = true;
       showRunPhase();
       setRunLinkReady(true);
     } catch (err) {
       if (getFallbackCopyText(text)) {
+        const copiedText =
+          copyQuickStartChecks.dataset.copiedText || "Check commands copied.";
+        const copiedNextText =
+          copyQuickStartChecks.dataset.copiedNextText || copiedText;
+        setCopyFeedback(copiedNextText);
         checksCopied = true;
-        setCopyFeedback(copyQuickStartChecks.dataset.copiedText || "Check commands copied.");
         showRunPhase();
         setRunLinkReady(true);
       } else {
@@ -787,7 +844,9 @@ if (quickStartNext) {
     if (quickStartNext.getAttribute("aria-disabled") === "true") {
       event.preventDefault();
       const message =
-        copyQuickStart?.dataset.mustCopyText || "Please copy commands first.";
+        quickStartNext.dataset.waitHint ||
+        copyQuickStart?.dataset.mustCopyText ||
+        "Please copy commands first.";
       setCopyFeedback(message, true);
     }
   });
