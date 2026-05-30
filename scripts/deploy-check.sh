@@ -126,7 +126,7 @@ if [[ -n "$REMOTE_SHA" ]]; then
   echo "2) GitHub remote state"
   echo "   Remote ${BRANCH}: ${REMOTE_SHA}"
   if [[ "$REMOTE_SHA" == "$LOCAL_SHA" ]]; then
-  echo "   Sync: local head == remote head (ready for deploy check)"
+    echo "   Sync: local head == remote head (ready for deploy check)"
   else
     if [[ "$STRICT" -eq 1 && "$LOCAL_BRANCH" == "$BRANCH" ]]; then
       fail "local and remote differ"
