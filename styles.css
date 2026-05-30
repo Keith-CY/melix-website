@@ -959,7 +959,7 @@ ol {
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   box-shadow: 0 8px 22px rgba(3, 6, 15, 0.38),
-    0 0 0 1px rgba(173, 188, 244, 0.18);
+    0 0 0 1px rgba(173, 188, 244, 0.14);
   z-index: 12;
   isolation: isolate;
   font-size: 0.82rem;
@@ -1015,7 +1015,6 @@ ol {
   font-weight: 800;
   color: #b2ffe0;
   margin-right: 0.03rem;
-  text-shadow: 0 0 8px rgba(178, 255, 224, 0.55);
 }
 
 @media (prefers-contrast: more) {
@@ -1070,7 +1069,7 @@ ol {
 
 @keyframes quickstart-completion-in {
   from {
-    opacity: 0.18;
+    opacity: 0.08;
     transform: translateY(-2px);
   }
   to {
