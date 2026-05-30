@@ -960,7 +960,7 @@ ol {
   box-shadow: 0 7px 18px rgba(3, 6, 15, 0.35),
     0 0 0 1px rgba(173, 188, 244, 0.08);
   font-size: 0.76rem;
-  font-weight: 560;
+  font-weight: 600;
   letter-spacing: 0.005em;
   transform: translateY(-2px);
   transition:
@@ -1009,7 +1009,7 @@ ol {
 .quickstart-completion-hint.quickstart-completion-hint-overlay {
   left: auto;
   right: 0;
-  top: 0.22rem;
+  top: 0.18rem;
   transform: translateY(-55%);
   pointer-events: none;
 }
