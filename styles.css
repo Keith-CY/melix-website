@@ -1009,7 +1009,7 @@ ol {
 .quickstart-completion-hint.quickstart-completion-hint-overlay {
   left: auto;
   right: 0;
-  top: 0.18rem;
+  top: 0.15rem;
   transform: translateY(-55%);
   pointer-events: none;
 }
