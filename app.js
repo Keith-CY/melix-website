@@ -48,12 +48,14 @@ const copy = {
         requirements: "Requirements",
         steps: "Quick Start",
         quick: {
-          title: "Start in 3 minutes",
-          copy: "Copy and run the commands below.",
-          nothing: "No commands to copy yet.",
-          copyBtn: "Copy commands",
-          copied: "Copied to clipboard",
-          copyFailed: "Copy failed. Please select and copy manually.",
+      title: "Start in 3 minutes",
+      copy: "Copy and run the commands below.",
+      nothing: "No commands to copy yet.",
+      copyBtn: "Copy commands",
+      resetText: "Reset quick start",
+      resetHint: "Quick start progress has been reset.",
+      copied: "Copied to clipboard",
+      copyFailed: "Copy failed. Please select and copy manually.",
           checksPrereqText: "Please copy repository commands first.",
           runPrereqText: "Please copy check commands first.",
           manualCopyHint:
@@ -186,12 +188,14 @@ const copy = {
         requirements: "要求 / Requirements",
         steps: "快速开始",
         quick: {
-          title: "三分钟快速开始",
-          copy: "复制下面命令并执行。",
-          nothing: "暂无可复制命令。",
-          copyBtn: "复制命令",
-          copied: "已复制到剪贴板",
-          copyFailed: "复制失败，请手动选中并复制。",
+      title: "三分钟快速开始",
+      copy: "复制下面命令并执行。",
+      nothing: "暂无可复制命令。",
+      copyBtn: "复制命令",
+      resetText: "重置快速开始",
+      resetHint: "已重置快速开始状态。",
+      copied: "已复制到剪贴板",
+      copyFailed: "复制失败，请手动选中并复制。",
           checksPrereqText: "请先复制仓库命令。",
           runPrereqText: "请先复制校验命令。",
           manualCopyHint: "复制失败。请手动选中命令块并复制（Cmd/Ctrl + C）。",
@@ -293,6 +297,7 @@ const quickStartRunCmd = document.getElementById("quickstart-run-cmd");
 const quickStartRunLink = document.getElementById("quickstart-run-link");
 const copyQuickStartRun = document.getElementById("copy-quickstart-run");
 const copyQuickStart = document.getElementById("copy-quickstart");
+const quickStartReset = document.getElementById("quickstart-reset");
 const copyQuickStartFeedback = document.getElementById("quickstart-feedback");
 const quickStartNext = document.getElementById("quickstart-next");
 const quickStartProgressLabel = document.getElementById("quickstart-progress");
@@ -366,6 +371,25 @@ function applyRestoredQuickStartState() {
   }
   setCheckLinkReady(checksCopied);
   setRunLinkReady(checksCopied && quickStartRunLink?.dataset?.readyRunUrl === "true");
+  setQuickStartProgressState();
+}
+
+function resetQuickStartProgress() {
+  commandsCopied = false;
+  checksCopied = false;
+  runCopied = false;
+  setupGuideOpened = false;
+  try {
+    localStorage.removeItem(quickStartStorageKey);
+  } catch {
+    // ignore storage permission errors.
+  }
+  if (quickStartChecks) {
+    quickStartChecks.hidden = true;
+  }
+  if (quickStartRun) {
+    quickStartRun.hidden = true;
+  }
   setQuickStartProgressState();
 }
 
@@ -941,6 +965,12 @@ function setLang(next) {
         locale.section.get.quick.mustCopyText || "Copy commands first.";
     }
   }
+  if (quickStartReset) {
+    quickStartReset.textContent =
+      locale.section.get.quick.resetText || "Reset quick start";
+    quickStartReset.dataset.resetHint =
+      locale.section.get.quick.resetHint || "Quick start progress has been reset.";
+  }
   if (copyQuickStartChecks) {
     copyQuickStartChecks.dataset.manualCopyHint =
       locale.section.get.quick.manualCopyHint ||
@@ -1234,6 +1264,15 @@ if (copyQuickStartRun) {
         showManualCopyFallback(copyQuickStartRun, text);
       }
     }
+  });
+}
+
+if (quickStartReset) {
+  quickStartReset.addEventListener("click", () => {
+    resetQuickStartProgress();
+    setCopyFeedback(
+      quickStartReset.dataset.resetHint || "Quick start progress has been reset."
+    );
   });
 }
 
