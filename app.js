@@ -1501,14 +1501,15 @@ function setQuickStartProgressText() {
   if (!quickStartProgressLabel || !quickStartProgressSummary) {
     return;
   }
-  const setStepTarget = (targetText) => {
+  const setStepTarget = (targetText, isDone = false) => {
     if (!quickStartProgressTarget) {
       return;
     }
     quickStartProgressTarget.textContent = targetText || "";
+    quickStartProgressTarget.classList.toggle("is-done", Boolean(isDone));
   };
-  const setTargetAndAnnounce = (targetText) => {
-    setStepTarget(targetText);
+  const setTargetAndAnnounce = (targetText, isDone = false) => {
+    setStepTarget(targetText, isDone);
     maybeHintQuickStartPhaseTarget(targetText || "");
   };
   const stepNodes = [
@@ -1552,7 +1553,8 @@ function setQuickStartProgressText() {
       "Quick start ready. Continue with your setup.";
     setTargetAndAnnounce(
       quickStartProgressLabel.dataset.targetDone ||
-        "Next step: continue reading docs."
+        "Next step: view current status.",
+      true
     );
     return;
   }

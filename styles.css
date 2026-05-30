@@ -1052,6 +1052,16 @@ ol {
   margin: 0;
   font-size: 0.76rem;
   color: #8aa9e6;
+  line-height: 1.38;
+  border-left: 2px solid rgba(162, 214, 255, 0);
+  padding-left: 0.55rem;
+  transition: color 0.22s ease, border-color 0.22s ease, transform 0.22s ease;
+}
+
+.quickstart-progress-target.is-done {
+  color: #b7fce6;
+  border-left-color: rgba(111, 233, 184, 0.75);
+  transform: translateX(0.3rem);
 }
 
 .quickstart-status-link {
