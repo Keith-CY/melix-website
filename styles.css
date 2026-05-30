@@ -316,6 +316,16 @@ button {
   animation: fadeUp 0.7s ease both;
 }
 
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.reveal.is-revealed {
+  animation: fadeUp 0.7s ease both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
 .section-card {
   border: 1px solid var(--line);
   border-radius: var(--radius);

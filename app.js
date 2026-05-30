@@ -425,6 +425,7 @@ let activeNavInteractionToken = 0;
 let activeNavLastInteractionAt = 0;
 let activeNavStrongInteractionToken = 0;
 let activeNavLastStrongInteractionAt = 0;
+let revealObserver = null;
 const quickStartStorageKey = "melixQuickStartProgressV1";
 const liveRefreshEnabledStorageKey = "melixLiveAutoRefreshEnabled";
 const LIVE_CHECK_INTERVAL_MS = 60 * 1000;
@@ -436,6 +437,7 @@ const ACTIVE_NAV_STALE_FALLBACK_MS = 2000;
 const NAV_INTERACTION_WINDOW_MS = ACTIVE_NAV_STALE_FALLBACK_MS;
 const NAV_DEBUG_QUERY = "debugNav";
 const NAV_DEBUG_STORAGE_KEY = "melixNavDebug";
+const LANG_STORAGE_KEY = "melixLang";
 const urlSearch = new URLSearchParams(window.location.search);
 const debugNav = urlSearch.has(NAV_DEBUG_QUERY) || urlSearch.get("debug") === "1";
 const localNavDebug = (() => {
@@ -452,6 +454,24 @@ if (debugNav) {
   } catch {
     // ignore.
   }
+}
+
+function resolvePreferredLanguage() {
+  const queryLang = urlSearch.get("lang");
+  if (queryLang === "zh" || queryLang === "en") {
+    return queryLang;
+  }
+
+  try {
+    const persistedLang = localStorage.getItem(LANG_STORAGE_KEY);
+    if (persistedLang === "zh" || persistedLang === "en") {
+      return persistedLang;
+    }
+  } catch {
+    // localStorage is unavailable in some contexts.
+  }
+
+  return navigator.language.toLowerCase().startsWith("zh") ? "zh" : "en";
 }
 
 function persistQuickStartProgress() {
@@ -1001,6 +1021,43 @@ function scheduleActiveNavUpdate() {
   activeNavRaf = requestAnimationFrame(() => {
     activeNavRaf = null;
     updateActiveNav();
+  });
+}
+
+function setupRevealAnimations() {
+  const revealNodes = Array.from(document.querySelectorAll(".reveal"));
+  if (!revealNodes.length) {
+    return;
+  }
+  if (!("IntersectionObserver" in window)) {
+    revealNodes.forEach((node) => node.classList.add("is-revealed"));
+    return;
+  }
+
+  if (revealObserver) {
+    revealObserver.disconnect();
+  }
+  revealNodes.forEach((node, index) => {
+    node.style.setProperty("--reveal-delay", `${Math.min(index, 6) * 80}ms`);
+  });
+  revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting || !entry.target) {
+          return;
+        }
+        entry.target.classList.add("is-revealed");
+        revealObserver?.unobserve(entry.target);
+      });
+    },
+    {
+      rootMargin: "0px 0px -12% 0px",
+      threshold: 0.1,
+    }
+  );
+
+  revealNodes.forEach((node) => {
+    revealObserver.observe(node);
   });
 }
 
@@ -1559,6 +1616,18 @@ function applyLinkConfig() {
 
 function setLang(next) {
   lang = next;
+  try {
+    localStorage.setItem(LANG_STORAGE_KEY, next);
+  } catch {
+    // Local storage may be unavailable in constrained browsers.
+  }
+  try {
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.set("lang", lang);
+    history.replaceState({}, "", nextUrl);
+  } catch {
+    // Keep language switch functional even when history API is blocked.
+  }
   const locale = copy[lang];
   currentLocale = locale;
   document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
@@ -2032,21 +2101,37 @@ if (quickStartRunLink) {
 }
 
 sectionNavLinks.forEach((link) => {
-  link.addEventListener("click", () => markActiveNavInteraction(true));
+  link.addEventListener("click", (event) => {
+    const href = link.getAttribute("href");
+    const target = href ? document.querySelector(href) : null;
+    const matchedNavItem = target
+      ? navScrollTargets.find((item) => item.target === target)
+      : null;
+    markActiveNavInteraction(true);
+    if (target) {
+      event.preventDefault();
+      if (matchedNavItem) {
+        applyActiveNav(matchedNavItem);
+      }
+      const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY).matches;
+      target.scrollIntoView({
+        behavior: reducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
+      markActiveNavInteraction(true);
+    }
+  });
 });
 window.addEventListener("scroll", () => markActiveNavInteraction(true), {
   passive: true,
 });
 window.addEventListener("resize", () => markActiveNavInteraction(false));
 
-const preferred = navigator.language.toLowerCase();
 applyRestoredQuickStartState();
 restoreLiveRefreshPreference();
-if (preferred.startsWith("zh")) {
-  setLang("zh");
-} else {
-  setLang("en");
-}
+const preferredLang = resolvePreferredLanguage();
+setLang(preferredLang);
+setupRevealAnimations();
 
 langToggle.setAttribute("aria-pressed", lang === "zh" ? "true" : "false");
 langToggle.setAttribute(
