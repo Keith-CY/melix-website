@@ -1034,6 +1034,11 @@ function setupRevealAnimations() {
     return;
   }
 
+  const heroReveal = document.getElementById("hero");
+  if (heroReveal && heroReveal.classList.contains("reveal")) {
+    heroReveal.classList.add("is-revealed");
+  }
+
   if (revealObserver) {
     revealObserver.disconnect();
   }
