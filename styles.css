@@ -492,6 +492,14 @@ ol {
   min-height: 1.3rem;
 }
 
+.quickstart-progress {
+  margin: 0.55rem 0 0;
+  color: #9bd3ff;
+  font-size: 0.9rem;
+  font-weight: 650;
+  min-height: 1.2rem;
+}
+
 .btn-sm {
   padding: 0.58rem 1rem;
   font-size: 0.9rem;

@@ -56,6 +56,12 @@ const copy = {
           copyFailed: "Copy failed. Please select and copy manually.",
           copiedNextText: "Commands copied. Continue with Run checks.",
           mustCopyText: "Please copy commands first.",
+          progress: {
+            phase1: "Step 1/3 · Copy commands above, then copy checks.",
+            phase2: "Step 2/3 · Copy checks, then copy start command.",
+            phase3: "Step 3/3 · Copy start commands, then open setup guide.",
+            done: "Quick start ready. Continue with your setup.",
+          },
           nextNothingText: "No check commands to copy.",
           nextCopyBtn: "Copy checks",
           nextReadyText: "Checks copied. Continue with setup.",
@@ -175,6 +181,12 @@ const copy = {
           copyFailed: "复制失败，请手动选中并复制。",
           copiedNextText: "已复制。继续执行校验。",
           mustCopyText: "请先复制命令。",
+          progress: {
+            phase1: "第 1/3 步 · 已复制仓库命令，请复制校验命令。",
+            phase2: "第 2/3 步 · 已复制校验命令，请复制启动命令。",
+            phase3: "第 3/3 步 · 已复制启动命令，请打开设置文档。",
+            done: "快速开始完成，可继续项目设置。",
+          },
           nextNothingText: "没有可复制的校验命令。",
           nextCopyBtn: "复制校验命令",
           nextReadyText: "校验命令已复制。继续设置。",
@@ -258,6 +270,7 @@ const copyQuickStartRun = document.getElementById("copy-quickstart-run");
 const copyQuickStart = document.getElementById("copy-quickstart");
 const copyQuickStartFeedback = document.getElementById("quickstart-feedback");
 const quickStartNext = document.getElementById("quickstart-next");
+const quickStartProgressLabel = document.getElementById("quickstart-progress");
 let quickStartFocusTimer = null;
 const statusSource = document.getElementById("status-source");
 const statusLastUpdated = document.getElementById("status-last-updated");
@@ -441,26 +454,51 @@ function setQuickStartProgressState() {
     setQuickStartStepState(quickStartTitle, "complete");
     setQuickStartStepState(quickStartCheckTitle, "complete");
     setQuickStartStepState(quickStartRunTitle, "complete");
+  } else if (checksCopied) {
+    setQuickStartStepState(quickStartTitle, "complete");
+    setQuickStartStepState(quickStartCheckTitle, "complete");
+    setQuickStartStepState(quickStartRunTitle, "active");
+  } else if (commandsCopied) {
+    setQuickStartStepState(quickStartTitle, "complete");
+    setQuickStartStepState(quickStartCheckTitle, "active");
+    setQuickStartStepState(quickStartRunTitle, "pending");
+  } else {
+    setQuickStartStepState(quickStartTitle, "active");
+    setQuickStartStepState(quickStartCheckTitle, "pending");
+    setQuickStartStepState(quickStartRunTitle, "pending");
+  }
+  setQuickStartProgressText();
+}
+
+function setQuickStartProgressText() {
+  if (!quickStartProgressLabel) {
+    return;
+  }
+
+  if (runCopied) {
+    quickStartProgressLabel.textContent =
+      quickStartProgressLabel.dataset.done ||
+      "Quick start ready. Continue with your setup.";
     return;
   }
 
   if (checksCopied) {
-    setQuickStartStepState(quickStartTitle, "complete");
-    setQuickStartStepState(quickStartCheckTitle, "complete");
-    setQuickStartStepState(quickStartRunTitle, "active");
+    quickStartProgressLabel.textContent =
+      quickStartProgressLabel.dataset.phase3 ||
+      "Step 3/3 · Copy start commands, then open setup guide.";
     return;
   }
 
   if (commandsCopied) {
-    setQuickStartStepState(quickStartTitle, "complete");
-    setQuickStartStepState(quickStartCheckTitle, "active");
-    setQuickStartStepState(quickStartRunTitle, "pending");
+    quickStartProgressLabel.textContent =
+      quickStartProgressLabel.dataset.phase2 ||
+      "Step 2/3 · Copy checks, then copy start command.";
     return;
   }
 
-  setQuickStartStepState(quickStartTitle, "active");
-  setQuickStartStepState(quickStartCheckTitle, "pending");
-  setQuickStartStepState(quickStartRunTitle, "pending");
+  quickStartProgressLabel.textContent =
+    quickStartProgressLabel.dataset.phase1 ||
+    "Step 1/3 · Copy commands above, then copy checks.";
 }
 
 function revealQuickStartPhase(target) {
@@ -737,6 +775,17 @@ function setLang(next) {
       locale.section.get.quick.runCopySuccess || "Start commands copied.";
     copyQuickStartRun.dataset.copyFailedText =
       locale.section.get.quick.runCopyFailed || "Copy start commands failed. Please copy manually.";
+  }
+  if (quickStartProgressLabel) {
+    const progressText = locale.section.get.quick.progress || {};
+    quickStartProgressLabel.dataset.phase1 =
+      progressText.phase1 || "Step 1/3 · Copy commands above, then copy checks.";
+    quickStartProgressLabel.dataset.phase2 =
+      progressText.phase2 || "Step 2/3 · Copy checks, then copy start command.";
+    quickStartProgressLabel.dataset.phase3 =
+      progressText.phase3 || "Step 3/3 · Copy start commands, then open setup guide.";
+    quickStartProgressLabel.dataset.done =
+      progressText.done || "Quick start ready. Continue with your setup.";
   }
   if (quickStartRun) {
     if (quickStartRunLink) {
