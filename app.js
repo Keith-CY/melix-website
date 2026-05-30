@@ -152,6 +152,9 @@ const copy = {
         liveCheckedLabel: "Checked",
         liveLatencyLabel: "Latency",
         liveEndpoint: "Endpoint",
+        copyHint: "Click to copy",
+        copiedText: "Copied",
+        copyUnavailableText: "No value yet",
         autoRefresh: "Auto refresh",
         autoRefreshOn: "Auto refresh: ON",
         autoRefreshOff: "Auto refresh: OFF",
@@ -325,6 +328,9 @@ const copy = {
         liveCheckedLabel: "上次检查",
         liveLatencyLabel: "延迟",
         liveEndpoint: "检测端点",
+        copyHint: "点击复制",
+        copiedText: "已复制",
+        copyUnavailableText: "暂无可复制值",
         autoRefresh: "自动刷新",
         autoRefreshOn: "自动刷新：开启",
         autoRefreshOff: "自动刷新：关闭",
@@ -1087,14 +1093,22 @@ function setupStatusMetaCopyHandlers() {
     item.setAttribute("role", "button");
     const label =
       item.querySelector("span[data-i18n], span:first-child")?.textContent?.trim() ||
-      "Status value";
-    item.setAttribute("aria-label", `Copy ${label}`);
+      "status value";
+    item.dataset.copyTargetLabel = label;
 
     const copyStatusMeta = async () => {
+      if (item.getAttribute("aria-disabled") === "true") {
+        showCopyFeedback(item.dataset.copyUnavailableText || "No value yet", true);
+        return;
+      }
       const targetId = item.dataset.copyTarget;
       const target = targetId ? document.getElementById(targetId) : null;
+      const fallbackText = item.dataset.copyFallback || "n/a";
+      const copyUnavailableText = item.dataset.copyUnavailableText || "No value yet";
       const text = target ? (target.textContent || "").trim() : "";
-      if (!text || text === "n/a") {
+
+      if (!text || text === fallbackText) {
+        showCopyFeedback(`${copyUnavailableText}.`, true);
         return;
       }
 
@@ -1141,6 +1155,50 @@ function setupStatusMetaCopyHandlers() {
       event.preventDefault();
       void copyStatusMeta();
     });
+  });
+}
+
+function applyStatusMetaCopyLocale(localeCopy = currentLocale) {
+  const statusLocale = getStatusLocale(localeCopy);
+  const copyHint = statusLocale.copyHint || "Click to copy";
+  const copiedText = statusLocale.copiedText || "Copied";
+  const copyUnavailableText = statusLocale.copyUnavailableText || "No value yet";
+  const copyItems = Array.from(document.querySelectorAll(".status-meta-item.is-copyable"));
+
+  copyItems.forEach((item) => {
+    const targetId = item.dataset.copyTarget || "";
+    const fallbackMap = {
+      "status-deploy-id": statusLocale.deployIdFallback || "n/a",
+      "status-commit": statusLocale.commitFallback || "n/a",
+    };
+
+    item.dataset.copyHint = copyHint;
+    item.dataset.copyDone = copiedText;
+    item.dataset.copyUnavailableText = copyUnavailableText;
+    const target = targetId
+      ? document.getElementById(targetId)
+      : null;
+    const value = target ? (target.textContent || "").trim() : "";
+    const fallback = fallbackMap[targetId] || statusLocale.deployIdFallback || "n/a";
+    item.dataset.copyFallback = fallback;
+
+    const hasValue = Boolean(value && value !== fallback);
+    item.classList.toggle("is-copyable-disabled", !hasValue);
+    item.setAttribute("aria-disabled", hasValue ? "false" : "true");
+    item.setAttribute(
+      "aria-label",
+      `${copyHint} ${item.dataset.copyTargetLabel || "status value"}`
+    );
+    if (!hasValue) {
+      item.classList.add("is-copyable-disabled");
+      item.setAttribute(
+        "title",
+        `${copyUnavailableText}: ${item.dataset.copyTargetLabel || "status value"}`
+      );
+    } else {
+      item.removeAttribute("title");
+      item.classList.remove("is-copyable-disabled");
+    }
   });
 }
 
@@ -1642,6 +1700,7 @@ async function refreshStatusMeta(localeCopy) {
   if (!statusLastUpdated.textContent) {
     statusLastUpdated.textContent = "--";
   }
+  applyStatusMetaCopyLocale(localeCopy);
 }
 
 function getLinksConfig() {
