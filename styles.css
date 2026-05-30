@@ -362,7 +362,36 @@ h2 {
 .status-meta {
   margin-top: 0.95rem;
   color: #9fb0dd;
-  font-size: 0.95rem;
+  display: grid;
+  gap: 0.62rem 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.status-meta-item {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  font-size: 0.94rem;
+  border: 1px solid rgba(173, 188, 244, 0.18);
+  border-radius: 12px;
+  padding: 0.52rem 0.72rem;
+  background: rgba(6, 15, 30, 0.72);
+  min-width: 0;
+}
+
+.status-meta-item > span:last-child {
+  color: #d5e3ff;
+  font-size: 0.9rem;
+  font-weight: 650;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .loop-grid {
@@ -876,6 +905,10 @@ button:focus-visible {
 @media (max-width: 640px) {
   .section {
     padding-top: 4rem;
+  }
+
+  .status-meta {
+    grid-template-columns: 1fr;
   }
 
   .hero h1 {
