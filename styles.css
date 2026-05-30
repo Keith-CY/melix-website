@@ -455,6 +455,10 @@ h2 {
     max-height 0.2s ease,
     padding 0.2s ease,
     border-color 0.2s ease;
+  line-height: 1.35;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.48rem;
 }
 
 .status-copy-toast.is-hidden {
@@ -475,6 +479,20 @@ h2 {
 .status-copy-toast.is-error {
   border-color: rgba(255, 122, 157, 0.45);
   color: #ffd0dc;
+}
+
+.status-copy-toast.is-success::before,
+.status-copy-toast.is-error::before {
+  line-height: 1;
+  font-weight: 800;
+}
+
+.status-copy-toast.is-success::before {
+  content: "✓";
+}
+
+.status-copy-toast.is-error::before {
+  content: "!";
 }
 
 .status-meta-item.is-copyable.is-copyable-disabled,
@@ -748,12 +766,21 @@ h2 {
   border: 1px solid transparent;
   font-weight: 700;
   white-space: nowrap;
+  gap: 0.37rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .status-live-pill-checking {
   color: #0b2644;
   background: linear-gradient(135deg, #d4e8ff, #88d7ff);
   border-color: rgba(143, 204, 255, 0.68);
+}
+
+.status-live-pill-checking::before {
+  content: "•";
+  font-size: 0.7rem;
+  line-height: 1;
+  animation: liveCheckingDot 1s ease-in-out infinite;
 }
 
 .status-live-pill-online {
@@ -773,6 +800,11 @@ h2 {
   color: #101f38;
   background: linear-gradient(135deg, #d4ddff, #abb9e9);
   border-color: rgba(173, 188, 244, 0.58);
+}
+
+.status-live-controls .btn-sm {
+  min-height: 2.15rem;
+  padding-inline: 0.94rem;
 }
 
 .status-live-detail {
@@ -1085,6 +1117,12 @@ button:focus-visible {
   .hero h1 {
     font-size: clamp(2rem, 9.3vw, 2.65rem);
   }
+
+  .status-live-controls .btn-sm {
+    flex: 1 1 auto;
+    min-width: 9.5rem;
+    justify-content: center;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1098,6 +1136,8 @@ button:focus-visible {
   .grain,
   .ambient-orb,
   .reveal,
+  .status-copy-toast,
+  .status-live-pill,
   .pulse,
   .code-block,
   .btn,
@@ -1106,6 +1146,10 @@ button:focus-visible {
   .pulse:hover {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
+  }
+
+  .status-live-pill-checking::before {
+    animation: none !important;
   }
 }
 
@@ -1117,6 +1161,18 @@ button:focus-visible {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes liveCheckingDot {
+  0%,
+  100% {
+    opacity: 0.26;
+    transform: scale(0.88);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
   }
 }
 
