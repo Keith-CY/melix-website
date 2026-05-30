@@ -415,6 +415,7 @@ let liveStatusRefreshTimer = null;
 let isLiveAutoRefreshEnabled = true;
 let activeNavRaf = null;
 let activeNavId = "";
+let activeNavObserver = null;
 const quickStartStorageKey = "melixQuickStartProgressV1";
 const liveRefreshEnabledStorageKey = "melixLiveAutoRefreshEnabled";
 const LIVE_CHECK_INTERVAL_MS = 60 * 1000;
@@ -760,18 +761,46 @@ const navScrollTargets = sectionNavLinks
   })
   .filter(Boolean);
 
-function updateActiveNav() {
+function getActiveNavByScrollY() {
   if (!navScrollTargets.length) {
-    return;
+    return null;
   }
   const offset = 150;
   const viewY = window.scrollY + offset;
   let activeItem = navScrollTargets[0];
-
   for (const item of navScrollTargets) {
     if (item.target.offsetTop <= viewY) {
       activeItem = item;
     }
+  }
+  return activeItem;
+}
+
+function getActiveNavFromEntries(entries) {
+  const visibleEntries = entries.filter(
+    (entry) => entry.isIntersecting && entry.target && entry.target.id
+  );
+  if (!visibleEntries.length) {
+    return null;
+  }
+  return visibleEntries.reduce((best, current) => {
+    const bestScore =
+      best.intersectionRatio * 1000 - Math.abs(best.boundingClientRect.top);
+    const currentScore =
+      current.intersectionRatio * 1000 - Math.abs(current.boundingClientRect.top);
+    return currentScore > bestScore ? current : best;
+  });
+}
+
+function applyActiveNav(activeItem) {
+  if (!navScrollTargets.length) {
+    return;
+  }
+  if (!activeItem) {
+    activeItem = getActiveNavByScrollY();
+  }
+  if (!activeItem) {
+    return;
   }
 
   navScrollTargets.forEach((item) => {
@@ -801,6 +830,45 @@ function updateActiveNav() {
     }
     item.link.removeAttribute("aria-current");
   });
+}
+
+function updateActiveNav() {
+  applyActiveNav(getActiveNavByScrollY());
+}
+
+function setupActiveNavObserver() {
+  if (!("IntersectionObserver" in window)) {
+    return false;
+  }
+  if (!navScrollTargets.length || !navLinks) {
+    return false;
+  }
+  if (activeNavObserver) {
+    activeNavObserver.disconnect();
+  }
+  activeNavObserver = new IntersectionObserver(
+    (entries) => {
+      const activeEntry = getActiveNavFromEntries(entries);
+      if (!activeEntry) {
+        return;
+      }
+      const activeItem = navScrollTargets.find(
+        (item) => item.target === activeEntry.target
+      );
+      if (activeItem) {
+        applyActiveNav(activeItem);
+      }
+    },
+    {
+      rootMargin: "-120px 0px -45% 0px",
+      threshold: [0, 0.2, 0.4, 0.6, 0.8, 1],
+    }
+  );
+
+  navScrollTargets.forEach((item) => {
+    activeNavObserver.observe(item.target);
+  });
+  return true;
 }
 
 function scheduleActiveNavUpdate() {
@@ -1853,6 +1921,12 @@ langToggle.setAttribute(
   "aria-label",
   lang === "en" ? "Switch language to 中文" : "Switch language to English"
 );
-window.addEventListener("scroll", scheduleActiveNavUpdate, { passive: true });
-window.addEventListener("resize", scheduleActiveNavUpdate);
-scheduleActiveNavUpdate();
+if (setupActiveNavObserver()) {
+  requestAnimationFrame(() => {
+    scheduleActiveNavUpdate();
+  });
+} else {
+  window.addEventListener("scroll", scheduleActiveNavUpdate, { passive: true });
+  window.addEventListener("resize", scheduleActiveNavUpdate);
+  scheduleActiveNavUpdate();
+}
