@@ -1099,6 +1099,11 @@ function setupStatusMetaCopyHandlers() {
     const copyStatusMeta = async () => {
       if (item.getAttribute("aria-disabled") === "true") {
         showCopyFeedback(item.dataset.copyUnavailableText || "No value yet", true);
+        item.classList.add("is-copyable-unavailable-pulse");
+        clearTimeout(item._copyUnavailablePulseTimer);
+        item._copyUnavailablePulseTimer = setTimeout(() => {
+          item.classList.remove("is-copyable-unavailable-pulse");
+        }, 900);
         return;
       }
       const targetId = item.dataset.copyTarget;
@@ -1136,9 +1141,11 @@ function setupStatusMetaCopyHandlers() {
       }
       item.dataset.copied = "1";
       item.classList.add("is-copyable-copied");
+      item.classList.add("is-copyable-just-copied");
       statusMetaCopyTimer = setTimeout(() => {
         delete item.dataset.copied;
         item.classList.remove("is-copyable-copied");
+        item.classList.remove("is-copyable-just-copied");
       }, 1300);
     };
 

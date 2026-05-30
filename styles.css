@@ -437,6 +437,52 @@ h2 {
   color: #5d6d95;
 }
 
+.status-meta-item.is-copyable.is-copyable-unavailable-pulse {
+  animation: statusMetaPulseUnavailable 0.42s ease-in-out;
+}
+
+.status-meta-item.is-copyable.is-copyable-just-copied {
+  animation: statusMetaPulseCopied 0.42s ease-in-out;
+}
+
+.status-meta-item.is-copyable:active:not([aria-disabled="true"]) {
+  transform: translateY(0) scale(0.995);
+}
+
+@keyframes statusMetaPulseUnavailable {
+  0% {
+    transform: translateX(0);
+  }
+  12% {
+    transform: translateX(-3px);
+  }
+  24% {
+    transform: translateX(3px);
+  }
+  36% {
+    transform: translateX(-2px);
+  }
+  48% {
+    transform: translateX(2px);
+  }
+  60%,
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes statusMetaPulseCopied {
+  0% {
+    box-shadow: 0 0 0 rgba(103, 240, 190, 0);
+  }
+  45% {
+    box-shadow: 0 0 0 8px rgba(103, 240, 190, 0.25);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(103, 240, 190, 0);
+  }
+}
+
 .status-meta-item.is-copyable:focus-visible,
 .status-meta-item.is-copyable:hover {
   border-color: rgba(103, 240, 190, 0.55);
