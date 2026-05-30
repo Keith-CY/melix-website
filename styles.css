@@ -138,9 +138,12 @@ body {
   width: 1.35rem;
   height: 1.35rem;
   border-radius: 999px;
+  background: #070c16;
   object-fit: cover;
+  object-position: center;
+  border: 1px solid rgba(173, 200, 243, 0.25);
   box-shadow: 0 8px 24px rgba(101, 213, 255, 0.34);
-  background: rgba(10, 17, 32, 0.3);
+  padding: 2px;
 }
 
 .brand-text {
@@ -1765,6 +1768,11 @@ main {
 .brand-logo {
   width: 1.55rem;
   height: 1.55rem;
+  background: #070c16;
+  object-fit: contain;
+  object-position: center;
+  border: 1px solid rgba(173, 200, 243, 0.25);
+  padding: 2px;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(103, 215, 255, 0.34);
 }
