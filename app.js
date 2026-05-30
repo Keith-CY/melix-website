@@ -421,6 +421,8 @@ let activeNavObserver = null;
 let activeNavStableTimer = null;
 let activeNavStableTarget = null;
 let activeNavStaleTimer = null;
+let activeNavInteractionToken = 0;
+let activeNavLastInteractionAt = 0;
 const quickStartStorageKey = "melixQuickStartProgressV1";
 const liveRefreshEnabledStorageKey = "melixLiveAutoRefreshEnabled";
 const LIVE_CHECK_INTERVAL_MS = 60 * 1000;
@@ -429,6 +431,7 @@ const MOBILE_NAV_QUERY = "(max-width: 900px)";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const ACTIVE_NAV_STABILITY_MS = 110;
 const ACTIVE_NAV_STALE_FALLBACK_MS = 2000;
+const NAV_INTERACTION_WINDOW_MS = ACTIVE_NAV_STALE_FALLBACK_MS;
 
 function persistQuickStartProgress() {
   try {
@@ -783,6 +786,11 @@ function getActiveNavByScrollY() {
   return activeItem;
 }
 
+function markActiveNavInteraction() {
+  activeNavInteractionToken += 1;
+  activeNavLastInteractionAt = performance.now();
+}
+
 function getActiveNavFromEntries(entries) {
   const visibleEntries = entries.filter(
     (entry) => entry.isIntersecting && entry.target && entry.target.id
@@ -866,11 +874,21 @@ function scheduleActiveNavFallback() {
   if (!("requestAnimationFrame" in window)) {
     return;
   }
+  const fallbackToken = activeNavInteractionToken;
   if (activeNavStaleTimer) {
     clearTimeout(activeNavStaleTimer);
   }
   activeNavStaleTimer = setTimeout(() => {
     activeNavStaleTimer = null;
+    if (activeNavInteractionToken !== fallbackToken) {
+      return;
+    }
+    if (
+      activeNavLastInteractionAt &&
+      performance.now() - activeNavLastInteractionAt > NAV_INTERACTION_WINDOW_MS
+    ) {
+      return;
+    }
     scheduleActiveNavCommit(getActiveNavByScrollY());
   }, ACTIVE_NAV_STALE_FALLBACK_MS);
 }
@@ -1960,6 +1978,12 @@ if (quickStartRunLink) {
   });
 }
 
+sectionNavLinks.forEach((link) => {
+  link.addEventListener("click", markActiveNavInteraction);
+});
+window.addEventListener("scroll", markActiveNavInteraction, { passive: true });
+window.addEventListener("resize", markActiveNavInteraction);
+
 const preferred = navigator.language.toLowerCase();
 applyRestoredQuickStartState();
 restoreLiveRefreshPreference();
@@ -1975,10 +1999,12 @@ langToggle.setAttribute(
   lang === "en" ? "Switch language to 中文" : "Switch language to English"
 );
 if (setupActiveNavObserver()) {
+  markActiveNavInteraction();
   requestAnimationFrame(() => {
     scheduleActiveNavUpdate();
   });
 } else {
+  markActiveNavInteraction();
   window.addEventListener("scroll", scheduleActiveNavUpdate, { passive: true });
   window.addEventListener("resize", scheduleActiveNavUpdate);
   scheduleActiveNavUpdate();
