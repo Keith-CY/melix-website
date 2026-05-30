@@ -384,6 +384,7 @@ const quickStartStep3Label = document.getElementById("quickstart-step3-label");
 const copyQuickStart = document.getElementById("copy-quickstart");
 const quickStartReset = document.getElementById("quickstart-reset");
 const copyQuickStartFeedback = document.getElementById("quickstart-feedback");
+const quickStartCompletionToast = document.getElementById("quickstart-completion-toast");
 const quickStartNext = document.getElementById("quickstart-next");
 const quickStartProgressLabel = document.getElementById("quickstart-progress");
 const quickStartStatusLink = document.getElementById("quickstart-status-link");
@@ -400,6 +401,8 @@ let quickStartFocusTimer = null;
 let quickStartRevealTimer = null;
 let quickStartPhaseTargetHint = "";
 let quickStartPhaseHintTimer = null;
+let quickStartCompletionToastTimer = null;
+let quickStartCompletionHintShown = false;
 const statusSource = document.getElementById("status-source");
 const statusLastUpdated = document.getElementById("status-last-updated");
 const statusBranch = document.getElementById("status-branch");
@@ -500,6 +503,7 @@ function persistQuickStartProgress() {
       checksCopied: checksCopied && commandsCopied,
       runCopied: runCopied && checksCopied,
       setupGuideOpened: setupGuideOpened && runCopied,
+      completionHintShown: quickStartCompletionHintShown,
     };
     localStorage.setItem(quickStartStorageKey, JSON.stringify(payload));
   } catch {
@@ -521,6 +525,7 @@ function restoreQuickStartProgress() {
     checksCopied = Boolean(parsed.checksCopied) && commandsCopied;
     runCopied = Boolean(parsed.runCopied) && checksCopied;
     setupGuideOpened = Boolean(parsed.setupGuideOpened) && runCopied;
+    quickStartCompletionHintShown = Boolean(parsed.completionHintShown);
   } catch {
     // Ignore corrupted storage states.
   }
@@ -544,6 +549,7 @@ function resetQuickStartProgress() {
   checksCopied = false;
   runCopied = false;
   setupGuideOpened = false;
+  quickStartCompletionHintShown = false;
   try {
     localStorage.removeItem(quickStartStorageKey);
   } catch {
@@ -566,6 +572,15 @@ function resetQuickStartProgress() {
   if (quickStartPhaseHintTimer) {
     clearTimeout(quickStartPhaseHintTimer);
     quickStartPhaseHintTimer = null;
+  }
+  if (quickStartCompletionToastTimer) {
+    clearTimeout(quickStartCompletionToastTimer);
+    quickStartCompletionToastTimer = null;
+  }
+  if (quickStartCompletionToast) {
+    quickStartCompletionToast.hidden = true;
+    quickStartCompletionToast.classList.remove("is-shown");
+    quickStartCompletionToast.textContent = "";
   }
   quickStartPhaseTargetHint = "";
   setQuickStartProgressState();
@@ -624,6 +639,33 @@ function setCopyFeedback(message, isError = false) {
     copyQuickStartFeedback.textContent = "";
     copyQuickStartFeedback.classList.remove("visible");
   }, showMs);
+}
+
+function showQuickStartCompletionToast(message) {
+  if (!quickStartCompletionToast || quickStartCompletionHintShown) {
+    return;
+  }
+  if (!window.matchMedia(MOBILE_NAV_QUERY).matches) {
+    return;
+  }
+  quickStartCompletionHintShown = true;
+  quickStartCompletionToast.textContent = message || "";
+  quickStartCompletionToast.hidden = false;
+  quickStartCompletionToast.classList.add("is-shown");
+  if (quickStartCompletionToastTimer) {
+    clearTimeout(quickStartCompletionToastTimer);
+    quickStartCompletionToastTimer = null;
+  }
+  const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY).matches;
+  quickStartCompletionToastTimer = setTimeout(() => {
+    if (!quickStartCompletionToast) {
+      return;
+    }
+    quickStartCompletionToast.classList.remove("is-shown");
+    quickStartCompletionToast.hidden = true;
+    quickStartCompletionToastTimer = null;
+  }, reducedMotion ? 1600 : 2400);
+  persistQuickStartProgress();
 }
 
 function showStatusMetaCopyToast(message, isError = false) {
@@ -1463,6 +1505,10 @@ function setQuickStartProgressState() {
     setQuickStartStepState(quickStartTitle, "complete");
     setQuickStartStepState(quickStartCheckTitle, "complete");
     setQuickStartStepState(quickStartRunTitle, "complete");
+    const completionHintMessage =
+      quickStartProgressLabel.dataset.targetDone ||
+      "Next step: view current status.";
+    showQuickStartCompletionToast(completionHintMessage);
   } else if (checksCopied) {
     setActiveCard(2);
     setQuickStartStepState(quickStartTitle, "complete");
