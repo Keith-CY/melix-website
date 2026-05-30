@@ -81,7 +81,7 @@ const copy = {
             target2: "Next step: copy start commands.",
             target3: "Next step: open the setup guide.",
             target3Pending: "Next step: open the setup guide.",
-            targetDone: "Next step: continue reading docs.",
+            targetDone: "Next step: view current status.",
             labels: {
               step1: "1/3",
               step2: "2/3",
@@ -91,7 +91,7 @@ const copy = {
             phase2: "Step 2/3 · Copy checks, then copy start command.",
             phase3: "Step 3/3 · Copy start commands, then open setup guide.",
             phase3Pending: "Step 3/3 · Start commands copied; open setup guide to complete.",
-            done: "Quick start ready. Continue with your setup.",
+            done: "Quick start ready. Continue with your setup and check the current status.",
           },
           nextNothingText: "No check commands to copy.",
           nextCopyBtn: "Copy checks",
@@ -262,7 +262,7 @@ const copy = {
             target2: "下一步：复制启动命令。",
             target3: "下一步：打开设置文档。",
             target3Pending: "下一步：打开设置文档。",
-            targetDone: "下一步：继续阅读文档。",
+            targetDone: "下一步：查看项目状态。",
             labels: {
               step1: "1/3",
               step2: "2/3",
@@ -273,7 +273,7 @@ const copy = {
             phase3: "第 3/3 步 · 已复制启动命令，请打开设置文档。",
             phase3Pending:
               "第 3/3 步 · 启动命令已复制，请打开设置文档后完成。",
-            done: "快速开始完成，可继续项目设置。",
+            done: "快速开始完成。继续完成设置后查看项目状态。",
           },
           nextNothingText: "没有可复制的校验命令。",
           nextCopyBtn: "复制校验命令",
@@ -2065,7 +2065,7 @@ function setLang(next) {
     quickStartProgressLabel.dataset.target3Pending =
       progressText.target3Pending || "Next step: open the setup guide.";
     quickStartProgressLabel.dataset.targetDone =
-      progressText.targetDone || "Next step: continue reading docs.";
+      progressText.targetDone || "Next step: view current status.";
     if (quickStartProgressStep1) {
       quickStartProgressStep1.textContent = labels.step1 || "1/3";
       quickStartProgressStep1.setAttribute("aria-label", progressText.phase1 || "Step 1");
