@@ -948,7 +948,6 @@ ol {
   opacity: 0;
   margin: 0.14rem 0 0;
   min-height: 0;
-  max-height: 1.9rem;
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
@@ -966,7 +965,7 @@ ol {
   font-weight: 600;
   letter-spacing: 0.002em;
   text-shadow: none;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   transition:
     opacity 0.2s ease,
     transform 0.2s ease,
@@ -976,10 +975,10 @@ ol {
   gap: 0.14rem;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  max-width: min(92vw, 16rem);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  max-width: min(92vw, 17.5rem);
+  white-space: normal;
+  word-break: break-word;
+  text-align: left;
   pointer-events: none;
   visibility: hidden;
   display: inline-flex;
@@ -1029,7 +1028,6 @@ ol {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-  max-height: 1.9rem;
   animation: quickstart-completion-in 170ms ease-out both;
 }
 
