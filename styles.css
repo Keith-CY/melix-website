@@ -487,9 +487,16 @@ ol {
 }
 
 .copy-feedback {
+  opacity: 0;
   color: var(--teal);
   font-size: 0.9rem;
   min-height: 1.3rem;
+  white-space: pre-line;
+  transition: opacity 0.18s ease;
+}
+
+.copy-feedback.visible {
+  opacity: 1;
 }
 
 .quickstart-progress {
