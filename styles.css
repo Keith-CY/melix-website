@@ -250,6 +250,29 @@ button {
   max-width: 58ch;
 }
 
+.hero-status-link {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  color: #97b5f0;
+  text-decoration: none;
+  font-size: 0.86rem;
+  font-weight: 600;
+  padding: 0 0.1rem 0.1rem;
+  border-radius: 8px;
+  border-bottom: 1px dashed rgba(151, 181, 240, 0.55);
+  transition: color 0.2s ease, border-bottom-color 0.2s ease;
+}
+
+.hero-status-link:hover {
+  color: #b7d3ff;
+  border-bottom-color: rgba(183, 211, 255, 0.95);
+}
+
+.hero-status-link:focus-visible {
+  border-bottom-color: transparent;
+}
+
 .hero-metrics {
   display: flex;
   flex-wrap: wrap;
