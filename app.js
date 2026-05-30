@@ -677,7 +677,7 @@ function showQuickStartCompletionToast(message) {
   const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY).matches;
   quickStartCompletionToastTimer = setTimeout(() => {
     hideQuickStartCompletionToast();
-  }, reducedMotion ? 1200 : 1900);
+  }, reducedMotion ? 1500 : 2200);
   persistQuickStartProgress();
 }
 
