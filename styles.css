@@ -951,14 +951,14 @@ ol {
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  border: 1px solid rgba(173, 188, 244, 0.38);
-  padding: 0.14rem 0.38rem;
+  border: 1px solid rgba(173, 188, 244, 0.42);
+  padding: 0.12rem 0.4rem;
   color: #ecf2ff;
-  background: linear-gradient(135deg, rgba(11, 18, 34, 0.87), rgba(6, 12, 24, 0.8));
+  background: linear-gradient(135deg, rgba(11, 18, 34, 0.9), rgba(6, 12, 24, 0.84));
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   box-shadow: 0 4px 10px rgba(3, 6, 15, 0.22),
-    0 0 0 1px rgba(173, 188, 244, 0.09);
+    0 0 0 1px rgba(173, 188, 244, 0.1);
   z-index: 12;
   isolation: isolate;
   font-size: 0.8rem;
@@ -969,7 +969,7 @@ ol {
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
-  line-height: 1.15;
+  line-height: 1.22;
   align-items: center;
   gap: 0.12rem;
   flex-wrap: nowrap;
