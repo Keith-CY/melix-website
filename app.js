@@ -66,6 +66,7 @@ const copy = {
             target1: "Next step: copy check commands.",
             target2: "Next step: copy start commands.",
             target3: "Next step: open the setup guide.",
+            target3Pending: "Next step: open the setup guide.",
             targetDone: "Next step: continue reading docs.",
             labels: {
               step1: "1/3",
@@ -75,6 +76,7 @@ const copy = {
             phase1: "Step 1/3 · Copy commands above, then copy checks.",
             phase2: "Step 2/3 · Copy checks, then copy start command.",
             phase3: "Step 3/3 · Copy start commands, then open setup guide.",
+            phase3Pending: "Step 3/3 · Start commands copied; open setup guide to complete.",
             done: "Quick start ready. Continue with your setup.",
           },
           nextNothingText: "No check commands to copy.",
@@ -205,6 +207,7 @@ const copy = {
             target1: "下一步：复制校验命令。",
             target2: "下一步：复制启动命令。",
             target3: "下一步：打开设置文档。",
+            target3Pending: "下一步：打开设置文档。",
             targetDone: "下一步：继续阅读文档。",
             labels: {
               step1: "1/3",
@@ -214,6 +217,8 @@ const copy = {
             phase1: "第 1/3 步 · 已复制仓库命令，请复制校验命令。",
             phase2: "第 2/3 步 · 已复制校验命令，请复制启动命令。",
             phase3: "第 3/3 步 · 已复制启动命令，请打开设置文档。",
+            phase3Pending:
+              "第 3/3 步 · 启动命令已复制，请打开设置文档后完成。",
             done: "快速开始完成，可继续项目设置。",
           },
           nextNothingText: "没有可复制的校验命令。",
@@ -665,6 +670,28 @@ function setQuickStartProgressText() {
     return;
   }
 
+  if (runCopied && !setupGuideOpened) {
+    setStepState(quickStartProgressStep1, "complete");
+    setStepState(quickStartProgressStep2, "complete");
+    setStepState(quickStartProgressStep3, "active");
+    quickStartProgressLabel.classList.remove(
+      "quickstart-progress-state-1",
+      "quickstart-progress-state-2",
+      "quickstart-progress-state-done"
+    );
+    quickStartProgressLabel.classList.add("quickstart-progress-state-3");
+    quickStartProgressSummary.textContent =
+      quickStartProgressLabel.dataset.phase3Pending ||
+      quickStartProgressLabel.dataset.phase3 ||
+      "Step 3/3 · Start commands copied; open setup guide to complete.";
+    setStepTarget(
+      quickStartProgressLabel.dataset.target3Pending ||
+        quickStartProgressLabel.dataset.target3 ||
+        "Next step: open the setup guide."
+    );
+    return;
+  }
+
   if (checksCopied) {
     setStepState(quickStartProgressStep1, "complete");
     setStepState(quickStartProgressStep2, "complete");
@@ -1031,6 +1058,9 @@ function setLang(next) {
       progressText.phase2 || "Step 2/3 · Copy checks, then copy start command.";
     quickStartProgressLabel.dataset.phase3 =
       progressText.phase3 || "Step 3/3 · Copy start commands, then open setup guide.";
+    quickStartProgressLabel.dataset.phase3Pending =
+      progressText.phase3Pending ||
+      "Step 3/3 · Start commands copied; open setup guide to complete.";
     quickStartProgressLabel.dataset.done =
       progressText.done || "Quick start ready. Continue with your setup.";
     quickStartProgressLabel.dataset.target1 =
@@ -1039,6 +1069,8 @@ function setLang(next) {
       progressText.target2 || "Next step: copy start commands.";
     quickStartProgressLabel.dataset.target3 =
       progressText.target3 || "Next step: open the setup guide.";
+    quickStartProgressLabel.dataset.target3Pending =
+      progressText.target3Pending || "Next step: open the setup guide.";
     quickStartProgressLabel.dataset.targetDone =
       progressText.targetDone || "Next step: continue reading docs.";
     if (quickStartProgressStep1) {
