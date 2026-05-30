@@ -966,6 +966,7 @@ ol {
   font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.005em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.28);
   transform: translateY(-2px) scale(0.97);
   transition:
     opacity 0.2s ease,
