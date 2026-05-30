@@ -358,10 +358,11 @@ function setCopyFeedback(message, isError = false) {
   copyQuickStartFeedback.style.color = isError ? "var(--danger)" : "var(--teal)";
   copyQuickStartFeedback.classList.add("visible");
   clearTimeout(setCopyFeedback._timer);
+  const showMs = message && message.length >= 160 ? 4200 : 2200;
   setCopyFeedback._timer = setTimeout(() => {
     copyQuickStartFeedback.textContent = "";
     copyQuickStartFeedback.classList.remove("visible");
-  }, 1800);
+  }, showMs);
 }
 
 function showCopyDone(button, doneText) {
