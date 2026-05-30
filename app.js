@@ -668,6 +668,8 @@ function showQuickStartCompletionToast(message) {
     quickStartCompletionToast.dataset.actionText ||
     quickStartStatusLink?.textContent ||
     "View current status";
+  const dismissText =
+    quickStartCompletionToast.dataset.dismissText || "Dismiss";
   quickStartCompletionToast.textContent = "";
   const textNode = document.createElement("span");
   textNode.textContent = message || "";
@@ -679,8 +681,18 @@ function showQuickStartCompletionToast(message) {
   actionLink.addEventListener("click", () => {
     hideQuickStartCompletionToast();
   });
+  const dismissButton = document.createElement("button");
+  dismissButton.type = "button";
+  dismissButton.className = "quickstart-completion-hint-dismiss";
+  dismissButton.setAttribute("aria-label", dismissText);
+  dismissButton.textContent = "×";
+  dismissButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    hideQuickStartCompletionToast();
+  });
   quickStartCompletionToast.appendChild(textNode);
   quickStartCompletionToast.appendChild(actionLink);
+  quickStartCompletionToast.appendChild(dismissButton);
   quickStartCompletionToast.hidden = false;
   quickStartCompletionToast.classList.add("is-shown");
   if (quickStartCompletionToastTimer) {
@@ -1997,6 +2009,8 @@ function setLang(next) {
   if (quickStartCompletionToast) {
     quickStartCompletionToast.dataset.actionText =
       locale.cta?.tertiary || "View current status";
+    quickStartCompletionToast.dataset.dismissText =
+      lang === "zh" ? "关闭" : "Dismiss";
   }
 
   setText("nav.problem", locale.nav.problem);
