@@ -21,6 +21,7 @@ const copy = {
       loop: "Product Loop",
       architecture: "Architecture",
       macos: "macOS",
+      getStarted: "Get Started",
       status: "Status",
     },
     section: {
@@ -197,6 +198,7 @@ const copy = {
       loop: "产品循环",
       architecture: "架构",
       macos: "macOS",
+      getStarted: "快速开始",
       status: "状态",
     },
     section: {
@@ -1455,6 +1457,7 @@ function setLang(next) {
   setText("nav.loop", locale.nav.loop);
   setText("nav.architecture", locale.nav.architecture);
   setText("nav.macos", locale.nav.macos);
+  setText("nav.getStarted", locale.nav.getStarted);
   setText("nav.status", locale.nav.status);
 
   setText("section.problem.title", locale.section.problem.title);
