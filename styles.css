@@ -977,6 +977,7 @@ ol {
   position: absolute;
   left: 0;
   top: calc(100% + 0.16rem);
+  transform: translate(0, 0);
 }
 
 .quickstart-completion-hint::before {
@@ -998,6 +999,13 @@ ol {
   position: relative;
   width: fit-content;
   margin-top: 0.38rem;
+}
+
+.quickstart-completion-hint.quickstart-completion-hint-overlay {
+  left: auto;
+  right: 0;
+  top: 0.22rem;
+  transform: translateY(-55%);
 }
 
 .quickstart-status-link {

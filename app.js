@@ -667,6 +667,7 @@ function showQuickStartCompletionToast(message) {
   const textNode = document.createElement("span");
   textNode.textContent = message || "";
   quickStartCompletionToast.appendChild(textNode);
+  quickStartCompletionToast.classList.add("quickstart-completion-hint-overlay");
   quickStartCompletionToast.hidden = false;
   quickStartCompletionToast.classList.add("is-shown");
   if (quickStartCompletionToastTimer) {
