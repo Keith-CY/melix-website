@@ -258,6 +258,7 @@ const copyQuickStartRun = document.getElementById("copy-quickstart-run");
 const copyQuickStart = document.getElementById("copy-quickstart");
 const copyQuickStartFeedback = document.getElementById("quickstart-feedback");
 const quickStartNext = document.getElementById("quickstart-next");
+let quickStartFocusTimer = null;
 const statusSource = document.getElementById("status-source");
 const statusLastUpdated = document.getElementById("status-last-updated");
 const statusBranch = document.getElementById("status-branch");
@@ -444,6 +445,20 @@ function setQuickStartProgressState() {
   setQuickStartStepState(quickStartTitle, "active");
   setQuickStartStepState(quickStartCheckTitle, "pending");
   setQuickStartStepState(quickStartRunTitle, "pending");
+}
+
+function revealQuickStartPhase(target) {
+  if (!target) {
+    return;
+  }
+  if (quickStartFocusTimer) {
+    clearTimeout(quickStartFocusTimer);
+  }
+  target.scrollIntoView({ behavior: "smooth", block: "start" });
+  target.classList.add("quickstart-focus");
+  quickStartFocusTimer = setTimeout(() => {
+    target.classList.remove("quickstart-focus");
+  }, 1500);
 }
 
 function updateRunPhase(localeCopy) {
@@ -799,6 +814,7 @@ if (copyQuickStart) {
       setCopyFeedback(copiedNextText);
       commandsCopied = true;
       showNextPhase();
+      revealQuickStartPhase(quickStartChecks);
       setCheckLinkReady(true);
       setQuickStartProgressState();
       setRunLinkReady(checksCopied && runReady);
@@ -807,6 +823,7 @@ if (copyQuickStart) {
         setCopyFeedback(copiedNextText);
         commandsCopied = true;
         showNextPhase();
+        revealQuickStartPhase(quickStartChecks);
         setCheckLinkReady(true);
         setQuickStartProgressState();
         setRunLinkReady(checksCopied && runReady);
@@ -841,6 +858,7 @@ if (copyQuickStartChecks) {
       checksCopied = true;
       setQuickStartProgressState();
       showRunPhase();
+      revealQuickStartPhase(quickStartRun);
       setRunLinkReady(true);
     } catch (err) {
       if (getFallbackCopyText(text)) {
@@ -852,6 +870,7 @@ if (copyQuickStartChecks) {
         checksCopied = true;
         setQuickStartProgressState();
         showRunPhase();
+        revealQuickStartPhase(quickStartRun);
         setRunLinkReady(true);
       } else {
         const failedText =
