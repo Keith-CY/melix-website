@@ -951,11 +951,11 @@ ol {
   max-height: 1.9rem;
   width: fit-content;
   max-width: 100%;
-  border-radius: 10px;
-  border: 1px solid transparent;
+  border-radius: 0;
+  border: none;
   padding: 0.19rem 0.55rem;
   color: #d8e7ff;
-  background: rgba(13, 24, 44, 0.9);
+  background: transparent;
   font-size: 0.74rem;
   transform: translateY(-2px);
   transition:
@@ -988,7 +988,6 @@ ol {
   opacity: 1;
   transform: translateY(0);
   max-height: 1.9rem;
-  border-color: rgba(103, 240, 190, 0.45);
 }
 
 .copy-feedback.visible {
