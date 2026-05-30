@@ -419,6 +419,8 @@ const quickStartStorageKey = "melixQuickStartProgressV1";
 const liveRefreshEnabledStorageKey = "melixLiveAutoRefreshEnabled";
 const LIVE_CHECK_INTERVAL_MS = 60 * 1000;
 const LIVE_CHECK_PATHS = ["/api/health", "/api/status", "/health", "/healthz", "/"];
+const MOBILE_NAV_QUERY = "(max-width: 900px)";
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
 function persistQuickStartProgress() {
   try {
@@ -779,12 +781,20 @@ function updateActiveNav() {
       item.link.setAttribute("aria-current", "page");
       if (activeNavId !== activeItem.target.id) {
         activeNavId = activeItem.target.id;
-        if (navLinks && window.matchMedia("(max-width: 900px)").matches) {
-          activeItem.link.scrollIntoView({
-            behavior: "smooth",
+        if (navLinks && navLinks.contains(activeItem.link)) {
+          const navRect = navLinks.getBoundingClientRect();
+          const linkRect = activeItem.link.getBoundingClientRect();
+          const needsVisible =
+            linkRect.left < navRect.left + 8 || linkRect.right > navRect.right - 8;
+          const shouldAutoScroll = window.matchMedia(MOBILE_NAV_QUERY).matches;
+          if (needsVisible && shouldAutoScroll) {
+            const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY).matches;
+            activeItem.link.scrollIntoView({
+            behavior: reducedMotion ? "auto" : "smooth",
             block: "nearest",
-            inline: "center",
+            inline: "nearest",
           });
+          }
         }
       }
       return;
