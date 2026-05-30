@@ -1039,21 +1039,19 @@ ol {
 
   .quickstart-completion-hint.is-shown::after {
     animation: none;
-    transform: scale(1);
   }
 }
 
 .quickstart-completion-hint.is-shown {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0) scale(1);
+  transform: translateY(0);
   max-height: 1.9rem;
   animation: quickstart-completion-in 170ms ease-out both;
 }
 
 .quickstart-completion-hint.is-shown::after {
   opacity: 1;
-  transform: scale(1);
 }
 
 .quickstart-completion-anchor {
