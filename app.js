@@ -54,9 +54,17 @@ const copy = {
           copyBtn: "Copy commands",
           copied: "Copied to clipboard",
           copyFailed: "Copy failed. Please select and copy manually.",
+          checksPrereqText: "Please copy repository commands first.",
+          runPrereqText: "Please copy check commands first.",
+          manualCopyHint:
+            "Clipboard write failed. Please select the command block and copy manually (Cmd/Ctrl + C).",
           copiedNextText: "Commands copied. Continue with Run checks.",
           mustCopyText: "Please copy commands first.",
           progress: {
+            target1: "Next step: copy check commands.",
+            target2: "Next step: copy start commands.",
+            target3: "Next step: open the setup guide.",
+            targetDone: "Next step: continue reading docs.",
             labels: {
               step1: "1/3",
               step2: "2/3",
@@ -184,9 +192,16 @@ const copy = {
           copyBtn: "复制命令",
           copied: "已复制到剪贴板",
           copyFailed: "复制失败，请手动选中并复制。",
+          checksPrereqText: "请先复制仓库命令。",
+          runPrereqText: "请先复制校验命令。",
+          manualCopyHint: "复制失败。请手动选中命令块并复制（Cmd/Ctrl + C）。",
           copiedNextText: "已复制。继续执行校验。",
           mustCopyText: "请先复制命令。",
           progress: {
+            target1: "下一步：复制校验命令。",
+            target2: "下一步：复制启动命令。",
+            target3: "下一步：打开设置文档。",
+            targetDone: "下一步：继续阅读文档。",
             labels: {
               step1: "1/3",
               step2: "2/3",
@@ -281,6 +296,9 @@ const copyQuickStart = document.getElementById("copy-quickstart");
 const copyQuickStartFeedback = document.getElementById("quickstart-feedback");
 const quickStartNext = document.getElementById("quickstart-next");
 const quickStartProgressLabel = document.getElementById("quickstart-progress");
+const quickStartProgressTarget = document.getElementById(
+  "quickstart-progress-target"
+);
 const quickStartProgressSummary = document.getElementById(
   "quickstart-progress-summary"
 );
@@ -366,6 +384,7 @@ function setLinkPhaseState(el, enabled, disabledHint = "") {
   if (!el) {
     return;
   }
+  el.disabled = !enabled;
   if (enabled) {
     el.classList.remove("is-disabled-link");
     el.removeAttribute("aria-disabled");
@@ -483,6 +502,20 @@ function setQuickStartProgressState() {
     setQuickStartStepState(quickStartCheckTitle, "pending");
     setQuickStartStepState(quickStartRunTitle, "pending");
   }
+  const checkNeedHint =
+    copyQuickStartChecks?.dataset?.mustCopyText || "Please copy commands first.";
+  const runNeedHint =
+    copyQuickStartRun?.dataset?.mustCopyText || "Please copy checks first.";
+  setLinkPhaseState(
+    copyQuickStartChecks,
+    Boolean(commandsCopied),
+    checkNeedHint
+  );
+  setLinkPhaseState(
+    copyQuickStartRun,
+    Boolean(checksCopied),
+    runNeedHint
+  );
   setQuickStartProgressText();
 }
 
@@ -490,6 +523,12 @@ function setQuickStartProgressText() {
   if (!quickStartProgressLabel || !quickStartProgressSummary) {
     return;
   }
+  const setStepTarget = (targetText) => {
+    if (!quickStartProgressTarget) {
+      return;
+    }
+    quickStartProgressTarget.textContent = targetText || "";
+  };
   const stepNodes = [
     quickStartProgressStep1,
     quickStartProgressStep2,
@@ -527,6 +566,10 @@ function setQuickStartProgressText() {
     quickStartProgressSummary.textContent =
       quickStartProgressLabel.dataset.done ||
       "Quick start ready. Continue with your setup.";
+    setStepTarget(
+      quickStartProgressLabel.dataset.targetDone ||
+        "Next step: continue reading docs."
+    );
     return;
   }
 
@@ -543,6 +586,9 @@ function setQuickStartProgressText() {
     quickStartProgressSummary.textContent =
       quickStartProgressLabel.dataset.phase3 ||
       "Step 3/3 · Copy start commands, then open setup guide.";
+    setStepTarget(
+      quickStartProgressLabel.dataset.target3 || "Next step: open the setup guide."
+    );
     return;
   }
 
@@ -558,6 +604,9 @@ function setQuickStartProgressText() {
     quickStartProgressSummary.textContent =
       quickStartProgressLabel.dataset.phase2 ||
       "Step 2/3 · Copy checks, then copy start command.";
+    setStepTarget(
+      quickStartProgressLabel.dataset.target2 || "Next step: copy start commands."
+    );
     return;
   }
 
@@ -571,6 +620,19 @@ function setQuickStartProgressText() {
   quickStartProgressSummary.textContent =
     quickStartProgressLabel.dataset.phase1 ||
     "Step 1/3 · Copy commands above, then copy checks.";
+  setStepTarget(
+    quickStartProgressLabel.dataset.target1 ||
+      "Next step: copy check commands."
+  );
+}
+
+function showManualCopyFallback(button, text) {
+  if (!button) {
+    return;
+  }
+  const hint = button.dataset.manualCopyHint || "Copy failed. Please copy manually.";
+  const fallbackText = text ? `\n${text}` : "";
+  setCopyFeedback(`${hint}${fallbackText}`, true);
 }
 
 function revealQuickStartPhase(target) {
@@ -804,6 +866,9 @@ function setLang(next) {
     quickStartCmd.textContent = locale.section.get.quick.commands.join("\n");
   }
   if (copyQuickStart) {
+    copyQuickStart.dataset.manualCopyHint =
+      locale.section.get.quick.manualCopyHint ||
+      "Clipboard write failed. Please select the command block and copy manually (Cmd/Ctrl + C).";
     copyQuickStart.textContent = locale.section.get.quick.copyBtn;
     copyQuickStart.dataset.copyIdleText = locale.section.get.quick.copyBtn || "Copy commands";
     copyQuickStart.dataset.copiedText = locale.section.get.quick.copied;
@@ -819,6 +884,9 @@ function setLang(next) {
     }
   }
   if (copyQuickStartChecks) {
+    copyQuickStartChecks.dataset.manualCopyHint =
+      locale.section.get.quick.manualCopyHint ||
+      "Clipboard write failed. Please select the command block and copy manually (Cmd/Ctrl + C).";
     copyQuickStartChecks.textContent =
       locale.section.get.quick.nextCopyBtn || "Copy checks";
     copyQuickStartChecks.dataset.copyIdleText =
@@ -830,13 +898,18 @@ function setLang(next) {
     copyQuickStartChecks.dataset.copyFailedText =
       locale.section.get.quick.nextCopyFailed || "Copy checks failed. Please copy manually.";
     copyQuickStartChecks.dataset.mustCopyText =
-      locale.section.get.quick.mustCopyText || "Please copy checks first.";
+      locale.section.get.quick.checksPrereqText ||
+      locale.section.get.quick.mustCopyText ||
+      "Please copy repository commands first.";
     copyQuickStartChecks.dataset.readyHint =
       locale.section.get.quick.mustCopyText || "Please copy checks first.";
     copyQuickStartChecks.dataset.copiedNextText =
       locale.section.get.quick.nextReadyText || "Checks copied. Continue with setup.";
   }
   if (copyQuickStartRun) {
+    copyQuickStartRun.dataset.manualCopyHint =
+      locale.section.get.quick.manualCopyHint ||
+      "Clipboard write failed. Please select the command block and copy manually (Cmd/Ctrl + C).";
     copyQuickStartRun.textContent =
       locale.section.get.quick.runCopyBtn || "Copy start commands";
     copyQuickStartRun.dataset.copyIdleText =
@@ -847,6 +920,9 @@ function setLang(next) {
       locale.section.get.quick.runCopySuccess || "Start commands copied.";
     copyQuickStartRun.dataset.copyFailedText =
       locale.section.get.quick.runCopyFailed || "Copy start commands failed. Please copy manually.";
+    copyQuickStartRun.dataset.mustCopyText =
+      locale.section.get.quick.runPrereqText ||
+      "Please copy checks first.";
   }
   if (quickStartProgressLabel) {
     const progressText = locale.section.get.quick.progress || {};
@@ -859,6 +935,14 @@ function setLang(next) {
       progressText.phase3 || "Step 3/3 · Copy start commands, then open setup guide.";
     quickStartProgressLabel.dataset.done =
       progressText.done || "Quick start ready. Continue with your setup.";
+    quickStartProgressLabel.dataset.target1 =
+      progressText.target1 || "Next step: copy check commands.";
+    quickStartProgressLabel.dataset.target2 =
+      progressText.target2 || "Next step: copy start commands.";
+    quickStartProgressLabel.dataset.target3 =
+      progressText.target3 || "Next step: open the setup guide.";
+    quickStartProgressLabel.dataset.targetDone =
+      progressText.targetDone || "Next step: continue reading docs.";
     if (quickStartProgressStep1) {
       quickStartProgressStep1.textContent = labels.step1 || "1/3";
       quickStartProgressStep1.setAttribute("aria-label", progressText.phase1 || "Step 1");
@@ -956,8 +1040,6 @@ if (copyQuickStart) {
     const copiedText = copyQuickStart.dataset.copiedText || "Copied";
     const copiedNextText =
       copyQuickStart.dataset.copiedNextText || copiedText;
-    const failedText =
-      copyQuickStart.dataset.copyFailedText || "Copy failed. Please retry.";
     const runReady = quickStartRunLink?.dataset?.readyRunUrl === "true";
 
     try {
@@ -985,7 +1067,8 @@ if (copyQuickStart) {
         setQuickStartProgressState();
         setRunLinkReady(checksCopied && runReady);
       } else {
-        setCopyFeedback(failedText, true);
+        showManualCopyFallback(copyQuickStart, text);
+        setQuickStartProgressState();
       }
     }
   });
@@ -993,6 +1076,15 @@ if (copyQuickStart) {
 
 if (copyQuickStartChecks) {
   copyQuickStartChecks.addEventListener("click", async () => {
+    if (!commandsCopied) {
+      setCopyFeedback(
+        copyQuickStartChecks.dataset.mustCopyText ||
+          copyQuickStart?.dataset?.mustCopyText ||
+          "Please copy commands first.",
+        true
+      );
+      return;
+    }
     const text = quickStartCheckCmd ? quickStartCheckCmd.textContent.trim() : "";
     if (!text) {
       const nothingText = copyQuickStartChecks.dataset.nothingText || "No check commands to copy.";
@@ -1032,9 +1124,7 @@ if (copyQuickStartChecks) {
         revealQuickStartPhase(quickStartRun);
         setRunLinkReady(true);
       } else {
-        const failedText =
-          copyQuickStartChecks.dataset.copyFailedText || "Copy checks failed. Please copy manually.";
-        setCopyFeedback(failedText, true);
+        showManualCopyFallback(copyQuickStartChecks, text);
       }
     }
   });
@@ -1042,6 +1132,15 @@ if (copyQuickStartChecks) {
 
 if (copyQuickStartRun) {
   copyQuickStartRun.addEventListener("click", async () => {
+    if (!checksCopied) {
+      setCopyFeedback(
+        copyQuickStartRun.dataset.mustCopyText ||
+          copyQuickStartChecks?.dataset?.mustCopyText ||
+          "Please copy check commands first.",
+        true
+      );
+      return;
+    }
     const text = quickStartRunCmd ? quickStartRunCmd.textContent.trim() : "";
     if (!text) {
       const nothingText = copyQuickStartRun.dataset.nothingText || "No start commands to copy.";
@@ -1068,10 +1167,7 @@ if (copyQuickStartRun) {
         showCopyDone(copyQuickStartRun, copiedText);
         setCopyFeedback(copiedText);
       } else {
-        const failedText =
-          copyQuickStartRun.dataset.copyFailedText ||
-          "Copy start commands failed. Please copy manually.";
-        setCopyFeedback(failedText, true);
+        showManualCopyFallback(copyQuickStartRun, text);
       }
     }
   });

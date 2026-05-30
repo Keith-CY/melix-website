@@ -591,6 +591,28 @@ ol {
   font-weight: 560;
 }
 
+.quickstart-progress-target {
+  margin: 0;
+  font-size: 0.76rem;
+  color: #8aa9e6;
+}
+
+.quickstart-progress-state-done .quickstart-progress-target {
+  color: #a7ffd6;
+}
+
+.quickstart-progress-state-3 .quickstart-progress-target {
+  color: #c4e2ff;
+}
+
+.quickstart-progress-state-2 .quickstart-progress-target {
+  color: #b7d8ff;
+}
+
+.quickstart-progress-state-1 .quickstart-progress-target {
+  color: #9abbe3;
+}
+
 @keyframes quickstartPulse {
   0%,
   100% {
