@@ -998,6 +998,14 @@ ol {
   margin-right: 0.03rem;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .quickstart-completion-hint,
+  .quickstart-completion-hint.is-shown {
+    animation: none;
+    transition: none;
+  }
+}
+
 .quickstart-completion-hint.is-shown {
   opacity: 1;
   visibility: visible;
