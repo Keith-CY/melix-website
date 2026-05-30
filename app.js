@@ -702,7 +702,7 @@ function showQuickStartCompletionToast(message) {
   const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY).matches;
   quickStartCompletionToastTimer = setTimeout(() => {
     hideQuickStartCompletionToast();
-  }, reducedMotion ? 1600 : 2400);
+  }, reducedMotion ? 1200 : 1900);
   persistQuickStartProgress();
 }
 
@@ -2476,19 +2476,7 @@ if (quickStartRunLink) {
 }
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    hideQuickStartCompletionToast();
-  }
-});
-
-window.addEventListener("click", (event) => {
-  if (!quickStartCompletionToast || quickStartCompletionToast.hidden) {
-    return;
-  }
-  if (
-    !quickStartCompletionToast.contains(event.target) &&
-    quickStartCompletionToast.classList.contains("is-shown")
-  ) {
+  if (event.key === "Escape" && quickStartCompletionToast?.classList.contains("is-shown")) {
     hideQuickStartCompletionToast();
   }
 });
