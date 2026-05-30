@@ -885,7 +885,7 @@ function scheduleActiveNavFallback() {
     }
     if (
       activeNavLastInteractionAt &&
-      performance.now() - activeNavLastInteractionAt > NAV_INTERACTION_WINDOW_MS
+      performance.now() - activeNavLastInteractionAt < NAV_INTERACTION_WINDOW_MS
     ) {
       return;
     }
