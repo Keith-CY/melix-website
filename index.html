@@ -379,7 +379,7 @@ uv --version</code></pre>
         </div>
       </section>
 
-      <section id="status" class="section reveal">
+        <section id="status" class="section reveal">
         <div class="wrap">
           <h2 data-i18n="section.status.heading">Current Status</h2>
           <p class="status-tag" data-i18n="section.status.tag">
@@ -430,6 +430,12 @@ uv --version</code></pre>
               <span id="status-commit">n/a</span>
             </p>
           </div>
+          <div
+            id="status-copy-toast"
+            class="status-copy-toast is-hidden"
+            role="status"
+            aria-live="polite"
+          ></div>
           <div class="status-live" id="status-live-wrap">
             <p class="status-live-label" id="status-live-label" data-i18n="section.status.liveLabel">
               Live deployment check

@@ -402,6 +402,7 @@ const statusLiveDetail = document.getElementById("status-live-detail");
 const statusLiveRefresh = document.getElementById("status-live-refresh");
 const statusLiveAutoRefresh = document.getElementById("status-live-autorefresh");
 const statusLiveMetrics = document.getElementById("status-live-metrics");
+const statusCopyToast = document.getElementById("status-copy-toast");
 const langToggle = document.getElementById("lang-toggle");
 const linkGithub = document.getElementById("link-github");
 const linkCommunity = document.getElementById("link-community");
@@ -434,6 +435,7 @@ let activeNavLastStrongInteractionAt = 0;
 let revealObserver = null;
 
 let statusMetaCopyTimer = null;
+let statusMetaToastTimer = null;
 const quickStartStorageKey = "melixQuickStartProgressV1";
 const liveRefreshEnabledStorageKey = "melixLiveAutoRefreshEnabled";
 const LIVE_CHECK_INTERVAL_MS = 60 * 1000;
@@ -601,6 +603,21 @@ function setCopyFeedback(message, isError = false) {
     copyQuickStartFeedback.textContent = "";
     copyQuickStartFeedback.classList.remove("visible");
   }, showMs);
+}
+
+function showStatusMetaCopyToast(message, isError = false) {
+  if (!statusCopyToast) {
+    return;
+  }
+  statusCopyToast.textContent = message;
+  statusCopyToast.classList.remove("is-hidden", "is-success", "is-error");
+  statusCopyToast.classList.add(isError ? "is-error" : "is-success");
+  if (statusMetaToastTimer) {
+    clearTimeout(statusMetaToastTimer);
+  }
+  statusMetaToastTimer = setTimeout(() => {
+    statusCopyToast.classList.add("is-hidden");
+  }, 1600);
 }
 
 function showCopyDone(button, doneText) {
@@ -1098,7 +1115,9 @@ function setupStatusMetaCopyHandlers() {
 
     const copyStatusMeta = async () => {
       if (item.getAttribute("aria-disabled") === "true") {
-        showCopyFeedback(item.dataset.copyUnavailableText || "No value yet", true);
+        const unavailableText = item.dataset.copyUnavailableText || "No value yet";
+        showCopyFeedback(unavailableText, true);
+        showStatusMetaCopyToast(unavailableText, true);
         item.classList.add("is-copyable-unavailable-pulse");
         clearTimeout(item._copyUnavailablePulseTimer);
         item._copyUnavailablePulseTimer = setTimeout(() => {
@@ -1113,6 +1132,7 @@ function setupStatusMetaCopyHandlers() {
       const text = target ? (target.textContent || "").trim() : "";
 
       if (!text || text === fallbackText) {
+        showStatusMetaCopyToast(`${copyUnavailableText}.`, true);
         showCopyFeedback(`${copyUnavailableText}.`, true);
         return;
       }
@@ -1133,6 +1153,7 @@ function setupStatusMetaCopyHandlers() {
 
       if (!copied) {
         showManualCopyFallback(item, text);
+        showStatusMetaCopyToast(item.dataset.manualCopyHint || copyUnavailableText, true);
         return;
       }
 
@@ -1142,6 +1163,7 @@ function setupStatusMetaCopyHandlers() {
       item.dataset.copied = "1";
       item.classList.add("is-copyable-copied");
       item.classList.add("is-copyable-just-copied");
+      showStatusMetaCopyToast(item.dataset.copyDone || "Copied", false);
       statusMetaCopyTimer = setTimeout(() => {
         delete item.dataset.copied;
         item.classList.remove("is-copyable-copied");
