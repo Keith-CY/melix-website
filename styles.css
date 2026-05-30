@@ -1010,7 +1010,7 @@ ol {
   filter: blur(1.3px);
   opacity: 1;
   transform-origin: center center;
-  animation: quickstart-completion-halo 2.2s ease-in-out infinite;
+  animation: quickstart-completion-halo 3.6s ease-in-out infinite;
 }
 
 @supports not (backdrop-filter: blur(1px)) {
@@ -1037,13 +1037,14 @@ ol {
     inset 0 1px 0 rgba(255, 255, 255, 0.68),
     0 0 10px rgba(173, 255, 230, 0.52),
     0 0 1px rgba(255, 255, 255, 0.8);
+  transform: translateZ(0) scale(1);
   color: #e8fff7;
   margin-right: 0.108rem;
   text-shadow: 0 1px 13px rgba(226, 255, 246, 0.84);
 }
 
 .quickstart-completion-hint.is-shown::before {
-  animation: quickstart-completion-badge-pulse 1.55s ease-in-out infinite;
+  animation: quickstart-completion-badge-pop 0.58s cubic-bezier(0.15, 1, 0.33, 1);
 }
 
 @media (max-width: 640px) {
@@ -1118,6 +1119,7 @@ ol {
     0 0 0 4px rgba(255, 255, 255, 0.08),
     0 0 0 5px rgba(255, 255, 255, 0.034),
     inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  filter: saturate(1.08) contrast(1.02);
 }
 
 .quickstart-completion-anchor {
@@ -1159,7 +1161,7 @@ ol {
   }
 }
 
-@keyframes quickstart-completion-badge-pulse {
+@keyframes quickstart-completion-badge-pop {
   0%,
   100% {
     transform: translateZ(0) scale(1);
