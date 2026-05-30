@@ -1152,7 +1152,7 @@ ol {
 
 @keyframes quickstart-completion-in {
   from {
-    opacity: 0.03;
+    opacity: 0.02;
     transform: translateY(-0.04px) scale(0.999);
   }
   to {
