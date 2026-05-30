@@ -82,7 +82,7 @@ const copy = {
             target3: "Next step: open the setup guide.",
             target3Pending: "Next step: open the setup guide.",
             targetDone: "Next step: view current status.",
-            completionHint: "Done — open status to continue.",
+            completionHint: "Done ✓ status available.",
             labels: {
               step1: "1/3",
               step2: "2/3",
@@ -264,7 +264,7 @@ const copy = {
             target3: "下一步：打开设置文档。",
             target3Pending: "下一步：打开设置文档。",
             targetDone: "下一步：查看项目状态。",
-            completionHint: "完成啦，去看状态。",
+            completionHint: "完成✓ 状态可查看。",
             labels: {
               step1: "1/3",
               step2: "2/3",
