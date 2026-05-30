@@ -959,6 +959,7 @@ ol {
   backdrop-filter: blur(6px);
   box-shadow: 0 10px 28px rgba(3, 6, 15, 0.42),
     0 0 0 1px rgba(173, 188, 244, 0.12);
+  z-index: 12;
   font-size: 0.76rem;
   font-weight: 600;
   letter-spacing: 0.005em;
@@ -974,7 +975,9 @@ ol {
   gap: 0.14rem;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  max-width: 100%;
+  max-width: min(92vw, 20rem);
+  white-space: nowrap;
+  text-overflow: ellipsis;
   overflow: hidden;
   pointer-events: none;
   visibility: hidden;
@@ -992,6 +995,7 @@ ol {
   font-size: 0.72rem;
   font-weight: 800;
   color: #b2ffe0;
+  margin-right: 0.03rem;
 }
 
 .quickstart-completion-hint.is-shown {
