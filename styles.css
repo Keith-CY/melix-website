@@ -1019,10 +1019,10 @@ ol {
   pointer-events: none;
   z-index: -1;
   background: radial-gradient(circle at 38% 25%, rgba(255, 255, 255, 0.92), rgba(173, 240, 255, 0.16), rgba(7, 12, 24, 0) 72%);
-  filter: blur(1.1px);
+  filter: blur(1.08px);
   opacity: 1;
   transform-origin: center center;
-  animation: quickstart-completion-halo 9.5s ease-in-out infinite;
+  animation: quickstart-completion-halo 9.8s ease-in-out infinite;
 }
 
 @supports not (backdrop-filter: blur(1px)) {
@@ -1130,11 +1130,11 @@ ol {
     0 0 0 1px rgba(255, 255, 255, 0.99),
     0 0 0 2px rgba(175, 215, 255, 0.46),
     0 0 0 3px rgba(255, 255, 255, 0.22),
-    0 0 0 4px rgba(255, 255, 255, 0.13),
+    0 0 0 4px rgba(255, 255, 255, 0.14),
     0 0 0 5px rgba(173, 235, 255, 0.12),
-    0 0 0 6px rgba(255, 255, 255, 0.04),
+    0 0 0 6px rgba(255, 255, 255, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.96);
-  filter: saturate(1.15) contrast(1.07);
+  filter: saturate(1.16) contrast(1.08);
 }
 
 .quickstart-completion-anchor {
@@ -1177,7 +1177,7 @@ ol {
   50% {
     transform: scale(1.0035);
     opacity: 1;
-    filter: blur(1.16px);
+    filter: blur(1.17px);
   }
   75% {
     transform: scale(1.0025);
