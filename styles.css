@@ -1021,6 +1021,18 @@ ol {
   text-shadow: 0 0 8px rgba(178, 255, 224, 0.55);
 }
 
+@media (prefers-contrast: more) {
+  .quickstart-completion-hint {
+    border-color: rgba(173, 188, 244, 0.96);
+    color: #ffffff;
+  }
+
+  .quickstart-completion-hint::before {
+    color: #f7fffb;
+    text-shadow: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .quickstart-completion-hint,
   .quickstart-completion-hint.is-shown {
