@@ -1229,6 +1229,11 @@ button:focus-visible {
   .status-grid {
     grid-template-columns: 1fr;
   }
+
+  .quickstart-status-link-ready {
+    animation-iteration-count: 1;
+    animation-duration: 1.5s;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1300,6 +1305,16 @@ button:focus-visible {
 
   .status-live-pill-checking::before {
     animation: none !important;
+  }
+
+  .quickstart-status-link-ready,
+  .quickstart-progress-step-complete,
+  .command-card h3[data-step].step-complete::before,
+  .quickstart-status-link,
+  .quickstart-progress-step-active,
+  .quickstart-focus {
+    animation: none !important;
+    transform: none !important;
   }
 }
 
