@@ -951,8 +951,8 @@ ol {
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  border: 2.72px solid rgba(255, 255, 255, 1);
-  padding: 0.56rem 1.68rem;
+  border: 2.7px solid rgba(255, 255, 255, 1);
+  padding: 0.54rem 1.64rem;
   color: #ffffff;
   background: linear-gradient(135deg, rgba(242, 255, 255, 1), rgba(0, 2, 6, 1));
   -webkit-backdrop-filter: saturate(620%) blur(8px);
@@ -973,7 +973,7 @@ ol {
   z-index: 20;
   overflow: visible;
   isolation: isolate;
-  font-size: 1.08rem;
+  font-size: 1.06rem;
   font-weight: 800;
   letter-spacing: 0.006em;
   text-shadow: 0 1px 2px rgba(3, 6, 15, 0.99),
@@ -982,12 +982,12 @@ ol {
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
-  line-height: 1.02;
+  line-height: 1.01;
   align-items: center;
   gap: 0.09rem;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  max-width: min(79vw, 13.8rem);
+  max-width: min(79vw, 13.6rem);
   white-space: normal;
   word-break: break-word;
   text-align: left;
@@ -1019,7 +1019,7 @@ ol {
 .quickstart-completion-hint::before {
   content: "✓";
   line-height: 1;
-  font-size: 1.08rem;
+  font-size: 1.06rem;
   font-weight: 800;
   color: #e8fff7;
   margin-right: 0.1rem;
