@@ -75,7 +75,7 @@ const copy = {
           runHeading: "Then continue with project setup",
           runCopy:
             "Go to setup guide to follow the right command for starting the service.",
-          runCommands: ["make bootstrap", "make proto", "bash scripts/dev_up.sh"],
+          runCommands: ["make bootstrap && make proto && bash scripts/dev_up.sh"],
           runCopyBtn: "Copy start commands",
           runCopySuccess: "Start commands copied.",
           runCopyFailed: "Copy start commands failed. Please copy manually.",
@@ -191,7 +191,7 @@ const copy = {
           ],
           runHeading: "继续项目设置",
           runCopy: "查看仓库说明执行服务启动步骤。",
-          runCommands: ["make bootstrap", "make proto", "bash scripts/dev_up.sh"],
+          runCommands: ["make bootstrap && make proto && bash scripts/dev_up.sh"],
           runCopyBtn: "复制启动命令",
           runCopySuccess: "启动命令已复制。",
           runCopyFailed: "复制启动命令失败，请手动复制。",
