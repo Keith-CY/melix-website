@@ -242,6 +242,7 @@ const requirementsEn = document.getElementById("requirements-en");
 const requirementsZh = document.getElementById("requirements-zh");
 const stepsEn = document.getElementById("steps-en");
 const stepsZh = document.getElementById("steps-zh");
+const quickStartTitle = document.querySelector('[data-step="1"]');
 const quickStartCmd = document.getElementById("quickstart-cmd");
 const quickStartChecks = document.getElementById("quickstart-checks");
 const quickStartCheckCmd = document.getElementById("quickstart-check-cmd");
@@ -267,7 +268,9 @@ const linkGithub = document.getElementById("link-github");
 const linkCommunity = document.getElementById("link-community");
 const linkIssue = document.getElementById("link-issue");
 let lang = "en";
+let commandsCopied = false;
 let checksCopied = false;
+let runCopied = false;
 
 const defaultLinks = {
   github: "",
@@ -402,6 +405,45 @@ function setCheckLinkReady(isReady) {
   }
   const waitHint = copyQuickStart?.dataset?.mustCopyText || "Copy commands first.";
   setLinkPhaseState(quickStartNext, isReady, waitHint);
+}
+
+function setQuickStartStepState(el, state) {
+  if (!el) {
+    return;
+  }
+  el.classList.remove("step-pending", "step-active", "step-complete");
+  el.classList.add(`step-${state}`);
+}
+
+function setQuickStartProgressState() {
+  if (!quickStartTitle || !quickStartCheckTitle || !quickStartRunTitle) {
+    return;
+  }
+
+  if (runCopied) {
+    setQuickStartStepState(quickStartTitle, "complete");
+    setQuickStartStepState(quickStartCheckTitle, "complete");
+    setQuickStartStepState(quickStartRunTitle, "complete");
+    return;
+  }
+
+  if (checksCopied) {
+    setQuickStartStepState(quickStartTitle, "complete");
+    setQuickStartStepState(quickStartCheckTitle, "complete");
+    setQuickStartStepState(quickStartRunTitle, "active");
+    return;
+  }
+
+  if (commandsCopied) {
+    setQuickStartStepState(quickStartTitle, "complete");
+    setQuickStartStepState(quickStartCheckTitle, "active");
+    setQuickStartStepState(quickStartRunTitle, "pending");
+    return;
+  }
+
+  setQuickStartStepState(quickStartTitle, "active");
+  setQuickStartStepState(quickStartCheckTitle, "pending");
+  setQuickStartStepState(quickStartRunTitle, "pending");
 }
 
 function updateRunPhase(localeCopy) {
@@ -723,6 +765,7 @@ function setLang(next) {
   const runReady = quickStartRunLink?.dataset?.readyRunUrl === "true";
   setRunLinkReady(checksCopied && runReady);
   setCheckLinkReady(checksCopied);
+  setQuickStartProgressState();
 }
 
 langToggle.addEventListener("click", () => {
@@ -745,6 +788,7 @@ if (copyQuickStart) {
       copyQuickStart.dataset.copiedNextText || copiedText;
     const failedText =
       copyQuickStart.dataset.copyFailedText || "Copy failed. Please retry.";
+    const runReady = quickStartRunLink?.dataset?.readyRunUrl === "true";
 
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -753,13 +797,19 @@ if (copyQuickStart) {
         throw new Error("clipboard-api-not-available");
       }
       setCopyFeedback(copiedNextText);
+      commandsCopied = true;
       showNextPhase();
       setCheckLinkReady(true);
+      setQuickStartProgressState();
+      setRunLinkReady(checksCopied && runReady);
     } catch (err) {
       if (getFallbackCopyText(text)) {
         setCopyFeedback(copiedNextText);
+        commandsCopied = true;
         showNextPhase();
         setCheckLinkReady(true);
+        setQuickStartProgressState();
+        setRunLinkReady(checksCopied && runReady);
       } else {
         setCopyFeedback(failedText, true);
       }
@@ -789,6 +839,7 @@ if (copyQuickStartChecks) {
         copyQuickStartChecks.dataset.copiedNextText || copiedText;
       setCopyFeedback(copiedNextText);
       checksCopied = true;
+      setQuickStartProgressState();
       showRunPhase();
       setRunLinkReady(true);
     } catch (err) {
@@ -799,6 +850,7 @@ if (copyQuickStartChecks) {
           copyQuickStartChecks.dataset.copiedNextText || copiedText;
         setCopyFeedback(copiedNextText);
         checksCopied = true;
+        setQuickStartProgressState();
         showRunPhase();
         setRunLinkReady(true);
       } else {
@@ -825,9 +877,13 @@ if (copyQuickStartRun) {
       } else {
         throw new Error("clipboard-api-not-available");
       }
+      runCopied = true;
+      setQuickStartProgressState();
       setCopyFeedback(copyQuickStartRun.dataset.copiedText || "Start commands copied.");
     } catch (err) {
       if (getFallbackCopyText(text)) {
+        runCopied = true;
+        setQuickStartProgressState();
         setCopyFeedback(copyQuickStartRun.dataset.copiedText || "Start commands copied.");
       } else {
         const failedText =
