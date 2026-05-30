@@ -423,6 +423,8 @@ let activeNavStableTarget = null;
 let activeNavStaleTimer = null;
 let activeNavInteractionToken = 0;
 let activeNavLastInteractionAt = 0;
+let activeNavStrongInteractionToken = 0;
+let activeNavLastStrongInteractionAt = 0;
 const quickStartStorageKey = "melixQuickStartProgressV1";
 const liveRefreshEnabledStorageKey = "melixLiveAutoRefreshEnabled";
 const LIVE_CHECK_INTERVAL_MS = 60 * 1000;
@@ -432,6 +434,25 @@ const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const ACTIVE_NAV_STABILITY_MS = 110;
 const ACTIVE_NAV_STALE_FALLBACK_MS = 2000;
 const NAV_INTERACTION_WINDOW_MS = ACTIVE_NAV_STALE_FALLBACK_MS;
+const NAV_DEBUG_QUERY = "debugNav";
+const NAV_DEBUG_STORAGE_KEY = "melixNavDebug";
+const urlSearch = new URLSearchParams(window.location.search);
+const debugNav = urlSearch.has(NAV_DEBUG_QUERY) || urlSearch.get("debug") === "1";
+const localNavDebug = (() => {
+  try {
+    return localStorage.getItem(NAV_DEBUG_STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+})();
+const shouldDebugNav = !!(debugNav || localNavDebug);
+if (debugNav) {
+  try {
+    localStorage.setItem(NAV_DEBUG_STORAGE_KEY, "1");
+  } catch {
+    // ignore.
+  }
+}
 
 function persistQuickStartProgress() {
   try {
@@ -786,9 +807,25 @@ function getActiveNavByScrollY() {
   return activeItem;
 }
 
-function markActiveNavInteraction() {
+function logNavDebug(message, payload = {}) {
+  if (!shouldDebugNav) {
+    return;
+  }
+  console.debug("[melix-nav]", message, payload);
+}
+
+function markActiveNavInteraction(isStrong = true) {
   activeNavInteractionToken += 1;
   activeNavLastInteractionAt = performance.now();
+  if (isStrong) {
+    activeNavStrongInteractionToken += 1;
+    activeNavLastStrongInteractionAt = activeNavLastInteractionAt;
+  }
+  logNavDebug("interaction", {
+    token: activeNavInteractionToken,
+    strongToken: activeNavStrongInteractionToken,
+    isStrong,
+  });
 }
 
 function getActiveNavFromEntries(entries) {
@@ -868,6 +905,10 @@ function scheduleActiveNavCommit(candidateItem) {
     activeNavStableTarget = null;
     applyActiveNav(nextActive);
   }, ACTIVE_NAV_STABILITY_MS);
+  logNavDebug("schedule-commit", {
+    target: candidateItem?.target?.id || "unknown",
+    delay: ACTIVE_NAV_STABILITY_MS,
+  });
 }
 
 function scheduleActiveNavFallback() {
@@ -881,16 +922,22 @@ function scheduleActiveNavFallback() {
   activeNavStaleTimer = setTimeout(() => {
     activeNavStaleTimer = null;
     if (activeNavInteractionToken !== fallbackToken) {
+      logNavDebug("fallback-aborted-token-changed");
       return;
     }
     if (
-      activeNavLastInteractionAt &&
-      performance.now() - activeNavLastInteractionAt < NAV_INTERACTION_WINDOW_MS
+      activeNavLastStrongInteractionAt &&
+      performance.now() - activeNavLastStrongInteractionAt <
+        NAV_INTERACTION_WINDOW_MS
     ) {
+      logNavDebug("fallback-aborted-strong-interaction-window");
       return;
     }
-    scheduleActiveNavCommit(getActiveNavByScrollY());
+    const next = getActiveNavByScrollY();
+    logNavDebug("fallback-commit", { target: next?.target?.id || "none" });
+    scheduleActiveNavCommit(next);
   }, ACTIVE_NAV_STALE_FALLBACK_MS);
+  logNavDebug("fallback-scheduled", { delay: ACTIVE_NAV_STALE_FALLBACK_MS });
 }
 
 function setupActiveNavObserver() {
@@ -915,9 +962,15 @@ function setupActiveNavObserver() {
     (entries) => {
       const activeEntry = getActiveNavFromEntries(entries);
       if (!activeEntry) {
+        logNavDebug("io-empty");
         scheduleActiveNavFallback();
         return;
       }
+      logNavDebug("io-active", {
+        id: activeEntry.target && activeEntry.target.id,
+        ratio: activeEntry.intersectionRatio,
+        top: activeEntry.boundingClientRect?.top,
+      });
       if (activeNavStaleTimer) {
         clearTimeout(activeNavStaleTimer);
         activeNavStaleTimer = null;
@@ -1979,10 +2032,12 @@ if (quickStartRunLink) {
 }
 
 sectionNavLinks.forEach((link) => {
-  link.addEventListener("click", markActiveNavInteraction);
+  link.addEventListener("click", () => markActiveNavInteraction(true));
 });
-window.addEventListener("scroll", markActiveNavInteraction, { passive: true });
-window.addEventListener("resize", markActiveNavInteraction);
+window.addEventListener("scroll", () => markActiveNavInteraction(true), {
+  passive: true,
+});
+window.addEventListener("resize", () => markActiveNavInteraction(false));
 
 const preferred = navigator.language.toLowerCase();
 applyRestoredQuickStartState();
