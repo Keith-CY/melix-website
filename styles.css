@@ -951,22 +951,22 @@ ol {
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  border: 3.3px solid rgba(255, 255, 255, 1);
+  border: 3.4px solid rgba(255, 255, 255, 1);
   padding: 0.8rem 2.68rem;
   color: #ffffff;
   background: linear-gradient(135deg, rgba(242, 255, 255, 1), rgba(0, 2, 6, 1));
   -webkit-backdrop-filter: saturate(620%) blur(8px);
   backdrop-filter: saturate(620%) blur(8px);
   box-shadow:
-    0 21px 54px rgba(1, 3, 10, 0.55),
+    0 20px 48px rgba(1, 3, 10, 0.58),
     0 0 0 1px rgba(255, 255, 255, 1),
     0 0 0 2px rgba(255, 255, 255, 0.99),
     0 0 0 3px rgba(255, 255, 255, 0.9),
     0 0 0 4px rgba(255, 255, 255, 0.64),
     0 0 0 5px rgba(255, 255, 255, 0.42),
     0 0 0 6px rgba(255, 255, 255, 0.26),
-    0 0 0 7px rgba(255, 255, 255, 0.11),
-    inset 0 1px 0 rgba(255, 255, 255, 0.68);
+    0 0 0 7px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
   position: absolute;
   left: 0;
   top: calc(100% + 0.2rem);
@@ -1005,7 +1005,7 @@ ol {
   pointer-events: none;
   z-index: -1;
   background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 1), rgba(7, 12, 24, 0));
-  filter: blur(2.2px);
+  filter: blur(2px);
   opacity: 1;
 }
 
