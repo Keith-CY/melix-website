@@ -1006,7 +1006,7 @@ ol {
   right: 0;
   top: 0.22rem;
   transform: translateY(-55%);
-  pointer-events: auto;
+  pointer-events: none;
 }
 
 .quickstart-status-link {
