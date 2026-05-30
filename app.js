@@ -1664,6 +1664,16 @@ function maybeHintQuickStartPhaseTarget(targetText) {
   }, 300);
 }
 
+function isInQuickStartViewport(target) {
+  if (!target) {
+    return false;
+  }
+  const rect = target.getBoundingClientRect();
+  const top = 120;
+  const bottom = window.innerHeight - 120;
+  return rect.top >= 0 && rect.top <= bottom && rect.bottom >= top;
+}
+
 function revealQuickStartPhase(target) {
   if (!target) {
     return;
@@ -1682,6 +1692,14 @@ function revealQuickStartPhase(target) {
   }
   const runReveal = () => {
     if (target.hidden) {
+      return;
+    }
+    if (isInQuickStartViewport(target)) {
+      target.classList.add("quickstart-focus");
+      quickStartFocusTimer = setTimeout(() => {
+        target.classList.remove("quickstart-focus");
+        quickStartFocusTimer = null;
+      }, 1500);
       return;
     }
     target.scrollIntoView({ behavior: "smooth", block: "start" });
