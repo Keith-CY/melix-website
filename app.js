@@ -1195,7 +1195,10 @@ if (quickStartRunLink) {
   quickStartRunLink.addEventListener("click", (event) => {
     if (quickStartRunLink.getAttribute("aria-disabled") === "true") {
       event.preventDefault();
-      setCopyFeedback(copyQuickStartChecks?.dataset.mustCopyText || "Copy checks first, then open setup guide.");
+      const message =
+        copyQuickStartRun?.dataset?.mustCopyText ||
+        "Copy checks first, then open setup guide.";
+      setCopyFeedback(message, true);
     }
   });
 }
