@@ -652,7 +652,19 @@ function showQuickStartCompletionToast(message) {
     return;
   }
   quickStartCompletionHintShown = true;
-  quickStartCompletionToast.textContent = message || "";
+  const actionText =
+    quickStartCompletionToast.dataset.actionText ||
+    quickStartStatusLink?.textContent ||
+    "View current status";
+  quickStartCompletionToast.textContent = "";
+  const textNode = document.createElement("span");
+  textNode.textContent = message || "";
+  const actionLink = document.createElement("a");
+  actionLink.href = "#status";
+  actionLink.className = "quickstart-completion-hint-action";
+  actionLink.textContent = actionText;
+  quickStartCompletionToast.appendChild(textNode);
+  quickStartCompletionToast.appendChild(actionLink);
   quickStartCompletionToast.hidden = false;
   quickStartCompletionToast.classList.add("is-shown");
   if (quickStartCompletionToastTimer) {
@@ -1971,6 +1983,10 @@ function setLang(next) {
   setText("cta.primary", locale.cta.primary);
   setText("cta.secondary", locale.cta.secondary);
   setText("cta.tertiary", locale.cta.tertiary);
+  if (quickStartCompletionToast) {
+    quickStartCompletionToast.dataset.actionText =
+      locale.cta?.tertiary || "View current status";
+  }
 
   setText("nav.problem", locale.nav.problem);
   setText("nav.loop", locale.nav.loop);
