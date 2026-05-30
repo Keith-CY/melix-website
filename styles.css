@@ -989,6 +989,13 @@ ol {
   transform: translate(0, 0);
 }
 
+@supports not (backdrop-filter: blur(1px)) {
+  .quickstart-completion-hint {
+    backdrop-filter: none;
+    background: linear-gradient(135deg, rgba(17, 28, 46, 0.96), rgba(8, 18, 36, 0.94));
+  }
+}
+
 .quickstart-completion-hint::before {
   content: "✓";
   line-height: 1;
